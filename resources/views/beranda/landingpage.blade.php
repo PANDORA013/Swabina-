@@ -40,7 +40,7 @@
     <div class="carousel-inner">
         @foreach($carousels as $key => $carousel)
             <div class="carousel-item {{ $key == 0 ? 'active' : '' }} carousel-awal">
-                <img src="{{ asset('storage/' . $carousel->image) }}" class="d-block w-100 carousel-image" alt="{{ $carousel->title }}">
+                <img src="{{ asset('storage/public/' . $carousel->image) }}" class="d-block w-100 carousel-image" alt="{{ $carousel->title }}">
             </div>
         @endforeach
     </div>
@@ -61,6 +61,7 @@
 
     <!-- Wrapper untuk card, tambahkan justify-content-center untuk memusatkan -->
     <div class="d-flex flex-wrap justify-content-center" style="gap: 1rem;">
+      
         <div class="card p-3 bg-body-tertiary" style="">
           <img src="/assets/gambar_landingpage/kerja.png" alt="..." class="card-img-top mx-auto" style="">
           <div class="card-body text-center">

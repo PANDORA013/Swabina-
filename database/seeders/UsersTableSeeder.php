@@ -14,33 +14,40 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         // Create Admin User if not exists
-        User::updateOrCreate(
-            ['email' => 'admin@gmail.com'],
-            [
+        // User::Create(
+        //     ['email' => 'admin@gmail.com'],
+        //     [
+        //         'name' => 'Admin User',
+        //         'password' => Hash::make('admin123'),
+        //         'role' => 'admin',
+        //     ]
+        // );
+
+        User::create([
                 'name' => 'Admin User',
-                'password' => Hash::make('admin123'),
-                'role' => 'admin',
-            ]
-        );
+                'email' => 'admin@gmail.com',
+                'password' => bcrypt('admin123'),
+
+            ]);
 
         // Create SDM User if not exists
-        User::updateOrCreate(
-            ['email' => 'sdm@gmail.com'],
-            [
-                'name' => 'SDM User',
-                'password' => Hash::make('admin123'),
-                'role' => 'sdm',
-            ]
-        );
+        // User::updateOrCreate(
+        //     ['email' => 'sdm@gmail.com'],
+        //     [
+        //         'name' => 'SDM User',
+        //         'password' => Hash::make('admin123'),
+        //         'role' => 'sdm',
+        //     ]
+        // );
 
-        // Create Marketing User if not exists
-        User::updateOrCreate(
-            ['email' => 'marketing@gmail.com'],
-            [
-                'name' => 'Marketing User',
-                'password' => Hash::make('admin123'),
-                'role' => 'marketing',
-            ]
-        );
+        // // Create Marketing User if not exists
+        // User::updateOrCreate(
+        //     ['email' => 'marketing@gmail.com'],
+        //     [
+        //         'name' => 'Marketing User',
+        //         'password' => Hash::make('admin123'),
+        //         'role' => 'marketing',
+        //     ]
+        // );
     }
 }
