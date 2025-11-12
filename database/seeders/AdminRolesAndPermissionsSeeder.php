@@ -141,6 +141,21 @@ class AdminRolesAndPermissionsSeeder extends Seeder
         // Update existing admin user to super_admin
         DB::table('users')
             ->where('email', 'admin@swabinagatra.com')
-            ->update(['admin_role_id' => $superAdminRole]);
+            ->update([
+                'admin_role_id' => $superAdminRole,
+                'role' => 'admin'
+            ]);
+
+        // Verify the update
+        $adminUser = DB::table('users')
+            ->where('email', 'admin@swabinagatra.com')
+            ->first();
+        
+        if ($adminUser) {
+            echo "\n✅ Super Admin Set Successfully!\n";
+            echo "Email: {$adminUser->email}\n";
+            echo "Role ID: {$adminUser->admin_role_id}\n";
+            echo "Status: Super Admin\n\n";
+        }
     }
 }
