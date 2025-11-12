@@ -194,8 +194,8 @@
         let formData = new FormData(this);
         
         let url = isEditing 
-            ? '<?php echo e(route("admin.sosialmedia.sosmed.update", ":id")); ?>'.replace(':id', editId)
-            : '<?php echo e(route("admin.sosialmedia.sosmed.store")); ?>';
+            ? '<?php echo e(route("admin.sosmed.update", ":id")); ?>'.replace(':id', editId)
+            : '<?php echo e(route("admin.sosmed.store")); ?>';
 
         if (isEditing) {
             formData.append('_method', 'PUT');
@@ -260,7 +260,7 @@
                     formData.append('_method', 'DELETE');
                     formData.append('type', type);
 
-                    fetch(`<?php echo e(route('admin.sosialmedia.sosmed.destroy', ':id')); ?>`.replace(':id', id), {
+                    fetch(`<?php echo e(route('admin.sosmed.destroy', ':id')); ?>`.replace(':id', id), {
                         method: 'POST',
                         body: formData,
                         headers: {

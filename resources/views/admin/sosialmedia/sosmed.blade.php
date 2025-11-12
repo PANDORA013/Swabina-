@@ -196,8 +196,8 @@
         let formData = new FormData(this);
         
         let url = isEditing 
-            ? '{{ route("admin.sosialmedia.sosmed.update", ":id") }}'.replace(':id', editId)
-            : '{{ route("admin.sosialmedia.sosmed.store") }}';
+            ? '{{ route("admin.sosmed.update", ":id") }}'.replace(':id', editId)
+            : '{{ route("admin.sosmed.store") }}';
 
         if (isEditing) {
             formData.append('_method', 'PUT');
@@ -262,7 +262,7 @@
                     formData.append('_method', 'DELETE');
                     formData.append('type', type);
 
-                    fetch(`{{ route('admin.sosialmedia.sosmed.destroy', ':id') }}`.replace(':id', id), {
+                    fetch(`{{ route('admin.sosmed.destroy', ':id') }}`.replace(':id', id), {
                         method: 'POST',
                         body: formData,
                         headers: {
