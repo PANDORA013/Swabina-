@@ -31,7 +31,15 @@ class BeritaController extends Controller
         $user = Auth::user();
         $userRole = $user ? $user->role : 'guest';
         $layout = $userRole === 'admin' ? 'layouts.app' : 'layouts.ppa';
-        return view('admin.berita.berita', compact('berita', 'userRole', 'layout'));
+        return view('admin.berita.index', compact('berita', 'userRole', 'layout'));
+    }
+
+    public function adminIndex()
+    {
+        $berita = Berita::latest()->get();
+        $userRole = auth()->user()->role;
+        $layout = $userRole === 'admin' ? 'layouts.app' : 'layouts.ppa';
+        return view('admin.berita.index', compact('berita', 'layout'));
     }
 
     private function compressAndSaveImage($file)
@@ -99,8 +107,8 @@ class BeritaController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:20480',
-                'title' => 'required|string|max:255',
-                'description' => 'required|string',
+                'title_id' => 'required|string|max:255',
+                'description_id' => 'required|string',
             ]);
 
             if ($validator->fails()) {
@@ -109,16 +117,16 @@ class BeritaController extends Controller
 
             $path = $this->compressAndSaveImage($request->file('image'));
 
-            // Save Indonesian content only (English translation disabled)
+            // Save multilingual content
             $berita = Berita::create([
                 'image' => $path,
                 'title' => [
-                    'id' => $request->title,
-                    'en' => $request->title // Use same as Indonesian for now
+                    'id' => $request->title_id,
+                    'en' => $request->title_en ?? $request->title_id
                 ],
                 'description' => [
-                    'id' => $this->formatDescription($request->description),
-                    'en' => $this->formatDescription($request->description) // Use same as Indonesian
+                    'id' => $this->formatDescription($request->description_id),
+                    'en' => $this->formatDescription($request->description_en ?? $request->description_id)
                 ],
             ]);
 
@@ -138,8 +146,8 @@ class BeritaController extends Controller
             $berita = Berita::findOrFail($id);
             
             $validator = Validator::make($request->all(), [
-                'title' => 'nullable|string|max:255',
-                'description' => 'nullable|string',
+                'title_id' => 'nullable|string|max:255',
+                'description_id' => 'nullable|string',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:20480',
             ]);
 
@@ -154,18 +162,18 @@ class BeritaController extends Controller
                 $berita->image = $this->compressAndSaveImage($request->file('image'));
             }
 
-            // Update Indonesian content only (English translation disabled)
-            if ($request->filled('title')) {
+            // Update multilingual content
+            if ($request->filled('title_id')) {
                 $berita->title = [
-                    'id' => $request->title,
-                    'en' => $request->title // Use same as Indonesian
+                    'id' => $request->title_id,
+                    'en' => $request->title_en ?? $request->title_id
                 ];
             }
 
-            if ($request->filled('description')) {
+            if ($request->filled('description_id')) {
                 $berita->description = [
-                    'id' => $this->formatDescription($request->description),
-                    'en' => $this->formatDescription($request->description) // Use same as Indonesian
+                    'id' => $this->formatDescription($request->description_id),
+                    'en' => $this->formatDescription($request->description_en ?? $request->description_id)
                 ];
             }
 
