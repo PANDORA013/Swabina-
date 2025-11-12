@@ -6,22 +6,33 @@
 const CACHE_VERSION = 'swabina-v1.0';
 const CACHE_NAME = `swabina-cache-${CACHE_VERSION}`;
 
-// Assets to cache immediately
+// Assets to cache immediately (only essential files)
 const PRECACHE_ASSETS = [
     '/',
     '/assets/css/swabina-main.css',
-    '/assets/css/bootstrap.min.css',
-    '/assets/js/bootstrap.bundle.min.js',
-    '/assets/js/lazy-loader.js',
-    '/assets/gambar_landingpage/logo_swabina.png'
+    '/assets/js/lazy-loader.js'
 ];
 
-// Install event - cache critical assets
+// Install event - cache critical assets with error handling
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME)
-            .then(cache => cache.addAll(PRECACHE_ASSETS))
+            .then(cache => {
+                // Try to cache each asset individually
+                return Promise.allSettled(
+                    PRECACHE_ASSETS.map(asset =>
+                        fetch(asset).then(response => {
+                            if (response.ok) {
+                                return cache.put(asset, response);
+                            }
+                        }).catch(err => {
+                            console.warn(`Failed to cache ${asset}:`, err);
+                        })
+                    )
+                );
+            })
             .then(() => self.skipWaiting())
+            .catch(err => console.error('Cache installation error:', err))
     );
 });
 
