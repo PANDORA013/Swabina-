@@ -17,8 +17,8 @@ class AdminManagementController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
-        $this->middleware('super_admin');
+        // Middleware is already applied in routes
+        // No need to re-apply here
     }
 
     /**
