@@ -82,11 +82,21 @@ class OptimizePerformance extends Command
         $imagesDir = public_path('assets/gambar_landingpage');
         $images = glob($imagesDir . '/*.png');
 
+        // Skip compression for these files (they have color profiles that get corrupted)
+        $skipFiles = ['logo_swabina.png', 'logo_iso1.png', 'logo_iso2.png', 'logo_iso3.png', 'logo_smk3.png'];
+
         $totalBefore = 0;
         $totalAfter = 0;
 
         foreach ($images as $imagePath) {
             $filename = basename($imagePath);
+            
+            // Skip files with color profile issues
+            if (in_array($filename, $skipFiles)) {
+                $this->line("  ⊘ $filename: Skipped (preserving color profile)");
+                continue;
+            }
+
             $sizeBefore = filesize($imagePath);
 
             try {
