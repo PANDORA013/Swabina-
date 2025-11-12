@@ -16,11 +16,13 @@ class AdminController extends Controller
             $beritas = Berita::latest()->get();
             $faqs = Faq::all();
             $pedomans = Pedoman::all();
+            $sertifikats = collect(); // Empty collection for sertifikat (table doesn't exist yet)
 
             return view('admin.dashboard', compact(
                 'beritas',
                 'faqs',
-                'pedomans'
+                'pedomans',
+                'sertifikats'
             ));
         } catch (\Exception $e) {
             return view('admin.dashboard')->with('error', 'Terjadi kesalahan saat memuat data');
