@@ -12,7 +12,7 @@ class KarirController extends Controller
     public function karir()
     {
         
-        return view('karir.karir');
+        return view('karir.karir-professional');
     }
     public function karirEng()
     {

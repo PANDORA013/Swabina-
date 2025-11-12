@@ -2,19 +2,13 @@
 
 @section('content')
 <div class="container">
-    <h1>Data MK</h1>
+    <h1>Data MK (Mengapa Kami)</h1>
     <button class="btn btn-primary" id="addMkBtn" data-bs-toggle="modal" data-bs-target="#mkModal">Tambah MK</button>
     <table class="table mt-4">
-        <div class="btn-group ms-2" role="group">
-            <button type="button" class="btn btn-sm btn-outline-primary active" id="btn-id">Indonesia</button>
-            <button type="button" class="btn btn-sm btn-outline-primary" id="btn-en">English</button>
-        </div>
         <thead>
             <tr>
                 <th>Image</th>
-                <th>
-                    Title
-                </th>
+                <th>Title</th>
                 <th>Description</th>
                 <th>Actions</th>
             </tr>
@@ -23,14 +17,8 @@
             @foreach($MK as $item)
             <tr>
                 <td><img src="{{ asset('storage/' . $item->image) }}" width="100" height="50" /></td>
-                <td>
-                    <div class="content-id">{{ is_array($item->title) ? $item->title['id'] : $item->title }}</div>
-                    <div class="content-en" style="display: none;">{{ is_array($item->title) ? $item->title['en'] : '' }}</div>
-                </td>
-                <td>
-                    <div class="content-id">{{ is_array($item->description) ? $item->description['id'] : $item->description }}</div>
-                    <div class="content-en" style="display: none;">{{ is_array($item->description) ? $item->description['en'] : '' }}</div>
-                </td>
+                <td>{{ is_array($item->title) ? $item->title['id'] : $item->title }}</td>
+                <td>{{ is_array($item->description) ? $item->description['id'] : $item->description }}</td>
                 <td>
                     <button class="btn btn-warning editBtn" 
                         data-id="{{ $item->id }}" 
@@ -227,28 +215,6 @@
             reader.readAsDataURL(this.files[0]);
         }
     });
-
-    document.getElementById('btn-id').addEventListener('click', function() {
-        toggleLanguage('id');
-        this.classList.add('active');
-        document.getElementById('btn-en').classList.remove('active');
-    });
-
-    document.getElementById('btn-en').addEventListener('click', function() {
-        toggleLanguage('en');
-        this.classList.add('active');
-        document.getElementById('btn-id').classList.remove('active');
-    });
-
-    function toggleLanguage(lang) {
-        if (lang === 'id') {
-            document.querySelectorAll('.content-id').forEach(el => el.style.display = '');
-            document.querySelectorAll('.content-en').forEach(el => el.style.display = 'none');
-        } else {
-            document.querySelectorAll('.content-id').forEach(el => el.style.display = 'none');
-            document.querySelectorAll('.content-en').forEach(el => el.style.display = '');
-        }
-    }
 </script>
 
 @endsection

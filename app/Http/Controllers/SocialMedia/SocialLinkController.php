@@ -39,7 +39,7 @@ class SocialLinkController extends Controller
     {
         try {
             $request->validate([
-                'type' => 'required|in:facebook,youtube,youtube_landing,whatsapp,instagram',
+                'type' => 'required|in:facebook,youtube,youtube_landing,whatsapp,instagram,linkedin',
                 'url' => 'required|url'
             ]);
 
@@ -73,7 +73,7 @@ class SocialLinkController extends Controller
         $this->middleware('auth');
         try {
             $request->validate([
-                'type' => 'required|in:facebook,youtube,youtube_landing,whatsapp,instagram',
+                'type' => 'required|in:facebook,youtube,youtube_landing,whatsapp,instagram,linkedin',
                 'url' => 'required|url'
             ]);
 

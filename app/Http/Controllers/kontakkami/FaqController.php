@@ -5,19 +5,29 @@ namespace App\Http\Controllers\kontakkami;
 use App\Http\Controllers\Controller;
 use App\Models\Faq;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Stichoza\GoogleTranslate\GoogleTranslate;
 
 class FaqController extends Controller
 {
+    // Public FAQ Page
     public function index()
+    {
+        $faqs = Faq::orderBy('id')->get();
+        return view('kontakkami.faq-professional', compact('faqs'));
+    }
+
+    // Admin FAQ Page
+    public function adminIndex()
     {
         $faqs = Faq::orderBy('id')->get();
         $faqs = $faqs->map(function ($faq, $index) {
             $faq->row_number = $index + 1;
             return $faq;
         });
-        $userRole = auth()->user()->role;
+        $user = Auth::user();
+        $userRole = $user ? $user->role : 'guest';
         $layout = $userRole === 'admin' ? 'layouts.app' : 'layouts.ppa';
         return view('admin.kontakkami.faq', compact('faqs', 'userRole', 'layout'));
     }

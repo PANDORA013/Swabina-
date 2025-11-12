@@ -1,0 +1,117 @@
+/**
+ * Optimized CSS for Low Animation UX
+ * Replaces heavy animations with subtle, performance-friendly alternatives
+ */
+
+/* Optimized Floating Button Animation - Reduced from 1.7s to 0.3s */
+.btn-img {
+    animation: emergencyLightGlow 0.3s infinite alternate !important;
+}
+
+@keyframes emergencyLightGlow {
+    0% {
+        background-color: white;
+        box-shadow: 0 0 2px 2px rgb(216, 215, 215);
+        filter: brightness(1.0);
+    }
+    100% {
+        background-color: white;
+        box-shadow: 0 0 3px 3px rgb(216, 215, 215);
+        filter: brightness(1.1);
+    }
+}
+
+/* Optimized Social Icons Animation */
+.floating-btn .social-icons .icon {
+    transition: all 0.2s ease !important;
+}
+
+/* Optimized Scroll Indicator - Reduced complexity */
+.scroll-indicator {
+    animation: scrollSideways 1s infinite !important;
+}
+
+.scroll-indicator::after {
+    animation: dotMoveSideways 1s infinite !important;
+}
+
+@keyframes scrollSideways {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(5px);
+    }
+}
+
+@keyframes dotMoveSideways {
+    0%, 100% {
+        transform: translate(-50%, -50%) translateX(0);
+    }
+    50% {
+        transform: translate(-50%, -50%) translateX(3px);
+    }
+}
+
+/* Optimized Navbar Transitions */
+.navbar-collapse {
+    transition: right 0.2s ease !important;
+}
+
+.navbar-collapse.show {
+    transform: translateX(0) !important;
+}
+
+/* Disable excessive transitions for better performance */
+.card, .btn, .nav-link {
+    transition: all 0.15s ease !important;
+}
+
+/* Optimize carousel transitions */
+.carousel-item {
+    transition: transform 0.3s ease-in-out !important;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .btn-img {
+        animation: none !important;
+    }
+    
+    .scroll-indicator,
+    .scroll-indicator::after {
+        animation: none !important;
+    }
+}
+
+/* Performance optimizations */
+.floating-btn, .carousel-item, .nav-link {
+    will-change: auto;
+}
+
+/* GPU acceleration for smooth animations */
+.btn-img, .floating-btn .social-icons .icon {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+/* Optimize hover effects */
+.card:hover, .btn:hover {
+    transform: translateY(-1px);
+    transition: transform 0.1s ease;
+}
+
+/* Remove or reduce heavy box-shadows */
+.card {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+}
+
+.card:hover {
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15) !important;
+}

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\landingpage;
 use App\Models\VisiMisiBudaya;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Stichoza\GoogleTranslate\GoogleTranslate;
 
 class VisiMisiBudayaController extends Controller
 {
@@ -28,14 +27,12 @@ class VisiMisiBudayaController extends Controller
 
         $content = str_replace("\r\n", "\n", $request->content);
         
-        // Initialize Google Translate
-        $tr_en = new GoogleTranslate('en');
-
+        // Google Translate disabled - use same content for both languages
         $item = VisiMisiBudaya::create([
             'type' => $request->type,
             'content' => [
                 'id' => $content,
-                'en' => $tr_en->translate($content)
+                'en' => $content // Use same as Indonesian
             ],
             'text_align' => $request->text_align,
         ]);
@@ -53,14 +50,12 @@ class VisiMisiBudayaController extends Controller
 
             $content = str_replace("\r\n", "\n", $request->content);
             
-            // Initialize Google Translate
-            $tr_en = new GoogleTranslate('en');
-
+            // Google Translate disabled - use same content for both languages
             $item = VisiMisiBudaya::findOrFail($id);
             $item->update([
                 'content' => [
                     'id' => $content,
-                    'en' => $tr_en->translate($content)
+                    'en' => $content // Use same as Indonesian
                 ],
                 'text_align' => $request->text_align,
             ]);

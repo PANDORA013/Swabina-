@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Models\SocialLink;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Blade;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -31,5 +32,13 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('social', new SocialLink());
             }
         });
+
+        // Register Blade directives for lazy loading
+        Blade::directive('lazyload', function ($expression) {
+            return "<?php echo 'loading=\"lazy\" decoding=\"async\"'; ?>";
+        });
+
+        // Register optimized image component
+        Blade::component('optimized-image', \App\View\Components\OptimizedImage::class);
     }
 }

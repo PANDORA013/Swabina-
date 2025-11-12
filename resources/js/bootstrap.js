@@ -9,6 +9,37 @@ window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
+// Set default timeout and baseURL for better performance
+window.axios.defaults.timeout = 10000;
+window.axios.defaults.baseURL = window.location.origin;
+
+// Add request interceptor for better error handling
+window.axios.interceptors.request.use(
+    (config) => {
+        // Add CSRF token to all requests
+        const token = document.head.querySelector('meta[name="csrf-token"]');
+        if (token) {
+            config.headers['X-CSRF-TOKEN'] = token.content;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+
+// Add response interceptor for global error handling
+window.axios.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response?.status === 419) {
+            // CSRF token mismatch - reload page
+            window.location.reload();
+        }
+        return Promise.reject(error);
+    }
+);
+
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

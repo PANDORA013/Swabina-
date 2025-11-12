@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Berita;
 use App\Models\Faq;
-use App\Models\SertifikatPenghargaan;
 use App\Models\Pedoman;
 use Illuminate\Http\Request;
 
@@ -15,13 +14,11 @@ class AdminController extends Controller
     {
         try {
             $beritas = Berita::latest()->get();
-            $sertifikats = SertifikatPenghargaan::latest()->get();
             $faqs = Faq::all();
-            $pedomans = pedoman::all();
+            $pedomans = Pedoman::all();
 
             return view('admin.dashboard', compact(
                 'beritas',
-                'sertifikats',
                 'faqs',
                 'pedomans'
             ));

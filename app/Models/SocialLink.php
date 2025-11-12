@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SocialLink extends Model
 {
-    protected $fillable = ['facebook', 'youtube', 'youtube_landing', 'whatsapp', 'instagram'];
+    protected $fillable = ['facebook', 'youtube', 'youtube_landing', 'whatsapp', 'instagram', 'linkedin'];
 
     // Validasi URL berdasarkan tipe
     public static function validateUrl($type, $url)
@@ -28,6 +28,9 @@ class SocialLink extends Model
             case 'instagram':
                 return str_starts_with($url, 'https://instagram.com/') || 
                        str_starts_with($url, 'https://www.instagram.com/');
+            case 'linkedin':
+                return str_starts_with($url, 'https://linkedin.com/') || 
+                       str_starts_with($url, 'https://www.linkedin.com/');
             default:
                 return false;
         }

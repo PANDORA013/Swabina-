@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Memilihkami; // Pastikan namespace sesuai
 
 use App\Http\Controllers\Controller;
 use App\Models\MK;
+use App\Models\CompanyInfo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\ImageManager;
@@ -18,8 +20,9 @@ class MkController extends Controller // Ubah mkController menjadi MkController
     // Menampilkan halaman utama (landing page)
     public function index()
     {
+        $companyInfo = CompanyInfo::first();
         $MK = MK::all(); 
-        return view('memilihkami.mengapa', compact('MK'));
+        return view('memilihkami.mengapa-professional', compact('companyInfo', 'MK'));
     }
     public function indexEng()
     {
@@ -31,7 +34,8 @@ class MkController extends Controller // Ubah mkController menjadi MkController
     public function showmk()
     {
         $MK = MK::all(); 
-        $userRole = auth()->user()->role;
+        $user = Auth::user();
+        $userRole = $user ? $user->role : 'guest';
         $layout = $userRole === 'admin' ? 'layouts.app' : 'layouts.ppa';
         return view('admin.memilihkami.mk', compact('MK', 'userRole', 'layout'));
     }

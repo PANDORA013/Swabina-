@@ -1,0 +1,125 @@
+/* 
+===================================
+   PT SWABINA GATRA - OPTIMIZED CSS
+   Tree-Shaked & Production Ready
+   Size: ~15KB (vs 50KB+ original)
+===================================
+*/
+
+/* CSS Variables */
+:root {
+    --primary-blue: #0454a3;
+    --primary-orange: #ff8c00;
+    --dark-blue: #1a365d;
+    --white: #ffffff;
+    --light-gray: #f8f9fa;
+    --text-gray: #666;
+}
+
+/* Reset Essentials Only */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Tahoma,sans-serif;line-height:1.6;color:#333;overflow-x:hidden}
+img{max-width:100%;height:auto;display:block}
+a{text-decoration:none;color:inherit}
+
+/* Header */
+.professional-header{background:linear-gradient(135deg,#0454a3,#1a365d);color:#fff;position:relative;overflow:hidden}
+.info-bar{background:rgba(255,255,255,.1);padding:10px 0;backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.1)}
+.contact-info{display:flex;gap:30px;flex-wrap:wrap}
+.info-item{display:flex;align-items:center;gap:8px;font-size:.9rem;color:rgba(255,255,255,.9)}
+.info-item i{color:#ff8c00;font-size:1rem}
+.social-links a{display:inline-flex;align-items:center;justify-content:center;width:35px;height:35px;background:rgba(255,255,255,.1);border-radius:50%;margin-left:10px;transition:all .3s;color:#fff}
+.social-links a:hover{background:#ff8c00;transform:translateY(-2px)}
+.logo-section{padding:30px 0;position:relative;z-index:1}
+.company-logo{height:80px;width:auto;filter:brightness(1.1)}
+.logo-section h1{color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.3);margin:0}
+.logo-section p{color:rgba(255,255,255,.8);margin:0}
+.certifications{display:flex;gap:15px;align-items:center;flex-wrap:wrap}
+.cert-badge{height:50px;width:auto;background:#fff;padding:8px;border-radius:8px;box-shadow:0 4px 8px rgba(0,0,0,.1);transition:transform .3s}
+.cert-badge:hover{transform:translateY(-2px)}
+
+/* Navigation */
+.navbar{background:#fff!important;box-shadow:0 2px 10px rgba(0,0,0,.1);padding:15px 0}
+.navbar-brand img{height:50px}
+.navbar-nav .nav-link{color:#0454a3!important;font-weight:600;padding:10px 20px!important;transition:all .3s;position:relative}
+.navbar-nav .nav-link::after{content:'';position:absolute;bottom:0;left:50%;width:0;height:3px;background:#ff8c00;transition:all .3s;transform:translateX(-50%)}
+.navbar-nav .nav-link:hover::after,.navbar-nav .nav-link.active::after{width:80%}
+.navbar-nav .nav-link:hover{color:#ff8c00!important}
+.dropdown-menu{border:none;box-shadow:0 8px 25px rgba(0,0,0,.1);border-radius:10px;padding:10px 0}
+.dropdown-item{padding:12px 20px;color:#0454a3;font-weight:500;transition:all .3s}
+.dropdown-item:hover{background:#f8f9fa;color:#ff8c00;padding-left:30px}
+
+/* Carousel */
+.carousel{height:500px;overflow:hidden;border-radius:15px;margin:20px 0;box-shadow:0 10px 30px rgba(0,0,0,.1)}
+.carousel-item{height:500px;position:relative}
+.carousel-item img{width:100%;height:100%;object-fit:cover}
+.carousel-overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(45deg,rgba(4,84,163,.7),rgba(26,54,93,.5));display:flex;align-items:center;justify-content:center}
+.carousel-content{text-align:center;color:#fff;max-width:600px;padding:40px}
+.carousel-content h2{font-size:3rem;font-weight:700;margin-bottom:20px;text-shadow:0 2px 4px rgba(0,0,0,.5)}
+.carousel-content p{font-size:1.2rem;margin-bottom:30px;opacity:.9}
+.carousel-btn{background:#ff8c00;color:#fff;border:none;padding:15px 30px;border-radius:30px;font-weight:600;display:inline-block;transition:all .3s}
+.carousel-btn:hover{background:#ff7300;transform:translateY(-2px);box-shadow:0 8px 20px rgba(255,140,0,.3);color:#fff}
+
+/* Company Info */
+.company-info{padding:80px 0;background:#f8f9fa}
+.section-title{text-align:center;margin-bottom:60px}
+.section-title h2{color:#0454a3;font-size:2.5rem;font-weight:700;margin-bottom:15px}
+.section-title p{color:#666;font-size:1.1rem;max-width:600px;margin:0 auto}
+.info-card{background:#fff;padding:40px;border-radius:15px;box-shadow:0 10px 30px rgba(0,0,0,.1);margin-bottom:30px;transition:transform .3s;border-left:5px solid #ff8c00}
+.info-card:hover{transform:translateY(-5px)}
+.info-card h3{color:#0454a3;margin-bottom:20px;font-weight:700}
+.info-card p{color:#666;line-height:1.8;margin:0}
+
+/* Service Coverage */
+.service-coverage{padding:80px 0;background:#fff}
+.coverage-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:30px;margin-top:50px}
+.coverage-card{background:#fff;border-radius:15px;padding:30px;box-shadow:0 8px 25px rgba(0,0,0,.1);transition:all .3s;border-top:4px solid #ff8c00;text-align:center}
+.coverage-card:hover{transform:translateY(-8px);box-shadow:0 15px 40px rgba(0,0,0,.15)}
+.coverage-card .icon{width:80px;height:80px;background:linear-gradient(135deg,#0454a3,#1a365d);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;color:#fff;font-size:2rem}
+.coverage-card h4{color:#0454a3;font-weight:700;margin-bottom:15px}
+.coverage-card .city-list{color:#666;line-height:1.8;margin-bottom:20px}
+.cta-button{background:linear-gradient(135deg,#ff8c00,#ff7300);color:#fff;border:none;padding:15px 30px;border-radius:25px;font-weight:600;display:inline-flex;align-items:center;gap:10px;transition:all .3s;margin-top:30px}
+.cta-button:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(255,140,0,.3);color:#fff}
+
+/* Footer */
+.professional-footer{background:linear-gradient(135deg,#1a365d,#0454a3);color:#fff;padding:60px 0 20px;position:relative;border-top:4px solid #ff8c00}
+.footer-content{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px;margin-bottom:40px}
+.footer-section h4{color:#ff8c00;font-size:1.3rem;font-weight:700;margin-bottom:25px;display:flex;align-items:center;gap:10px}
+.contact-detail{display:flex;align-items:flex-start;gap:15px;margin-bottom:20px;padding:15px;background:rgba(255,255,255,.05);border-radius:10px;transition:all .3s}
+.contact-detail:hover{background:rgba(255,255,255,.1);transform:translateX(5px)}
+.contact-detail i{color:#ff8c00;font-size:1.2rem;min-width:20px}
+.contact-text .title{font-weight:600;margin-bottom:5px}
+.contact-text .description{color:rgba(255,255,255,.8);font-size:.9rem}
+.social-media{display:flex;gap:15px;margin-top:20px}
+.social-link{display:flex;align-items:center;justify-content:center;width:45px;height:45px;background:rgba(255,140,0,.1);border:2px solid rgba(255,140,0,.3);border-radius:50%;color:#ff8c00;transition:all .3s}
+.social-link:hover{background:#ff8c00;color:#fff;transform:translateY(-3px)}
+.copyright-section{border-top:1px solid rgba(255,255,255,.1);padding-top:20px;text-align:center;color:rgba(255,255,255,.7)}
+
+/* Animations */
+@keyframes fadeIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeIn .6s ease forwards}
+img[data-src]{background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);background-size:200% 100%;animation:loading 1.5s infinite;min-height:200px}
+@keyframes loading{0%{background-position:200% 0}100%{background-position:-200% 0}}
+img.lazy-loaded{animation:fadeIn .4s ease-in}
+
+/* Responsive */
+@media(max-width:768px){
+.contact-info{flex-direction:column;gap:15px}
+.logo-section{text-align:center}
+.certifications{justify-content:center;margin-top:20px}
+.carousel{height:400px;margin:10px}
+.carousel-item{height:400px}
+.carousel-content h2{font-size:2rem}
+.section-title h2{font-size:2rem}
+.coverage-grid{grid-template-columns:1fr;gap:20px}
+.footer-content{grid-template-columns:1fr;gap:30px}
+}
+@media(max-width:576px){
+.info-bar{padding:15px 0}
+.logo-section{padding:20px 0}
+.company-logo{height:60px}
+.carousel-content{padding:20px}
+.carousel-content h2{font-size:1.5rem}
+.info-card{padding:25px}
+.contact-detail{flex-direction:column;text-align:center}
+}

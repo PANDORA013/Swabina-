@@ -1,0 +1,226 @@
+/* 
+🎯 MINIMAL ANIMATIONS - PERFORMANCE OPTIMIZED
+===========================================
+Centralized animation system with minimal, hardware-accelerated animations
+Supports prefers-reduced-motion and modern best practices
+*/
+
+/* CSS Variables for Animation Performance */
+:root {
+  --animation-duration-fast: 0.15s;
+  --animation-duration-normal: 0.3s;
+  --animation-duration-slow: 0.5s;
+  --animation-easing: cubic-bezier(0.4, 0, 0.2, 1);
+  --animation-easing-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Performance-optimized base animation setup */
+.animate-element {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+/* ====================
+   MINIMAL HOVER EFFECTS
+   ==================== */
+
+/* Subtle button hover - replaces heavy box-shadow animations */
+.btn-minimal-hover {
+  transition: transform var(--animation-duration-fast) var(--animation-easing),
+              opacity var(--animation-duration-fast) var(--animation-easing);
+}
+
+.btn-minimal-hover:hover {
+  transform: translateY(-1px);
+  opacity: 0.9;
+}
+
+/* Navigation link hover - minimal and fast */
+.nav-link-minimal {
+  position: relative;
+  transition: color var(--animation-duration-fast) var(--animation-easing);
+}
+
+.nav-link-minimal::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: currentColor;
+  transition: width var(--animation-duration-normal) var(--animation-easing);
+}
+
+.nav-link-minimal:hover::after {
+  width: 100%;
+}
+
+/* ====================
+   OPTIMIZED FLOATING BUTTON
+   ==================== */
+
+/* Replace heavy emergencyLightGlow with subtle pulse */
+.floating-btn-optimized {
+  animation: subtle-pulse 3s ease-in-out infinite;
+  transform: translateZ(0); /* Hardware acceleration */
+}
+
+@keyframes subtle-pulse {
+  0%, 100% {
+    transform: scale(1) translateZ(0);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.02) translateZ(0);
+    opacity: 0.95;
+  }
+}
+
+/* ====================
+   MINIMAL SCROLL INDICATORS
+   ==================== */
+
+/* Replace complex scroll animations with simple bounce */
+.scroll-indicator-minimal {
+  animation: minimal-bounce 2s ease-in-out infinite;
+  transform: translateZ(0);
+}
+
+@keyframes minimal-bounce {
+  0%, 100% {
+    transform: translateY(0) translateZ(0);
+  }
+  50% {
+    transform: translateY(-3px) translateZ(0);
+  }
+}
+
+/* ====================
+   OPTIMIZED CAROUSEL TRANSITIONS
+   ==================== */
+
+/* Smooth, hardware-accelerated carousel */
+.carousel-item-optimized {
+  transition: transform 0.6s ease-in-out;
+  transform: translateZ(0);
+}
+
+/* ====================
+   LOADING STATES
+   ==================== */
+
+/* Minimal spinner - replaces heavy spinner animations */
+.spinner-minimal {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #0454a3;
+  border-radius: 50%;
+  animation: spin-minimal 1s linear infinite;
+  transform: translateZ(0);
+}
+
+@keyframes spin-minimal {
+  0% { transform: rotate(0deg) translateZ(0); }
+  100% { transform: rotate(360deg) translateZ(0); }
+}
+
+/* ====================
+   FADE IN ANIMATIONS
+   ==================== */
+
+/* Subtle fade-in for content */
+.fade-in-minimal {
+  animation: fade-in-up 0.6s var(--animation-easing) forwards;
+  opacity: 0;
+  transform: translateY(10px) translateZ(0);
+}
+
+@keyframes fade-in-up {
+  to {
+    opacity: 1;
+    transform: translateY(0) translateZ(0);
+  }
+}
+
+/* ====================
+   MOBILE MENU ANIMATION
+   ==================== */
+
+/* Smooth mobile menu slide */
+.mobile-menu-slide {
+  transform: translateX(100%) translateZ(0);
+  transition: transform var(--animation-duration-normal) var(--animation-easing);
+}
+
+.mobile-menu-slide.show {
+  transform: translateX(0) translateZ(0);
+}
+
+/* ====================
+   ACCESSIBILITY & PERFORMANCE
+   ==================== */
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .floating-btn-optimized,
+  .scroll-indicator-minimal,
+  .spinner-minimal {
+    animation: none !important;
+  }
+}
+
+/* ====================
+   PERFORMANCE OPTIMIZATIONS
+   ==================== */
+
+/* Optimize for hardware acceleration */
+.hw-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Contain layout shifts */
+.contain-layout {
+  contain: layout style paint;
+}
+
+/* ====================
+   UTILITY CLASSES
+   ==================== */
+
+/* Quick animation utilities */
+.animate-fast { transition-duration: var(--animation-duration-fast) !important; }
+.animate-normal { transition-duration: var(--animation-duration-normal) !important; }
+.animate-slow { transition-duration: var(--animation-duration-slow) !important; }
+
+/* Transform utilities */
+.hover-lift:hover { transform: translateY(-2px) translateZ(0); }
+.hover-scale:hover { transform: scale(1.05) translateZ(0); }
+
+/* ====================
+   DEBUGGING & DEVELOPMENT
+   ==================== */
+
+/* Debug animation performance (remove in production) */
+.debug-animations * {
+  outline: 1px solid rgba(255, 0, 0, 0.1) !important;
+}
+
+/* Animation performance monitoring */
+@supports (animation-timeline: scroll()) {
+  .scroll-timeline {
+    animation-timeline: scroll();
+  }
+}

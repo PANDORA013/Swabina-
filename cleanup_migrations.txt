@@ -1,0 +1,12 @@
+DB::table('migrations')
+    ->whereIn('migration', [
+        '2024_09_19_064512_create_sekilas_perusahaans_table',
+        '2024_09_19_073535_create_sertifikat_penghargaans_table',
+        '2024_10_04_145915_create_m_k_s_table'
+    ])
+    ->delete();
+
+echo "✅ Deleted orphaned migration records\n";
+
+$count = DB::table('migrations')->count();
+echo "Remaining migrations: " . $count . "\n";

@@ -14,7 +14,7 @@ class SwaacademyController extends Controller
         $gambarSA = GambarSA::first();
         $texts = TextSA::all();
         
-        return view('produkdanlayanan.swaac', compact('carousels', 'gambarSA', 'texts'));
+        return view('produkdanlayanan.swaac-professional', compact('carousels', 'gambarSA', 'texts'));
     }
     public function indexEng()
     {

@@ -183,8 +183,8 @@
         let formData = new FormData(this);
         
         let url = isEditing 
-            ? `{{ route('admin.pedoman.pedoman.update', '') }}/${editId}`
-            : '{{ route('admin.pedoman.pedoman.store') }}';
+            ? `{{ route('admin.pedoman.update', '') }}/${editId}`
+            : '{{ route('admin.pedoman.store') }}';
 
         if (isEditing) {
             formData.append('_method', 'PUT');
@@ -250,7 +250,7 @@
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    fetch(`{{ route('admin.pedoman.pedoman.destroy', '') }}/${id}`, {
+                    fetch(`{{ route('admin.pedoman.destroy', '') }}/${id}`, {
                         method: 'DELETE',
                         headers: {
                             'X-CSRF-TOKEN': '{{ csrf_token() }}',

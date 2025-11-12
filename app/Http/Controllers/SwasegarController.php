@@ -13,10 +13,11 @@ class SwasegarController extends Controller
     public function index()
     {
         $carousels = SwasegarCarousel::all();
-        $gambarSS = GambarSS::first(); 
+        $gambarSS = GambarSS::first();
         $textss = TextSS::all();
-        return view('produkdanlayanan.swas', compact('carousels', 'gambarSS', 'textss')); 
-    }   
+        
+        return view('produkdanlayanan.swas-professional', compact('carousels', 'gambarSS', 'textss'));
+    }
     public function indexEng()
     {
         $carousels = SwasegarCarousel::all();

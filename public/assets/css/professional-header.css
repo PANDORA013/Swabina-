@@ -1,0 +1,285 @@
+/* 
+🏢 PROFESSIONAL COMPANY HEADER STYLES
+=====================================
+Modern, clean, and professional header design for PT Swabina Gatra
+*/
+
+/* Modern Professional Header */
+.professional-header {
+    background: linear-gradient(135deg, #0454a3 0%, #0366d6 100%);
+    box-shadow: 0 2px 20px rgba(4, 84, 163, 0.15);
+    border-bottom: none;
+    padding: 0;
+    position: relative;
+}
+
+.professional-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #ff6b35, #f7931e, #0454a3);
+}
+
+/* Top Info Bar */
+.info-bar {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(4, 84, 163, 0.1);
+    padding: 8px 0;
+    font-size: 0.85rem;
+}
+
+.contact-info {
+    display: flex;
+    align-items: center;
+    color: #0454a3;
+    font-weight: 500;
+    gap: 30px;
+}
+
+.contact-info .info-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.contact-info .info-item:hover {
+    color: #0366d6;
+    transform: translateY(-1px);
+}
+
+.contact-info .info-item i {
+    font-size: 16px;
+    color: #0454a3;
+}
+
+/* Professional Logo Section */
+.logo-section {
+    padding: 15px 0;
+    background: white;
+}
+
+.company-logo {
+    height: 65px;
+    width: auto;
+    transition: all 0.3s ease;
+}
+
+.company-logo:hover {
+    transform: scale(1.05);
+}
+
+/* Certification Badges */
+.certifications {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.cert-badge {
+    height: 45px;
+    width: auto;
+    filter: grayscale(20%);
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cert-badge:hover {
+    filter: grayscale(0%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Modern Navigation */
+.modern-navbar {
+    background: #0454a3;
+    padding: 0;
+    box-shadow: 0 4px 20px rgba(4, 84, 163, 0.3);
+    border: none;
+}
+
+.navbar-brand-modern {
+    display: none; /* Hide duplicate logo in navbar */
+}
+
+.navbar-nav-modern .nav-link {
+    color: white !important;
+    font-weight: 500;
+    padding: 15px 20px !important;
+    position: relative;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+.navbar-nav-modern .nav-link::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #ff6b35, #f7931e);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.navbar-nav-modern .nav-link:hover::before,
+.navbar-nav-modern .nav-link.active::before {
+    width: 80%;
+}
+
+.navbar-nav-modern .nav-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Dropdown Modern Styling */
+.dropdown-menu-modern {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    padding: 10px 0;
+    background: white;
+    margin-top: 10px;
+}
+
+.dropdown-menu-modern::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 20px;
+    width: 12px;
+    height: 12px;
+    background: white;
+    transform: rotate(45deg);
+    box-shadow: -2px -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item-modern {
+    padding: 10px 25px;
+    color: #333;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border-left: 3px solid transparent;
+}
+
+.dropdown-item-modern:hover {
+    background: linear-gradient(90deg, rgba(4, 84, 163, 0.1), transparent);
+    border-left-color: #0454a3;
+    color: #0454a3;
+    transform: translateX(5px);
+}
+
+/* Mobile Responsive */
+@media (max-width: 991.98px) {
+    .contact-info {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .contact-info .info-item {
+        font-size: 0.8rem;
+    }
+    
+    .certifications {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .cert-badge {
+        height: 35px;
+    }
+    
+    .company-logo {
+        height: 55px;
+    }
+    
+    .logo-section {
+        text-align: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .info-bar {
+        display: none; /* Hide top info bar on very small screens */
+    }
+    
+    .logo-section {
+        padding: 10px 0;
+    }
+    
+    .company-logo {
+        height: 50px;
+    }
+    
+    .certifications {
+        margin-top: 15px;
+    }
+    
+    .cert-badge {
+        height: 30px;
+    }
+}
+
+/* Professional Company Information Layout */
+.company-info-professional {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 40px 0;
+    margin-top: 0;
+}
+
+.info-card {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+    border-left: 4px solid #0454a3;
+    transition: all 0.3s ease;
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
+}
+
+.info-card h4 {
+    color: #0454a3;
+    font-weight: 600;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+.info-card p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 8px;
+}
+
+.info-card .highlight {
+    color: #0454a3;
+    font-weight: 600;
+}
+
+/* Animation Performance Optimizations */
+.professional-header *,
+.modern-navbar *,
+.info-card * {
+    will-change: transform;
+    backface-visibility: hidden;
+}
+
+/* Accessibility Improvements */
+.nav-link:focus,
+.dropdown-item:focus {
+    outline: 2px solid #ff6b35;
+    outline-offset: 2px;
+}

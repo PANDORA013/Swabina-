@@ -103,6 +103,24 @@
                 </td>
             </tr>
             @endif
+
+            @if($social->linkedin)
+            <tr>
+                <td>LinkedIn</td>
+                <td>{{ $social->linkedin }}</td>
+                <td>
+                    <button class="btn btn-warning editBtn" 
+                        data-id="{{ $social->id }}"
+                        data-type="linkedin"
+                        data-url="{{ $social->linkedin }}"
+                        data-bs-toggle="modal" 
+                        data-bs-target="#socialModal">Edit</button>
+                    <button class="btn btn-danger deleteBtn" 
+                        data-id="{{ $social->id }}"
+                        data-type="linkedin">Delete</button>
+                </td>
+            </tr>
+            @endif
         </tbody>
     </table>
 </div>
@@ -127,6 +145,7 @@
                             <option value="youtube_landing">YouTube Landing</option>
                             <option value="whatsapp">WhatsApp</option>
                             <option value="instagram">Instagram</option>
+                            <option value="linkedin">LinkedIn</option>
                         </select>
                     </div>
                     <div class="form-group">

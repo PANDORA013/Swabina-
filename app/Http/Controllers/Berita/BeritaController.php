@@ -5,19 +5,19 @@ namespace App\Http\Controllers\Berita;
 use App\Http\Controllers\Controller;
 use App\Models\Berita;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 use Illuminate\Support\Facades\Log;
-use Stichoza\GoogleTranslate\GoogleTranslate;
 
 class BeritaController extends Controller
 {
     public function index()
     {
         $berita = Berita::all(); 
-        return view('berita.berita', compact('berita'));
+        return view('berita.berita-professional', compact('berita'));
     }
     public function indexEng()
     {
@@ -28,7 +28,8 @@ class BeritaController extends Controller
     public function showberita()
     {
         $berita = Berita::all(); 
-        $userRole = auth()->user()->role;
+        $user = Auth::user();
+        $userRole = $user ? $user->role : 'guest';
         $layout = $userRole === 'admin' ? 'layouts.app' : 'layouts.ppa';
         return view('admin.berita.berita', compact('berita', 'userRole', 'layout'));
     }
@@ -108,18 +109,16 @@ class BeritaController extends Controller
 
             $path = $this->compressAndSaveImage($request->file('image'));
 
-            // Initialize Google Translate
-            $tr = new GoogleTranslate('en');
-
+            // Save Indonesian content only (English translation disabled)
             $berita = Berita::create([
                 'image' => $path,
                 'title' => [
                     'id' => $request->title,
-                    'en' => $tr->translate($request->title)
+                    'en' => $request->title // Use same as Indonesian for now
                 ],
                 'description' => [
                     'id' => $this->formatDescription($request->description),
-                    'en' => $tr->translate($this->formatDescription($request->description))
+                    'en' => $this->formatDescription($request->description) // Use same as Indonesian
                 ],
             ]);
 
@@ -155,20 +154,18 @@ class BeritaController extends Controller
                 $berita->image = $this->compressAndSaveImage($request->file('image'));
             }
 
-            // Initialize Google Translate
-            $tr = new GoogleTranslate('en');
-
+            // Update Indonesian content only (English translation disabled)
             if ($request->filled('title')) {
                 $berita->title = [
                     'id' => $request->title,
-                    'en' => $tr->translate($request->title)
+                    'en' => $request->title // Use same as Indonesian
                 ];
             }
 
             if ($request->filled('description')) {
                 $berita->description = [
                     'id' => $this->formatDescription($request->description),
-                    'en' => $tr->translate($this->formatDescription($request->description))
+                    'en' => $this->formatDescription($request->description) // Use same as Indonesian
                 ];
             }
 
