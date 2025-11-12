@@ -21,13 +21,23 @@ class FaqController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'question' => 'required|string',
-            'answer' => 'required|string'
+            'pertanyaan_id' => 'required|string',
+            'jawaban_id' => 'required|string'
         ]);
 
+        $content = [
+            'id' => [
+                'pertanyaan' => $request->pertanyaan_id,
+                'jawaban' => $request->jawaban_id
+            ],
+            'en' => [
+                'pertanyaan' => $request->pertanyaan_en ?? '',
+                'jawaban' => $request->jawaban_en ?? ''
+            ]
+        ];
+
         Faq::create([
-            'question' => $request->question,
-            'answer' => $request->answer
+            'content' => $content
         ]);
 
         View::clearCache();
@@ -41,14 +51,25 @@ class FaqController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'question' => 'required|string',
-            'answer' => 'required|string'
+            'pertanyaan_id' => 'required|string',
+            'jawaban_id' => 'required|string'
         ]);
 
         $faq = Faq::findOrFail($id);
+        
+        $content = [
+            'id' => [
+                'pertanyaan' => $request->pertanyaan_id,
+                'jawaban' => $request->jawaban_id
+            ],
+            'en' => [
+                'pertanyaan' => $request->pertanyaan_en ?? '',
+                'jawaban' => $request->jawaban_en ?? ''
+            ]
+        ];
+
         $faq->update([
-            'question' => $request->question,
-            'answer' => $request->answer
+            'content' => $content
         ]);
 
         View::clearCache();
