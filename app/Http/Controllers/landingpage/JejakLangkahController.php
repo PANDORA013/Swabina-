@@ -13,10 +13,10 @@ class JejakLangkahController extends Controller
 {
     public function index()
     {
-        $jejakLangkah = JejakLangkah::first();
+        $jejakLangkahs = JejakLangkah::all();
         $userRole = auth()->user()->role;
         $layout = $userRole === 'admin' ? 'layouts.app' : 'layouts.ppa';
-        return view('admin.landingpage.jejaklangkah', compact('jejakLangkah', 'userRole', 'layout'));
+        return view('admin.jejak_langkah.index', compact('jejakLangkahs', 'layout'));
     }
 
     private function compressAndSaveImage($file)
@@ -75,22 +75,29 @@ class JejakLangkahController extends Controller
     {
         try {
             $request->validate([
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:20480', // 20MB limit
+                'tahun' => 'required|integer|min:1900|max:2100',
+                'deskripsi' => 'required|string',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:20480', // 20MB limit
             ]);
 
-            $imagePath = $this->compressAndSaveImage($request->file('image'));
+            $data = [
+                'tahun' => $request->tahun,
+                'deskripsi' => $request->deskripsi,
+            ];
 
-            JejakLangkah::create([
-                'image' => $imagePath,
-            ]);
+            if ($request->hasFile('image')) {
+                $data['image'] = $this->compressAndSaveImage($request->file('image'));
+            }
 
-            return response()->json(['success' => true, 'message' => 'Jejak Langkah created successfully.']);
+            JejakLangkah::create($data);
+
+            return response()->json(['success' => true, 'message' => 'Jejak Langkah berhasil ditambahkan.']);
         } catch (\Exception $e) {
             Log::error('Error in JejakLangkah store', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
-            return response()->json(['success' => false, 'message' => 'An error occurred: ' . $e->getMessage()], 500);
+            return response()->json(['success' => false, 'message' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
         }
     }
 
@@ -98,10 +105,20 @@ class JejakLangkahController extends Controller
     {
         try {
             $request->validate([
+                'tahun' => 'nullable|integer|min:1900|max:2100',
+                'deskripsi' => 'nullable|string',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:20480', // 20MB limit
             ]);
 
             $jejakLangkah = JejakLangkah::findOrFail($id);
+
+            if ($request->filled('tahun')) {
+                $jejakLangkah->tahun = $request->tahun;
+            }
+
+            if ($request->filled('deskripsi')) {
+                $jejakLangkah->deskripsi = $request->deskripsi;
+            }
 
             if ($request->hasFile('image')) {
                 // Delete old image
@@ -115,27 +132,35 @@ class JejakLangkahController extends Controller
 
             $jejakLangkah->save();
 
-            return response()->json(['success' => true, 'message' => 'Jejak Langkah updated successfully.']);
+            return response()->json(['success' => true, 'message' => 'Jejak Langkah berhasil diperbarui.']);
         } catch (\Exception $e) {
             Log::error('Error in JejakLangkah update', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
-            return response()->json(['success' => false, 'message' => 'An error occurred: ' . $e->getMessage()], 500);
+            return response()->json(['success' => false, 'message' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
         }
     }
 
     public function destroy($id)
     {
-        $jejakLangkah = JejakLangkah::findOrFail($id);
+        try {
+            $jejakLangkah = JejakLangkah::findOrFail($id);
 
-        // Delete image from storage
-        if ($jejakLangkah->image) {
-            Storage::disk('public')->delete($jejakLangkah->image);
+            // Delete image from storage
+            if ($jejakLangkah->image) {
+                Storage::disk('public')->delete($jejakLangkah->image);
+            }
+
+            $jejakLangkah->delete();
+
+            return response()->json(['success' => true, 'message' => 'Jejak Langkah berhasil dihapus.']);
+        } catch (\Exception $e) {
+            Log::error('Error in JejakLangkah destroy', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return response()->json(['success' => false, 'message' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
         }
-
-        $jejakLangkah->delete();
-
-        return response()->json(['success' => true, 'message' => 'Jejak Langkah deleted successfully.']);
     }
 }

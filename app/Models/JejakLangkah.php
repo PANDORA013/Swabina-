@@ -14,6 +14,8 @@ class JejakLangkah extends Model
 
     // Tentukan kolom yang dapat diisi secara massal
     protected $fillable = [
-        'image', // Menyimpan path gambar
+        'tahun',       // Tahun milestone
+        'deskripsi',   // Deskripsi milestone
+        'image',       // Menyimpan path gambar
     ];
 }
