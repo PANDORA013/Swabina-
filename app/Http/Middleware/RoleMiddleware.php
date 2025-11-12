@@ -13,14 +13,16 @@ class RoleMiddleware
             return redirect('/login')->with('error', 'Unauthorized Access');
         }
 
-        $userRole = auth()->user()->role;
+        $user = auth()->user();
 
+        // Check if user has any of the required roles using Spatie
         foreach ($roles as $role) {
-            if ($userRole == $role) {
+            if ($user->hasRole($role)) {
                 return $next($request);
             }
         }
 
-        return redirect('/login')->with('error', 'Unauthorized Access');
+        // If no role matches, redirect to home
+        abort(403, 'Unauthorized Access - Insufficient permissions');
     }
 }
