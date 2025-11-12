@@ -156,7 +156,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // Admin Management (Super Admin Only)
-    Route::middleware('super_admin')->group(function () {
+    Route::middleware(['auth', 'super_admin'])->group(function () {
         Route::prefix('admin/admin-management')->name('admin.admin-management.')->group(function () {
             Route::get('/', [AdminManagementController::class, 'index'])->name('index');
             Route::get('/create', [AdminManagementController::class, 'create'])->name('create');
