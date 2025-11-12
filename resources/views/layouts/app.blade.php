@@ -324,6 +324,20 @@
                         </a>
                     </li>
 
+                    <!-- Sertifikat & Penghargaan -->
+                    <li>
+                        <a href="{{ route('admin.sertifikat.index') }}" class="@if(request()->routeIs('admin.sertifikat.*')) active @endif">
+                            <i class="fas fa-award me-2"></i>Sertifikat & Penghargaan
+                        </a>
+                    </li>
+
+                    <!-- Sekilas Perusahaan -->
+                    <li>
+                        <a href="{{ route('admin.sekilas.index') }}" class="@if(request()->routeIs('admin.sekilas.*')) active @endif">
+                            <i class="fas fa-building-columns me-2"></i>Sekilas Perusahaan
+                        </a>
+                    </li>
+
                     <!-- Divider -->
                     <li style="border-top: 1px solid #e0e0e0; margin: 10px 0; padding: 10px 0;">
                         <span style="padding: 0 20px; font-size: 0.85rem; color: #999; font-weight: 600; text-transform: uppercase;">
