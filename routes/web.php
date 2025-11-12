@@ -116,6 +116,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('admin/pedoman')->name('admin.pedoman.')->group(function () {
         Route::get('/', [PedomanController::class, 'index'])->name('index');
         Route::post('/store', [PedomanController::class, 'store'])->name('store');
+        Route::put('/update/{id}', [PedomanController::class, 'update'])->name('update');
         Route::delete('/delete/{id}', [PedomanController::class, 'destroy'])->name('destroy');
     });
     
