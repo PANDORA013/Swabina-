@@ -138,6 +138,21 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/delete/{whyChooseUs}', [\App\Http\Controllers\Admin\WhyChooseUsController::class, 'destroy'])->name('destroy');
         Route::post('/reorder', [\App\Http\Controllers\Admin\WhyChooseUsController::class, 'reorder'])->name('reorder');
     });
+
+    // Sertifikat & Penghargaan Management
+    Route::prefix('admin/sertifikat')->name('admin.sertifikat.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\SertifikatController::class, 'index'])->name('index');
+        Route::post('/store', [\App\Http\Controllers\Admin\SertifikatController::class, 'store'])->name('store');
+        Route::put('/update/{id}', [\App\Http\Controllers\Admin\SertifikatController::class, 'update'])->name('update');
+        Route::delete('/delete/{id}', [\App\Http\Controllers\Admin\SertifikatController::class, 'destroy'])->name('destroy');
+    });
+
+    // Sekilas Perusahaan Management
+    Route::prefix('admin/sekilas')->name('admin.sekilas.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\SekilasPerusahaanController::class, 'index'])->name('index');
+        Route::post('/store', [\App\Http\Controllers\Admin\SekilasPerusahaanController::class, 'store'])->name('store');
+        Route::put('/update/{id}', [\App\Http\Controllers\Admin\SekilasPerusahaanController::class, 'update'])->name('update');
+    });
 });
 
 // ============================================
