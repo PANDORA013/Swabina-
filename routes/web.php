@@ -13,6 +13,7 @@ use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\KontakkamiController;
 use App\Http\Controllers\SeoController;
 use App\Http\Controllers\SearchController;
+use App\Http\Middleware\SuperAdminMiddleware;
 use Illuminate\Support\Facades\Route;
 
 // ============================================
@@ -156,7 +157,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // Admin Management (Super Admin Only)
-    Route::middleware(['auth', 'super_admin'])->group(function () {
+    Route::middleware(['auth', SuperAdminMiddleware::class])->group(function () {
         Route::prefix('admin/admin-management')->name('admin.admin-management.')->group(function () {
             Route::get('/', [AdminManagementController::class, 'index'])->name('index');
             Route::get('/create', [AdminManagementController::class, 'create'])->name('create');
