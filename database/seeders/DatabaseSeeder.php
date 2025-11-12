@@ -12,9 +12,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([
-            AdminSeeder::class,
-            CompanyInfoSeeder::class,
-        ]);
+        // Dummy data seeders removed
+        // Database starts clean without any test data
     }
 }
