@@ -20,13 +20,9 @@ class SuperAdminMiddleware
         }
 
         $user = auth()->user();
-        
-        // Load admin role if not already loaded
-        if (!$user->relationLoaded('adminRole')) {
-            $user->load('adminRole');
-        }
 
-        if (!$user->isSuperAdmin()) {
+        // Check if user has super_admin role using Spatie permission
+        if (!$user->hasRole('super_admin')) {
             abort(403, 'Unauthorized. Super Admin access required.');
         }
 
