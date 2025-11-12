@@ -32,7 +32,8 @@ class SocialLinkController extends Controller
     {
         $userRole = auth()->user()->role;
         $layout = $userRole === 'admin' ? 'layouts.app' : 'layouts.ppa';
-        return view('admin.sosialmedia.sosmed', compact('layout'));
+        $social = SocialLink::firstOrCreate(['id' => 1]);
+        return view('admin.sosialmedia.sosmed', compact('layout', 'social'));
     }
 
     public function store(Request $request)
