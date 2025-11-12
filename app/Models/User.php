@@ -27,65 +27,48 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the admin role for this user
-     */
-    public function adminRole()
-    {
-        return $this->belongsTo(AdminRole::class, 'admin_role_id');
-    }
-
-    /**
-     * Get all permissions for this user
+     * Get all permissions for this user (using Spatie permission)
      */
     public function getPermissions()
     {
-        // If user has admin_role_id, get permissions from role
-        if ($this->admin_role_id) {
-            $rolePermissions = $this->adminRole()
-                ->with('permissions')
-                ->first()
-                ?->permissions
-                ?->pluck('name')
-                ?->toArray() ?? [];
-            
-            // Merge with custom permissions if any
-            $customPermissions = $this->permissions_json ?? [];
-            return array_unique(array_merge($rolePermissions, $customPermissions));
-        }
-
-        return $this->permissions_json ?? [];
+        // Get permissions from Spatie permission system
+        return $this->getAllPermissions()->pluck('name')->toArray();
     }
 
     /**
-     * Check if user has permission
+     * Check if user has permission (using Spatie permission)
      */
     public function hasPermission($permission)
     {
-        return in_array($permission, $this->getPermissions());
+        return $this->can($permission);
     }
 
     /**
-     * Check if user has any of the given permissions
+     * Check if user has any of the given permissions (using Spatie permission)
      */
     public function hasAnyPermission($permissions)
     {
-        $userPermissions = $this->getPermissions();
-        return count(array_intersect($permissions, $userPermissions)) > 0;
+        foreach ($permissions as $permission) {
+            if ($this->can($permission)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
-     * Check if user is super admin
+     * Check if user is super admin (using Spatie permission)
      */
     public function isSuperAdmin()
     {
-        return $this->adminRole?->name === 'super_admin';
+        return $this->hasRole('super_admin');
     }
 
     /**
-     * Check if user is admin
+     * Check if user is admin (using Spatie permission)
      */
     public function isAdmin()
     {
-        return $this->adminRole?->name === 'admin' || $this->isSuperAdmin();
+        return $this->hasRole('admin') || $this->isSuperAdmin();
     }
 }
