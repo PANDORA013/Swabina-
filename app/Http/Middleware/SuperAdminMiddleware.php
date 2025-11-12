@@ -19,7 +19,14 @@ class SuperAdminMiddleware
             return redirect('/login');
         }
 
-        if (!auth()->user()->isSuperAdmin()) {
+        $user = auth()->user();
+        
+        // Load admin role if not already loaded
+        if (!$user->relationLoaded('adminRole')) {
+            $user->load('adminRole');
+        }
+
+        if (!$user->isSuperAdmin()) {
             abort(403, 'Unauthorized. Super Admin access required.');
         }
 
