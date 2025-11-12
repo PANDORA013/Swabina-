@@ -347,6 +347,22 @@
                     <!-- Divider -->
                     <li style="border-top: 1px solid #e0e0e0; margin: 10px 0; padding: 10px 0;">
                         <span style="padding: 0 20px; font-size: 0.85rem; color: #999; font-weight: 600; text-transform: uppercase;">
+                            <i class="fas fa-lock me-2"></i>Super Admin
+                        </span>
+                    </li>
+
+                    <!-- Admin Management (Super Admin Only) -->
+                    @if(auth()->user()->isSuperAdmin())
+                        <li>
+                            <a href="{{ route('admin.admin-management.index') }}" class="@if(request()->routeIs('admin.admin-management.*')) active @endif">
+                                <i class="fas fa-users-cog me-2"></i>Kelola Admin
+                            </a>
+                        </li>
+                    @endif
+
+                    <!-- Divider -->
+                    <li style="border-top: 1px solid #e0e0e0; margin: 10px 0; padding: 10px 0;">
+                        <span style="padding: 0 20px; font-size: 0.85rem; color: #999; font-weight: 600; text-transform: uppercase;">
                             <i class="fas fa-cog me-2"></i>Pengaturan
                         </span>
                     </li>

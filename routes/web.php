@@ -5,6 +5,7 @@ use App\Http\Controllers\auth\AdminController;
 use App\Http\Controllers\Berita\BeritaController;
 use App\Http\Controllers\Admin\CompanyInfoController;
 use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\AdminManagementController;
 use App\Http\Controllers\SocialMedia\SocialLinkController;
 use App\Http\Controllers\pedoman\PedomanController;
 use App\Http\Controllers\landingpage\JejakLangkahController;
@@ -152,6 +153,19 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [\App\Http\Controllers\Admin\SekilasPerusahaanController::class, 'index'])->name('index');
         Route::post('/store', [\App\Http\Controllers\Admin\SekilasPerusahaanController::class, 'store'])->name('store');
         Route::put('/update/{id}', [\App\Http\Controllers\Admin\SekilasPerusahaanController::class, 'update'])->name('update');
+    });
+
+    // Admin Management (Super Admin Only)
+    Route::middleware('super_admin')->group(function () {
+        Route::prefix('admin/admin-management')->name('admin.admin-management.')->group(function () {
+            Route::get('/', [AdminManagementController::class, 'index'])->name('index');
+            Route::get('/create', [AdminManagementController::class, 'create'])->name('create');
+            Route::post('/store', [AdminManagementController::class, 'store'])->name('store');
+            Route::get('/{admin}/edit', [AdminManagementController::class, 'edit'])->name('edit');
+            Route::put('/{admin}', [AdminManagementController::class, 'update'])->name('update');
+            Route::delete('/{admin}', [AdminManagementController::class, 'destroy'])->name('destroy');
+            Route::get('/{role}/permissions', [AdminManagementController::class, 'getRolePermissions'])->name('get-permissions');
+        });
     });
 });
 

@@ -18021,3 +18021,5 @@ Did you mean this?
 #13 C:\\xampp\\htdocs\\project_magang\\artisan(35): Illuminate\\Foundation\\Console\\Kernel->handle()
 #14 {main}
 "} 
+[2025-11-12 04:11:51] local.INFO: Login attempt {"email":"admin@swabinagatra.com"} 
+[2025-11-12 04:11:51] local.INFO: Login successful {"email":"admin@swabinagatra.com"} 
