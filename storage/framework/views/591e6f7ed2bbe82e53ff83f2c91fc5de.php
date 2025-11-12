@@ -1,0 +1,1 @@
+<?php /**PATH C:\xampp\htdocs\project_magang\resources\views/layouts/app.blade.php ENDPATH**/ ?>
