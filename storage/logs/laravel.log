@@ -18003,3 +18003,21 @@ Did you mean this?
 #62 C:\\xampp\\htdocs\\project_magang\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(23): require_once('...')
 #63 {main}
 "} 
+[2025-11-12 03:55:03] local.ERROR: Class "Intervention\Image\Facades\Image" not found {"exception":"[object] (Error(code: 0): Class \"Intervention\\Image\\Facades\\Image\" not found at C:\\xampp\\htdocs\\project_magang\\app\\Console\\Commands\\OptimizePerformance.php:95)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\project_magang\\app\\Console\\Commands\\OptimizePerformance.php(23): App\\Console\\Commands\\OptimizePerformance->compressImages()
+#1 C:\\xampp\\htdocs\\project_magang\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(36): App\\Console\\Commands\\OptimizePerformance->handle()
+#2 C:\\xampp\\htdocs\\project_magang\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#3 C:\\xampp\\htdocs\\project_magang\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(95): Illuminate\\Container\\Util::unwrapIfClosure()
+#4 C:\\xampp\\htdocs\\project_magang\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod()
+#5 C:\\xampp\\htdocs\\project_magang\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(754): Illuminate\\Container\\BoundMethod::call()
+#6 C:\\xampp\\htdocs\\project_magang\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(213): Illuminate\\Container\\Container->call()
+#7 C:\\xampp\\htdocs\\project_magang\\vendor\\symfony\\console\\Command\\Command.php(318): Illuminate\\Console\\Command->execute()
+#8 C:\\xampp\\htdocs\\project_magang\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(182): Symfony\\Component\\Console\\Command\\Command->run()
+#9 C:\\xampp\\htdocs\\project_magang\\vendor\\symfony\\console\\Application.php(1073): Illuminate\\Console\\Command->run()
+#10 C:\\xampp\\htdocs\\project_magang\\vendor\\symfony\\console\\Application.php(356): Symfony\\Component\\Console\\Application->doRunCommand()
+#11 C:\\xampp\\htdocs\\project_magang\\vendor\\symfony\\console\\Application.php(195): Symfony\\Component\\Console\\Application->doRun()
+#12 C:\\xampp\\htdocs\\project_magang\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(198): Symfony\\Component\\Console\\Application->run()
+#13 C:\\xampp\\htdocs\\project_magang\\artisan(35): Illuminate\\Foundation\\Console\\Kernel->handle()
+#14 {main}
+"} 
