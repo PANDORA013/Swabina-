@@ -26,8 +26,8 @@ Route::get('sitemap.xml', [SeoController::class, 'sitemap'])->name('sitemap');
 // Home
 Route::get('/', [LandingPageController::class, 'index'])->name('beranda');
 
-// News/Berita
-Route::get('/berita', [BeritaController::class, 'index'])->name('berita');
+// News/Berita (Public)
+Route::get('/berita', [BeritaController::class, 'publicIndex'])->name('berita');
 Route::get('/berita/{id}', [BeritaController::class, 'show'])->name('berita.show');
 
 // FAQ

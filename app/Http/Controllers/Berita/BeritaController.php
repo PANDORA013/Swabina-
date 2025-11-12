@@ -14,32 +14,33 @@ use Illuminate\Support\Facades\Log;
 
 class BeritaController extends Controller
 {
-    public function index()
+    // Public pages
+    public function publicIndex()
     {
         $berita = Berita::all(); 
         return view('berita.berita-professional', compact('berita'));
     }
-    public function indexEng()
+
+    public function publicIndexEng()
     {
         $berita = Berita::all(); 
         return view('eng.berita-eng.berita-eng', compact('berita'));
     }
 
-    public function showberita()
-    {
-        $berita = Berita::all(); 
-        $user = Auth::user();
-        $userRole = $user ? $user->role : 'guest';
-        $layout = $userRole === 'admin' ? 'layouts.app' : 'layouts.ppa';
-        return view('admin.berita.index', compact('berita', 'userRole', 'layout'));
-    }
-
-    public function adminIndex()
+    // Admin management page
+    public function index()
     {
         $berita = Berita::latest()->get();
         $userRole = auth()->user()->role;
         $layout = $userRole === 'admin' ? 'layouts.app' : 'layouts.ppa';
         return view('admin.berita.index', compact('berita', 'layout'));
+    }
+
+    // Public detail page
+    public function show($id)
+    {
+        $berita = Berita::findOrFail($id);
+        return view('berita.berita-detail', compact('berita'));
     }
 
     private function compressAndSaveImage($file)
