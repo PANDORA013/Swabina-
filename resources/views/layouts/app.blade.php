@@ -275,44 +275,73 @@
             <!-- Sidebar -->
             <div class="col-md-3 col-lg-2 sidebar d-none d-md-block">
                 <ul class="sidebar-menu">
+                    <!-- Dashboard -->
                     <li>
                         <a href="{{ route('admin.dashboard') }}" class="@if(request()->routeIs('admin.dashboard')) active @endif">
-                            <i class="fas fa-home me-2"></i>Dashboard
+                            <i class="fas fa-tachometer-alt me-2"></i>Dashboard
                         </a>
                     </li>
+
+                    <!-- Divider -->
+                    <li style="border-top: 1px solid #e0e0e0; margin: 10px 0; padding: 10px 0;">
+                        <span style="padding: 0 20px; font-size: 0.85rem; color: #999; font-weight: 600; text-transform: uppercase;">
+                            <i class="fas fa-globe me-2"></i>Halaman Public
+                        </span>
+                    </li>
+
+                    <!-- Berita -->
                     <li>
                         <a href="{{ route('admin.berita.index') }}" class="@if(request()->routeIs('admin.berita.*')) active @endif">
-                            <i class="fas fa-newspaper me-2"></i>Berita
+                            <i class="fas fa-newspaper me-2"></i>Berita & Artikel
                         </a>
                     </li>
+
+                    <!-- FAQ -->
                     <li>
                         <a href="{{ route('admin.faq.index') }}" class="@if(request()->routeIs('admin.faq.*')) active @endif">
                             <i class="fas fa-question-circle me-2"></i>FAQ
                         </a>
                     </li>
-                    <li>
-                        <a href="{{ route('admin.company-info.index') }}" class="@if(request()->routeIs('admin.company-info.*')) active @endif">
-                            <i class="fas fa-building me-2"></i>Company Info
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.sosmed.index') }}" class="@if(request()->routeIs('admin.sosmed.*')) active @endif">
-                            <i class="fas fa-share-alt me-2"></i>Social Media
-                        </a>
-                    </li>
+
+                    <!-- Pedoman -->
                     <li>
                         <a href="{{ route('admin.pedoman.index') }}" class="@if(request()->routeIs('admin.pedoman.*')) active @endif">
-                            <i class="fas fa-book me-2"></i>Pedoman
+                            <i class="fas fa-book me-2"></i>Kebijakan & Pedoman
                         </a>
                     </li>
+
+                    <!-- Jejak Langkah -->
                     <li>
                         <a href="{{ route('admin.jejak.index') }}" class="@if(request()->routeIs('admin.jejak.*')) active @endif">
-                            <i class="fas fa-history me-2"></i>Jejak Langkah
+                            <i class="fas fa-timeline me-2"></i>Jejak Langkah
                         </a>
                     </li>
+
+                    <!-- Why Choose Us -->
                     <li>
                         <a href="{{ route('admin.why-choose-us.index') }}" class="@if(request()->routeIs('admin.why-choose-us.*')) active @endif">
-                            <i class="fas fa-star me-2"></i>Why Choose Us
+                            <i class="fas fa-star me-2"></i>Mengapa Memilih Kami
+                        </a>
+                    </li>
+
+                    <!-- Divider -->
+                    <li style="border-top: 1px solid #e0e0e0; margin: 10px 0; padding: 10px 0;">
+                        <span style="padding: 0 20px; font-size: 0.85rem; color: #999; font-weight: 600; text-transform: uppercase;">
+                            <i class="fas fa-cog me-2"></i>Pengaturan
+                        </span>
+                    </li>
+
+                    <!-- Company Info -->
+                    <li>
+                        <a href="{{ route('admin.company-info.index') }}" class="@if(request()->routeIs('admin.company-info.*')) active @endif">
+                            <i class="fas fa-building me-2"></i>Informasi Perusahaan
+                        </a>
+                    </li>
+
+                    <!-- Social Media -->
+                    <li>
+                        <a href="{{ route('admin.sosmed.index') }}" class="@if(request()->routeIs('admin.sosmed.*')) active @endif">
+                            <i class="fas fa-share-alt me-2"></i>Media Sosial
                         </a>
                     </li>
                 </ul>
