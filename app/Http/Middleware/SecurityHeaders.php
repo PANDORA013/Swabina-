@@ -28,13 +28,16 @@ class SecurityHeaders
         
         // Performance Headers for SEO
         if ($this->isStaticAsset($request)) {
-            // Cache static assets for 1 year
-            $response->headers->set('Cache-Control', 'public, max-age=31536000, immutable');
-            $response->headers->set('Expires', gmdate('D, d M Y H:i:s \G\M\T', time() + 31536000));
+            // Cache static assets for 30 days (versioned files)
+            $response->headers->set('Cache-Control', 'public, max-age=2592000, immutable');
+            $response->headers->set('Expires', gmdate('D, d M Y H:i:s \G\M\T', time() + 2592000));
         } else {
             // Cache HTML pages for 1 hour
             $response->headers->set('Cache-Control', 'public, max-age=3600');
         }
+        
+        // Enable gzip compression
+        $response->headers->set('Vary', 'Accept-Encoding');
 
         // Compression
         if (!$response->headers->has('Content-Encoding')) {

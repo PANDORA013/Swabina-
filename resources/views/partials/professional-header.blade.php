@@ -22,18 +22,22 @@
                         <img src="{{ asset('assets/gambar_landingpage/logo_iso1.png') }}" 
                              alt="ISO 9001" 
                              title="ISO 9001:2015"
+                             loading="lazy"
                              style="height: 55px; width: auto; object-fit: contain;">
                         <img src="{{ asset('assets/gambar_landingpage/logo_iso2.png') }}" 
                              alt="ISO 14001" 
                              title="ISO 14001"
+                             loading="lazy"
                              style="height: 55px; width: auto; object-fit: contain;">
                         <img src="{{ asset('assets/gambar_landingpage/logo_iso3.png') }}" 
                              alt="ISO 45001" 
                              title="ISO 45001"
+                             loading="lazy"
                              style="height: 55px; width: auto; object-fit: contain;">
                         <img src="{{ asset('assets/gambar_landingpage/logo_smk3.png') }}" 
                              alt="SMK3" 
                              title="SMK3"
+                             loading="lazy"
                              style="height: 55px; width: auto; object-fit: contain;">
                     </div>
                 </div>
