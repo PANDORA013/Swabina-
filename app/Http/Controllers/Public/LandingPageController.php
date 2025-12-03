@@ -8,6 +8,7 @@ use App\Models\SocialLink;
 use App\Models\CompanyInfo;
 use App\Models\Berita;
 use App\Models\WhyChooseUs;
+use App\Models\Carousel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema; // added for table existence check
 
@@ -15,6 +16,13 @@ class LandingPageController extends Controller
 {
     public function index()
     {
+        // Fetch Carousels (Slider)
+        if (Schema::hasTable('carousels')) {
+            $carousels = Carousel::getActive();
+        } else {
+            $carousels = collect([]);
+        }
+
         // Make sure tables exist before querying to avoid runtime errors
         if (Schema::hasTable('jejak_langkahs')) {
             $jejakLangkahs = JejakLangkah::all();
@@ -42,7 +50,7 @@ class LandingPageController extends Controller
             $whyChooseUs = collect([]);
         }
 
-        return view('beranda.landingpage-professional', compact('jejakLangkahs', 'social', 'companyInfo', 'beritas', 'whyChooseUs'));
+        return view('beranda.landingpage-professional', compact('carousels', 'jejakLangkahs', 'social', 'companyInfo', 'beritas', 'whyChooseUs'));
     }
     
     
