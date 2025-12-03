@@ -17,14 +17,14 @@ class NewsController extends Controller
     // Public pages
     public function publicIndex()
     {
-        $berita = Berita::all(); 
-        return view('berita.berita-professional', compact('berita'));
+        $beritas = Berita::all(); 
+        return view('berita.berita-professional', compact('beritas'));
     }
 
     public function publicIndexEng()
     {
-        $berita = Berita::all(); 
-        return view('eng.berita-eng.berita-eng', compact('berita'));
+        $beritas = Berita::all(); 
+        return view('eng.berita-eng.berita-eng', compact('beritas'));
     }
 
     // Admin management page
@@ -38,11 +38,11 @@ class NewsController extends Controller
             abort(403, 'Unauthorized. Permission "manage-news" required.');
         }
 
-        $berita = Berita::latest()->get();
+        $beritas = Berita::latest()->get();
         // Fix layout logic: super_admin gets layouts.app, admin gets layouts.app-professional
         $layout = $user->role === 'super_admin' ? 'layouts.app' : 'layouts.app-professional';
         
-        return view('admin.news.index', compact('berita', 'layout'));
+        return view('admin.news.index', compact('beritas', 'layout'));
     }
 
     // Create page (not used in modal, but required by routes)
