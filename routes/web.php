@@ -100,8 +100,11 @@ Route::middleware(['auth'])->group(function () {
          ->name('admin.social-media.')
          ->group(function () {
              Route::get('/', [SocialLinkController::class, 'index'])->name('index');
+             Route::get('/create', [SocialLinkController::class, 'create'])->name('create');
+             Route::post('/', [SocialLinkController::class, 'store'])->name('store');
              Route::get('/{id}/edit', [SocialLinkController::class, 'edit'])->name('edit');
              Route::put('/{id}', [SocialLinkController::class, 'update'])->name('update');
+             Route::delete('/{id}', [SocialLinkController::class, 'destroy'])->name('destroy');
          });
     
     // Berita/News Management (Requires: manage_news)
@@ -146,6 +149,8 @@ Route::middleware(['auth'])->group(function () {
          ->name('admin.layanan.')
          ->group(function () {
              Route::get('/', [\App\Http\Controllers\Admin\LayananController::class, 'index'])->name('index');
+             Route::get('/create', [\App\Http\Controllers\Admin\LayananController::class, 'create'])->name('create');
+             Route::post('/', [\App\Http\Controllers\Admin\LayananController::class, 'store'])->name('store');
              Route::get('/{slug}/edit', [\App\Http\Controllers\Admin\LayananController::class, 'edit'])->name('edit');
              Route::put('/{slug}', [\App\Http\Controllers\Admin\LayananController::class, 'update'])->name('update');
              Route::put('/{slug}/status', [\App\Http\Controllers\Admin\LayananController::class, 'updateStatus'])->name('updateStatus');
@@ -158,9 +163,11 @@ Route::middleware(['auth'])->group(function () {
          ->name('admin.pedoman.')
          ->group(function () {
              Route::get('/', [PedomanController::class, 'index'])->name('index');
-             Route::post('/store', [PedomanController::class, 'store'])->name('store');
-             Route::put('/update/{id}', [PedomanController::class, 'update'])->name('update');
-             Route::delete('/delete/{id}', [PedomanController::class, 'destroy'])->name('destroy');
+             Route::get('/create', [PedomanController::class, 'create'])->name('create');
+             Route::post('/', [PedomanController::class, 'store'])->name('store');
+             Route::get('/{id}/edit', [PedomanController::class, 'edit'])->name('edit');
+             Route::put('/{id}', [PedomanController::class, 'update'])->name('update');
+             Route::delete('/{id}', [PedomanController::class, 'destroy'])->name('destroy');
          });
     
     // Jejak Langkah Management (Requires: manage_content)
@@ -205,9 +212,11 @@ Route::middleware(['auth'])->group(function () {
          ->name('admin.sekilas.')
          ->group(function () {
              Route::get('/', [PedomanController::class, 'index'])->name('index');
-             Route::post('/store', [PedomanController::class, 'store'])->name('store');
-             Route::put('/update/{id}', [PedomanController::class, 'update'])->name('update');
-             Route::delete('/delete/{id}', [PedomanController::class, 'destroy'])->name('destroy');
+             Route::get('/create', [PedomanController::class, 'create'])->name('create');
+             Route::post('/', [PedomanController::class, 'store'])->name('store');
+             Route::get('/{id}/edit', [PedomanController::class, 'edit'])->name('edit');
+             Route::put('/{id}', [PedomanController::class, 'update'])->name('update');
+             Route::delete('/{id}', [PedomanController::class, 'destroy'])->name('destroy');
          });
     
     // Contact Page Management (Requires: manage_settings)
@@ -216,9 +225,11 @@ Route::middleware(['auth'])->group(function () {
          ->name('admin.contact-page.')
          ->group(function () {
              Route::get('/', [\App\Http\Controllers\Admin\ContactPageController::class, 'index'])->name('index');
-             Route::post('/store', [\App\Http\Controllers\Admin\ContactPageController::class, 'store'])->name('store');
-             Route::put('/update/{id}', [\App\Http\Controllers\Admin\ContactPageController::class, 'update'])->name('update');
-             Route::delete('/delete/{id}', [\App\Http\Controllers\Admin\ContactPageController::class, 'destroy'])->name('destroy');
+             Route::get('/create', [\App\Http\Controllers\Admin\ContactPageController::class, 'create'])->name('create');
+             Route::post('/', [\App\Http\Controllers\Admin\ContactPageController::class, 'store'])->name('store');
+             Route::get('/{id}/edit', [\App\Http\Controllers\Admin\ContactPageController::class, 'edit'])->name('edit');
+             Route::put('/{id}', [\App\Http\Controllers\Admin\ContactPageController::class, 'update'])->name('update');
+             Route::delete('/{id}', [\App\Http\Controllers\Admin\ContactPageController::class, 'destroy'])->name('destroy');
          });
     
     // Sertifikat & Penghargaan Management (Requires: manage_content)
