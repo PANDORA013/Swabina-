@@ -9,6 +9,7 @@ use App\Models\CompanyInfo;
 use App\Models\Berita;
 use App\Models\WhyChooseUs;
 use App\Models\Carousel;
+use App\Models\SekilasPerusahaan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema; // added for table existence check
 
@@ -50,7 +51,14 @@ class LandingPageController extends Controller
             $whyChooseUs = collect([]);
         }
 
-        return view('beranda.landingpage-professional', compact('carousels', 'jejakLangkahs', 'social', 'companyInfo', 'beritas', 'whyChooseUs'));
+        // TAMBAHAN: Sekilas Perusahaan (was missing)
+        if (Schema::hasTable('sekilas_perusahaans')) {
+            $sekilasPerusahaan = SekilasPerusahaan::all();
+        } else {
+            $sekilasPerusahaan = collect([]);
+        }
+
+        return view('beranda.landingpage-professional', compact('carousels', 'jejakLangkahs', 'social', 'companyInfo', 'beritas', 'whyChooseUs', 'sekilasPerusahaan'));
     }
     
     
