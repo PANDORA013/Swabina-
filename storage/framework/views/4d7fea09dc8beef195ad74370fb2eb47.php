@@ -17,7 +17,7 @@
         </div>
     </div>
 
-    <?php if($berita->count() > 0): ?>
+    <?php if($beritas->count() > 0): ?>
     <div class="card shadow-sm">
         <div class="card-body">
             <div class="table-responsive">
@@ -32,42 +32,42 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php $__currentLoopData = $berita; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php $__currentLoopData = $beritas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $berita): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <tr>
                             <td>
-                                <?php if($item->image): ?>
-                                    <img src="<?php echo e(asset('storage/' . $item->image)); ?>" 
+                                <?php if($berita->image): ?>
+                                    <img src="<?php echo e(asset('storage/' . $berita->image)); ?>" 
                                          class="img-thumbnail" 
                                          style="width: 70px; height: 50px; object-fit: cover;" 
-                                         alt="Gambar untuk berita: <?php echo e($item->title); ?>" />
+                                         alt="Gambar untuk berita: <?php echo e($berita->title); ?>" />
                                 <?php else: ?>
                                     <span class="badge bg-secondary">No Image</span>
                                 <?php endif; ?>
                             </td>
                             <td>
-                                <strong><?php echo e($item->title ?? 'N/A'); ?></strong>
+                                <strong><?php echo e($berita->title ?? 'N/A'); ?></strong>
                             </td>
                             <td>
                                 <span class="text-muted">
-                                    <?php echo e(Str::limit($item->description ?? '', 80)); ?>
+                                    <?php echo e(Str::limit($berita->description ?? '', 80)); ?>
 
                                 </span>
                             </td>
                             <td>
-                                <small class="text-muted"><?php echo e($item->created_at->format('d M Y')); ?></small>
+                                <small class="text-muted"><?php echo e($berita->created_at->format('d M Y')); ?></small>
                             </td>
                             <td>
                                 <button class="btn btn-sm btn-warning editBtn me-1" 
-                                    data-id="<?php echo e($item->id); ?>" 
-                                    data-title="<?php echo e($item->title); ?>"
-                                    data-description="<?php echo e($item->description); ?>"
-                                    data-image="<?php echo e(asset('storage/' . $item->image)); ?>" 
+                                    data-id="<?php echo e($berita->id); ?>" 
+                                    data-title="<?php echo e($berita->title); ?>"
+                                    data-description="<?php echo e($berita->description); ?>"
+                                    data-image="<?php echo e(asset('storage/' . $berita->image)); ?>" 
                                     data-bs-toggle="modal" 
                                     data-bs-target="#beritaModal"
-                                    aria-label="Edit berita: <?php echo e($item->title); ?>">
+                                    aria-label="Edit berita: <?php echo e($berita->title); ?>">
                                     <i class="fas fa-edit" aria-hidden="true"></i>
                                 </button>
-                                <button class="btn btn-sm btn-danger deleteBtn" data-id="<?php echo e($item->id); ?>" aria-label="Hapus berita: <?php echo e($item->title); ?>">
+                                <button class="btn btn-sm btn-danger deleteBtn" data-id="<?php echo e($berita->id); ?>" aria-label="Hapus berita: <?php echo e($berita->title); ?>">
                                     <i class="fas fa-trash" aria-hidden="true"></i>
                                 </button>
                             </td>

@@ -19,7 +19,7 @@
         </div>
     </div>
 
-    @if($berita->count() > 0)
+    @if($beritas->count() > 0)
     <div class="card shadow-sm">
         <div class="card-body">
             <div class="table-responsive">
@@ -34,41 +34,41 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($berita as $item)
+                        @foreach($beritas as $berita)
                         <tr>
                             <td>
-                                @if($item->image)
-                                    <img src="{{ asset('storage/' . $item->image) }}" 
+                                @if($berita->image)
+                                    <img src="{{ asset('storage/' . $berita->image) }}" 
                                          class="img-thumbnail" 
                                          style="width: 70px; height: 50px; object-fit: cover;" 
-                                         alt="Gambar untuk berita: {{ $item->title }}" />
+                                         alt="Gambar untuk berita: {{ $berita->title }}" />
                                 @else
                                     <span class="badge bg-secondary">No Image</span>
                                 @endif
                             </td>
                             <td>
-                                <strong>{{ $item->title ?? 'N/A' }}</strong>
+                                <strong>{{ $berita->title ?? 'N/A' }}</strong>
                             </td>
                             <td>
                                 <span class="text-muted">
-                                    {{ Str::limit($item->description ?? '', 80) }}
+                                    {{ Str::limit($berita->description ?? '', 80) }}
                                 </span>
                             </td>
                             <td>
-                                <small class="text-muted">{{ $item->created_at->format('d M Y') }}</small>
+                                <small class="text-muted">{{ $berita->created_at->format('d M Y') }}</small>
                             </td>
                             <td>
                                 <button class="btn btn-sm btn-warning editBtn me-1" 
-                                    data-id="{{ $item->id }}" 
-                                    data-title="{{ $item->title }}"
-                                    data-description="{{ $item->description }}"
-                                    data-image="{{ asset('storage/' . $item->image) }}" 
+                                    data-id="{{ $berita->id }}" 
+                                    data-title="{{ $berita->title }}"
+                                    data-description="{{ $berita->description }}"
+                                    data-image="{{ asset('storage/' . $berita->image) }}" 
                                     data-bs-toggle="modal" 
                                     data-bs-target="#beritaModal"
-                                    aria-label="Edit berita: {{ $item->title }}">
+                                    aria-label="Edit berita: {{ $berita->title }}">
                                     <i class="fas fa-edit" aria-hidden="true"></i>
                                 </button>
-                                <button class="btn btn-sm btn-danger deleteBtn" data-id="{{ $item->id }}" aria-label="Hapus berita: {{ $item->title }}">
+                                <button class="btn btn-sm btn-danger deleteBtn" data-id="{{ $berita->id }}" aria-label="Hapus berita: {{ $berita->title }}">
                                     <i class="fas fa-trash" aria-hidden="true"></i>
                                 </button>
                             </td>
@@ -91,7 +91,7 @@
 <div class="modal fade" id="beritaModal" tabindex="-1" aria-labelledby="beritaModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form id="beritaForm" enctype="multipart/form-data" novalidate>
+            <form id="beritaForm" method="POST" enctype="multipart/form-data" novalidate>
                 @csrf
                 <div class="modal-header bg-primary text-white">
                     <h5 class="modal-title" id="beritaModalLabel">
