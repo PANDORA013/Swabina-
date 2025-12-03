@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class JejakLangkah extends Model
 {
     protected $table = 'jejak_langkahs';
-    protected $fillable = ['image'];
+    protected $fillable = ['tahun', 'deskripsi', 'image'];
     public $timestamps = true;
 }

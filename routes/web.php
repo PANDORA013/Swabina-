@@ -163,13 +163,20 @@ Route::middleware(['auth'])->group(function () {
     
     // Jejak Langkah Management (Requires: manage_content)
     Route::middleware(['check.privilege:manage_content'])
-         ->prefix('admin/jejak')
-         ->name('admin.jejak.')
+         ->prefix('admin')
+         ->name('admin.')
          ->group(function () {
-             Route::get('/', [PedomanController::class, 'index'])->name('index');
-             Route::post('/store', [PedomanController::class, 'store'])->name('store');
-             Route::put('/update/{id}', [PedomanController::class, 'update'])->name('update');
-             Route::delete('/delete/{id}', [PedomanController::class, 'destroy'])->name('destroy');
+             Route::resource('jejak-langkah', JejakLangkahController::class, [
+                 'names' => [
+                     'index' => 'jejak-langkah.index',
+                     'create' => 'jejak-langkah.create',
+                     'store' => 'jejak-langkah.store',
+                     'show' => 'jejak-langkah.show',
+                     'edit' => 'jejak-langkah.edit',
+                     'update' => 'jejak-langkah.update',
+                     'destroy' => 'jejak-langkah.destroy',
+                 ]
+             ]);
          });
     
     // Why Choose Us Management (Requires: manage_content)
