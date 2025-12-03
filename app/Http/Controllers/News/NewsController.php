@@ -18,13 +18,15 @@ class NewsController extends Controller
     public function index()
     {
         $beritas = Berita::latest()->get();
-        return view('admin.news.index', compact('beritas'));
+        $layout = 'layouts.app';
+        return view('admin.news.index', compact('beritas', 'layout'));
     }
 
     // Menampilkan form tambah
     public function create()
     {
-        return view('admin.news.create');
+        $layout = 'layouts.app';
+        return view('admin.news.create', compact('layout'));
     }
 
     // Menyimpan berita baru
@@ -59,7 +61,8 @@ class NewsController extends Controller
     public function edit($id)
     {
         $berita = Berita::findOrFail($id);
-        return view('admin.news.edit', compact('berita'));
+        $layout = 'layouts.app';
+        return view('admin.news.edit', compact('berita', 'layout'));
     }
 
     // Mengupdate berita
