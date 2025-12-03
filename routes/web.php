@@ -100,9 +100,8 @@ Route::middleware(['auth'])->group(function () {
          ->name('admin.social-media.')
          ->group(function () {
              Route::get('/', [SocialLinkController::class, 'index'])->name('index');
-             Route::post('/store', [SocialLinkController::class, 'store'])->name('store');
-             Route::put('/update/{id}', [SocialLinkController::class, 'update'])->name('update');
-             Route::delete('/delete/{id}', [SocialLinkController::class, 'destroy'])->name('destroy');
+             Route::get('/{id}/edit', [SocialLinkController::class, 'edit'])->name('edit');
+             Route::put('/{id}', [SocialLinkController::class, 'update'])->name('update');
          });
     
     // Berita/News Management (Requires: manage_news)
