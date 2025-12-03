@@ -1,103 +1,79 @@
-@extends($layout)
-
-@section('page-title', 'Manajemen Jejak Langkah')
-
-@section('breadcrumb')
-    <li class="breadcrumb-item active" aria-current="page">Jejak Langkah</li>
-@endsection
+@extends('layouts.app')
 
 @section('content')
-<div class="container-fluid mt-4">
-    <div class="row mb-4">
-        <div class="col-md-8">
-            <p class="text-muted">Kelola timeline dan milestone perusahaan</p>
-        </div>
-        <div class="col-md-4 text-end">
-            <a href="{{ route('admin.jejak-langkah.create') }}" class="btn btn-primary">
-                <i class="bi bi-plus-circle me-2"></i>Tambah Jejak Langkah
-            </a>
-        </div>
-    </div>
+<div class="container-fluid">
+    <div class="card w-100 position-relative overflow-hidden">
+        <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="card-title fw-semibold mb-0">Jejak Langkah Perusahaan</h5>
+                <a href="{{ route('admin.jejak-langkah.create') }}" class="btn btn-primary">
+                    <i class="ti ti-plus me-1"></i> Tambah Data
+                </a>
+            </div>
+            
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
 
-    @if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <i class="bi bi-check-circle me-2"></i>
-        {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    @endif
-
-    @if(session('error'))
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <i class="bi bi-exclamation-circle me-2"></i>
-        {{ session('error') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    @endif
-
-    @if($jejakLangkahs->count() > 0)
-    <div class="card shadow-sm">
-        <div class="table-responsive">
-            <table class="table table-hover mb-0">
-                <thead class="table-light">
-                    <tr>
-                        <th style="width: 5%">No</th>
-                        <th style="width: 10%">Tahun</th>
-                        <th style="width: 45%">Deskripsi</th>
-                        <th style="width: 20%">Gambar</th>
-                        <th style="width: 10%" class="text-center">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($jejakLangkahs->sortByDesc('tahun') as $index => $jejak)
-                    <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>
-                            <strong>{{ $jejak->tahun ?? 'N/A' }}</strong>
-                        </td>
-                        <td>
-                            <small class="text-muted">{{ Str::limit($jejak->deskripsi ?? '-', 100) }}</small>
-                        </td>
-                        <td>
-                            @if($jejak->image)
-                                <img src="{{ asset('storage/' . $jejak->image) }}" 
-                                     alt="{{ $jejak->tahun }}" 
-                                     style="max-height: 50px; max-width: 50px; object-fit: cover; border-radius: 4px;" />
-                            @else
-                                <span class="text-muted">-</span>
-                            @endif
-                        </td>
-                        <td class="text-center">
-                            <div class="btn-group btn-group-sm" role="group">
-                                <a href="{{ route('admin.jejak-langkah.edit', $jejak->id) }}" 
-                                   class="btn btn-warning" 
-                                   title="Edit">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
-                                <form action="{{ route('admin.jejak-langkah.destroy', $jejak->id) }}" 
-                                      method="POST" 
-                                      style="display:inline;" 
-                                      onsubmit="return confirm('Yakin ingin menghapus jejak langkah ini?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger" title="Hapus">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table text-nowrap mb-0 align-middle">
+                    <thead class="text-dark fs-4">
+                        <tr>
+                            <th class="border-bottom-0"><h6 class="fw-semibold mb-0">No</h6></th>
+                            <th class="border-bottom-0"><h6 class="fw-semibold mb-0">Tahun</h6></th>
+                            <th class="border-bottom-0"><h6 class="fw-semibold mb-0">Gambar</h6></th>
+                            <th class="border-bottom-0"><h6 class="fw-semibold mb-0">Deskripsi</h6></th>
+                            <th class="border-bottom-0"><h6 class="fw-semibold mb-0">Aksi</h6></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($jejakLangkahs as $item)
+                        <tr>
+                            <td class="border-bottom-0"><h6 class="fw-semibold mb-0">{{ $loop->iteration }}</h6></td>
+                            <td class="border-bottom-0"><span class="badge bg-primary rounded-3 fw-semibold">{{ $item->tahun }}</span></td>
+                            <td class="border-bottom-0">
+                                @if($item->image)
+                                    <img src="{{ asset('storage/' . $item->image) }}" width="80" class="rounded" alt="Jejak {{ $item->tahun }}">
+                                @else
+                                    <span class="text-muted">-</span>
+                                @endif
+                            </td>
+                            <td class="border-bottom-0">
+                                <p class="mb-0 fw-normal text-muted" style="max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    {{ Str::limit($item->deskripsi, 60) }}
+                                </p>
+                            </td>
+                            <td class="border-bottom-0">
+                                <div class="d-flex align-items-center gap-2">
+                                    <a href="{{ route('admin.jejak-langkah.edit', $item->id) }}" class="btn btn-warning btn-sm">
+                                        <i class="ti ti-edit"></i> Edit
+                                    </a>
+                                    
+                                    {{-- Form Delete --}}
+                                    <form action="{{ route('admin.jejak-langkah.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Yakin hapus jejak langkah tahun {{ $item->tahun }}?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            <i class="ti ti-trash"></i> Hapus
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="5" class="text-center py-5">
+                                <h6 class="fw-semibold text-muted">Belum ada data jejak langkah</h6>
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-    @else
-    <div class="alert alert-info" role="alert">
-        <i class="bi bi-info-circle me-2"></i>
-        Belum ada jejak langkah. Silakan tambahkan jejak langkah baru dengan klik tombol "Tambah Jejak Langkah".
-    </div>
-    @endif
 </div>
-
 @endsection
