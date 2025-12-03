@@ -3,7 +3,7 @@
   <div class="row mengapa-pilih-kami" style="">
       <div class="col-md-3 mb-3" style="flex: 0 0 auto; width: 20%;">
           <div class="card" style="width: 100%; height: 90%; border:none">
-              <img src="/assets/gambar_landingpage/competence.png" class="card-img-top" alt="Card Image">
+              <x-webp-image src="assets/gambar_landingpage/competence.png" class="card-img-top" alt="Competence" width="300" height="200" />
               <div class="card-body">
                   <h5 class="card-title" style="font-weight: bold">Competence</h5>
                   <a href="{{ route('memilihkami') }}" id="btn-mpk" class="btn btn-primary" style=""
@@ -13,7 +13,7 @@
       </div>
       <div class="col-md-3 mb-3" style="flex: 0 0 auto; width: 20%;">
           <div class="card" style="width: 100%; height: 90%; border:none">
-              <img src="/assets/gambar_landingpage/integrity.png" class="card-img-top" alt="Card Image">
+              <x-webp-image src="assets/gambar_landingpage/integrity.png" class="card-img-top" alt="Integrity" width="300" height="200" />
               <div class="card-body">
                   <h5 class="card-title" style="font-weight: bold;">Integrity</h5>
                   <a href="{{ route('memilihkami') }}" id="btn-mpk" class="btn btn-primary" style=""
@@ -23,7 +23,7 @@
       </div>
       <div class="col-md-3 mb-3" style="flex: 0 0 auto; width: 20%;">
           <div class="card" style="width: 100%; height: 90%; border:none">
-              <img src="/assets/gambar_landingpage/excellence.png" class="card-img-top" alt="Card Image">
+              <x-webp-image src="assets/gambar_landingpage/excellence.png" class="card-img-top" alt="Excellent" width="300" height="200" />
               <div class="card-body">
                   <h5 class="card-title" style="font-weight: bold">Excellent</h5>
                   <a href="{{ route('memilihkami') }}" id="btn-mpk" class="btn btn-primary" style=""
@@ -33,7 +33,7 @@
       </div>
       <div class="col-md-3 mb-3" style="flex: 0 0 auto; width: 20%;">
         <div class="card" style="width: 100%; height: 90%; border:none">
-            <img src="/assets/gambar_landingpage/innovative.png" class="card-img-top" alt="Card Image">
+            <x-webp-image src="assets/gambar_landingpage/innovative.png" class="card-img-top" alt="Innovative" width="300" height="200" />
             <div class="card-body">
                 <h5 class="card-title" style="font-weight: bold">Innovative</h5>
                 <a href="{{ route('memilihkami') }}" id="btn-mpk" class="btn btn-primary" style=""
@@ -43,7 +43,7 @@
     </div>
     <div class="col-md-3 mb-3" style="flex: 0 0 auto; width: 20%;">
       <div class="card" style="width: 100%; height: 90%; border:none">
-          <img src="/assets/gambar_landingpage/profesional.png" class="card-img-top" alt="Card Image">
+          <x-webp-image src="assets/gambar_landingpage/profesional.png" class="card-img-top" alt="Profesional" width="300" height="200" />
           <div class="card-body">
               <h5 class="card-title" style="font-weight: bold">Profesional</h5>
               <a href="{{ route('memilihkami') }}" id="btn-mpk" class="btn btn-primary " style=""

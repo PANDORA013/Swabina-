@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tentang Kami - PT Swabina Gatra</title>
     <link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('assets/css/professional-header.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/professional-layout.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/professional-footer.css')}}">
@@ -39,21 +39,21 @@
                     <h2 style="color: #0454a3; border-bottom: 3px solid #0454a3; padding-bottom: 10px;">Visi & Misi</h2>
                     
                     @if($visi->isNotEmpty())
-                        <h4 class="mt-4">🎯 VISI</h4>
+                        <h3 class="mt-4">🎯 VISI</h3>
                         @foreach($visi as $item)
                             <p>{!! nl2br(e($item->content['id'] ?? '')) !!}</p>
                         @endforeach
                     @endif
                     
                     @if($misi->isNotEmpty())
-                        <h4 class="mt-4">📋 MISI</h4>
+                        <h3 class="mt-4">📋 MISI</h3>
                         @foreach($misi as $item)
                             <p>{!! nl2br(e($item->content['id'] ?? '')) !!}</p>
                         @endforeach
                     @endif
                     
                     @if($budaya->isNotEmpty())
-                        <h4 class="mt-4">💼 BUDAYA PERUSAHAAN</h4>
+                        <h3 class="mt-4">💼 BUDAYA PERUSAHAAN</h3>
                         @foreach($budaya as $item)
                             <p><strong>{{ $item->title ?? 'SIAP BISA' }}</strong></p>
                             <p>{!! nl2br(e($item->content['id'] ?? '')) !!}</p>

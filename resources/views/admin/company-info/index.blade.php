@@ -1,11 +1,16 @@
 @extends($layout)
 
+@section('page-title', 'Informasi Perusahaan')
+
+@section('breadcrumb')
+    <li class="breadcrumb-item active" aria-current="page">Info Perusahaan</li>
+@endsection
+
 @section('content')
 <div class="container-fluid">
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="mb-1"><i class="fas fa-building me-2"></i>Informasi Perusahaan</h1>
             <p class="text-muted">Kelola semua informasi perusahaan yang tampil di website public</p>
         </div>
     </div>
@@ -51,17 +56,17 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Logo Perusahaan</label>
+                        <label for="company_logo" class="form-label fw-bold">Logo Perusahaan</label>
                         @if($companyInfo->company_logo)
                             <div class="mb-2">
                                 <img src="{{ asset('storage/' . $companyInfo->company_logo) }}" 
-                                     alt="Company Logo" class="img-thumbnail" style="max-height: 100px;">
+                                     alt="Logo perusahaan saat ini" class="img-thumbnail" style="max-height: 100px;">
                             </div>
                         @endif
-                        <input type="file" class="form-control" id="company_logo" accept="image/*">
+                        <input type="file" class="form-control" id="company_logo" accept="image/*" aria-label="Pilih file logo perusahaan">
                         <small class="text-muted">Format: JPG, PNG, SVG. Max: 2MB</small>
-                        <button type="button" class="btn btn-sm btn-primary mt-2" onclick="uploadCompanyLogo()">
-                            <i class="fas fa-upload me-1"></i>Upload Logo
+                        <button type="button" class="btn btn-sm btn-primary mt-2" onclick="uploadCompanyLogo()" aria-label="Upload logo perusahaan">
+                            <i class="fas fa-upload me-1" aria-hidden="true"></i>Upload Logo
                         </button>
                     </div>
                 </div>
@@ -280,17 +285,17 @@
                 <div class="row">
                     @for($i = 1; $i <= 4; $i++)
                         <div class="col-md-3 mb-3">
-                            <label class="form-label fw-bold">Logo ISO {{ $i }}</label>
+                            <label for="iso_logo_{{ $i }}" class="form-label fw-bold">Logo ISO {{ $i }}</label>
                             @php $logoField = 'iso_logo_' . $i; @endphp
                             @if($companyInfo->$logoField)
                                 <div class="mb-2">
                                     <img src="{{ asset('storage/' . $companyInfo->$logoField) }}" 
-                                         alt="ISO Logo {{ $i }}" class="img-thumbnail" style="max-height: 80px;">
+                                         alt="ISO sertifikasi logo nomor {{ $i }}" class="img-thumbnail" style="max-height: 80px;">
                                 </div>
                             @endif
-                            <input type="file" class="form-control mb-2" id="iso_logo_{{ $i }}" accept="image/*">
-                            <button type="button" class="btn btn-sm btn-success w-100" onclick="uploadIsoLogo({{ $i }})">
-                                <i class="fas fa-upload me-1"></i>Upload Logo {{ $i }}
+                            <input type="file" class="form-control mb-2" id="iso_logo_{{ $i }}" accept="image/*" aria-label="Pilih file logo ISO {{ $i }}">
+                            <button type="button" class="btn btn-sm btn-success w-100" onclick="uploadIsoLogo({{ $i }})" aria-label="Upload logo ISO {{ $i }}">
+                                <i class="fas fa-upload me-1" aria-hidden="true"></i>Upload Logo {{ $i }}
                             </button>
                         </div>
                     @endfor
@@ -301,11 +306,11 @@
 
         <!-- Save Button -->
         <div class="d-flex justify-content-end gap-2 mb-4">
-            <button type="reset" class="btn btn-secondary">
-                <i class="fas fa-undo me-2"></i>Reset
+            <button type="reset" class="btn btn-secondary" aria-label="Reset semua input ke nilai sebelumnya">
+                <i class="fas fa-undo me-2" aria-hidden="true"></i>Reset
             </button>
-            <button type="submit" class="btn btn-primary btn-lg">
-                <i class="fas fa-save me-2"></i>Simpan Semua Perubahan
+            <button type="submit" class="btn btn-primary btn-lg" aria-label="Simpan semua perubahan informasi perusahaan">
+                <i class="fas fa-save me-2" aria-hidden="true"></i>Simpan Semua Perubahan
             </button>
         </div>
     </form>

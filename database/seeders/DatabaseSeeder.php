@@ -12,7 +12,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Dummy data seeders removed
-        // Database starts clean without any test data
+        $this->call([
+            AdminRoleSeeder::class,
+            AssignSuperAdminRoleSeeder::class,
+            CreatePermissionsSeeder::class,
+        ]);
     }
 }

@@ -2,16 +2,11 @@
 
 @section('head')
 <x-seo-meta 
-    title="SWA Academy - Program Pelatihan & Pengembangan SDM - PT Swabina Gatra"
-    description="SWA Academy menyediakan program pelatihan profesional untuk pengembangan sumber daya manusia dengan kurikulum disesuaikan kebutuhan industri."
-    :keywords="['SWA Academy', 'pelatihan', 'training', 'pengembangan SDM', 'corporate training', 'workshop']"
+    title="SWA Academy - PT Swabina Gatra"
+    description="Program pelatihan dan pengembangan SDM profesional dari PT Swabina Gatra"
+    :keywords="['swabina', 'academy', 'pelatihan', 'training', 'sertifikasi']"
     url="{{ route('swaacademy') }}"
 />
-<x-structured-data type="service" :data="[
-    'name' => 'SWA Academy - Program Pelatihan',
-    'description' => 'Program pelatihan dan pengembangan SDM profesional',
-    'provider' => 'PT Swabina Gatra'
-]" />
 @endsection
 
 @section('page-header')
@@ -21,7 +16,7 @@
         <h1 class="display-4 fw-bold mb-3">
             <i class="bi bi-mortarboard"></i> SWA Academy
         </h1>
-        <p class="lead">Pelatihan & Pengembangan SDM Berkualitas</p>
+        <p class="lead">Program Pelatihan dan Pengembangan SDM Profesional</p>
     </div>
 </section>
 @endsection
@@ -42,7 +37,7 @@
                 <div class="card border-0 shadow-sm">
                     <div class="card-body p-4">
                         <p class="text-muted mb-0" style="text-align: justify; line-height: 1.8; font-size: 1.1rem;">
-                            SWA Academy adalah program pelatihan profesional yang dirancang untuk mengembangkan kompetensi dan keterampilan sumber daya manusia di berbagai industri. Dengan instruktur berpengalaman dan kurikulum yang relevan dengan kebutuhan pasar, kami menyediakan solusi pembelajaran yang efektif dan berkelanjutan.
+                            SWA Academy adalah divisi pelatihan dan pengembangan SDM dari PT Swabina Gatra yang berkomitmen untuk meningkatkan kompetensi dan profesionalisme sumber daya manusia di berbagai bidang industri. Kami menyediakan program pelatihan yang disesuaikan dengan kebutuhan industri dan standar internasional.
                         </p>
                     </div>
                 </div>
@@ -50,48 +45,144 @@
         </div>
     </section>
 
-    <!-- Program Types Section -->
+    <!-- Program Pelatihan -->
     <section class="mb-5">
         <div class="section-header text-center mb-4">
             <h2 class="section-title">
-                <i class="bi bi-calendar-event text-primary"></i> Jenis Program Pelatihan
+                <i class="bi bi-book text-primary"></i> Program Pelatihan
             </h2>
             <div class="title-underline"></div>
         </div>
 
         <div class="row g-4">
             <div class="col-md-6 col-lg-4">
-                <div class="card border-0 shadow-sm h-100 hover-lift">
-                    <div class="card-body text-center">
-                        <div class="feature-icon mb-3">
-                            <i class="bi bi-people" style="font-size: 2.5rem; color: var(--primary-color);"></i>
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-box mb-3">
+                            <i class="bi bi-person-badge display-4 text-primary"></i>
                         </div>
-                        <h5 class="card-title fw-bold mb-2">In-House Training</h5>
-                        <p class="card-text text-muted small">Program pelatihan khusus disesuaikan dengan kebutuhan spesifik perusahaan Anda di lokasi yang Anda tentukan.</p>
+                        <h5 class="card-title">Pelatihan Teknis</h5>
+                        <p class="card-text text-muted">Program pelatihan keterampilan teknis sesuai bidang industri</p>
                     </div>
                 </div>
             </div>
 
             <div class="col-md-6 col-lg-4">
-                <div class="card border-0 shadow-sm h-100 hover-lift">
-                    <div class="card-body text-center">
-                        <div class="feature-icon mb-3">
-                            <i class="bi bi-easel" style="font-size: 2.5rem; color: var(--primary-color);"></i>
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-box mb-3">
+                            <i class="bi bi-people display-4 text-primary"></i>
                         </div>
-                        <h5 class="card-title fw-bold mb-2">Workshop & Seminar</h5>
-                        <p class="card-text text-muted small">Workshop intensif dengan topik-topik terkini dan relevan yang disampaikan oleh praktisi industri.</p>
+                        <h5 class="card-title">Soft Skills</h5>
+                        <p class="card-text text-muted">Pengembangan kemampuan komunikasi dan kepemimpinan</p>
                     </div>
                 </div>
             </div>
 
             <div class="col-md-6 col-lg-4">
-                <div class="card border-0 shadow-sm h-100 hover-lift">
-                    <div class="card-body text-center">
-                        <div class="feature-icon mb-3">
-                            <i class="bi bi-laptop" style="font-size: 2.5rem; color: var(--primary-color);"></i>
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-box mb-3">
+                            <i class="bi bi-award display-4 text-primary"></i>
                         </div>
-                        <h5 class="card-title fw-bold mb-2">Online Learning</h5>
-                        <p class="card-text text-muted small">Program pembelajaran berbasis platform digital yang fleksibel dan dapat diakses kapan saja.</p>
+                        <h5 class="card-title">Sertifikasi</h5>
+                        <p class="card-text text-muted">Program sertifikasi profesi sesuai standar nasional dan internasional</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-box mb-3">
+                            <i class="bi bi-laptop display-4 text-primary"></i>
+                        </div>
+                        <h5 class="card-title">Pelatihan Digital</h5>
+                        <p class="card-text text-muted">Program pelatihan teknologi informasi dan digital</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-box mb-3">
+                            <i class="bi bi-shield-check display-4 text-primary"></i>
+                        </div>
+                        <h5 class="card-title">K3 & Safety</h5>
+                        <p class="card-text text-muted">Pelatihan Keselamatan dan Kesehatan Kerja</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-box mb-3">
+                            <i class="bi bi-graph-up display-4 text-primary"></i>
+                        </div>
+                        <h5 class="card-title">Manajemen</h5>
+                        <p class="card-text text-muted">Program pelatihan manajemen dan kepemimpinan</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Keunggulan -->
+    <section class="mb-5">
+        <div class="section-header text-center mb-4">
+            <h2 class="section-title">
+                <i class="bi bi-star text-primary"></i> Keunggulan Kami
+            </h2>
+            <div class="title-underline"></div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="d-flex align-items-start">
+                    <div class="flex-shrink-0">
+                        <i class="bi bi-check-circle-fill text-primary fs-3"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h5>Instruktur Berpengalaman</h5>
+                        <p class="text-muted">Tim instruktur profesional dengan pengalaman industri yang luas</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="d-flex align-items-start">
+                    <div class="flex-shrink-0">
+                        <i class="bi bi-check-circle-fill text-primary fs-3"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h5>Kurikulum Terstruktur</h5>
+                        <p class="text-muted">Materi pelatihan yang disesuaikan dengan kebutuhan industri terkini</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="d-flex align-items-start">
+                    <div class="flex-shrink-0">
+                        <i class="bi bi-check-circle-fill text-primary fs-3"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h5>Sertifikat Resmi</h5>
+                        <p class="text-muted">Sertifikat yang diakui oleh industri dan lembaga pemerintah</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="d-flex align-items-start">
+                    <div class="flex-shrink-0">
+                        <i class="bi bi-check-circle-fill text-primary fs-3"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h5>Fasilitas Lengkap</h5>
+                        <p class="text-muted">Ruang pelatihan modern dengan peralatan yang memadai</p>
                     </div>
                 </div>
             </div>
@@ -101,62 +192,37 @@
     <!-- CTA Section -->
     <section class="py-5">
         <div class="card border-0 shadow-lg" style="background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);">
-            <div class="card-body text-center text-white py-5">
-                <h2 class="h3 fw-bold mb-3">Bergabunglah dengan SWA Academy</h2>
-                <p class="lead mb-4">Tingkatkan kompetensi tim Anda dengan program pelatihan profesional dari SWA Academy.</p>
-                @php
-                    $whatsapp = isset($companyInfo) ? ($companyInfo->whatsapp ?? null) : null;
-                @endphp
-                <div class="d-flex gap-3 justify-content-center flex-wrap">
-                    <a href="{{ route('kontakkami') }}" class="btn btn-light btn-lg px-4">
-                        <i class="bi bi-envelope-fill me-2"></i>Info Lebih Lanjut
-                    </a>
-                    @if($whatsapp)
-                    <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $whatsapp) }}" class="btn btn-outline-light btn-lg px-4" target="_blank">
-                        <i class="bi bi-whatsapp me-2"></i>Chat WhatsApp
-                    </a>
-                    @endif
-                </div>
+            <div class="card-body text-center text-white p-5">
+                <h2 class="mb-3">Tingkatkan Kompetensi SDM Anda</h2>
+                <p class="lead mb-4">Hubungi kami untuk informasi program pelatihan yang sesuai dengan kebutuhan perusahaan Anda</p>
+                <a href="{{ route('kontakkami') }}" class="btn btn-light btn-lg px-5">
+                    <i class="bi bi-telephone me-2"></i> Hubungi Kami
+                </a>
             </div>
         </div>
     </section>
 </div>
-@endsection
 
-@section('styles')
 <style>
-.feature-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 60px;
-    height: 60px;
-    margin: 0 auto;
-    background: rgba(13, 110, 253, 0.1);
-    border-radius: 50%;
-}
+    .hover-lift {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .hover-lift:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+    }
 
-.hover-lift {
-    transition: all 0.3s ease;
-}
+    .section-title {
+        font-weight: 700;
+        color: #2c3e50;
+    }
 
-.hover-lift:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15) !important;
-}
-
-.section-title {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #0d6efd;
-}
-
-.title-underline {
-    width: 60px;
-    height: 4px;
-    background: #0d6efd;
-    border-radius: 2px;
-    margin: 1rem auto;
-}
+    .title-underline {
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(to right, #0d6efd, #0a58ca);
+        margin: 0 auto;
+    }
 </style>
 @endsection

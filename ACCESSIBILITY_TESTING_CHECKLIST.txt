@@ -1,0 +1,261 @@
+📋 ACCESSIBILITY TESTING CHECKLIST
+====================================
+
+Tanggal: 19 November 2025
+Versi: 1.0
+
+═══════════════════════════════════════════════════════════════
+
+🔷 KEYBOARD NAVIGATION TESTING
+────────────────────────────────
+
+[ ] 1. Skip Link Test
+    • Tekan Tab di homepage
+    • Pastikan "Skip to main content" link visible
+    • Tekan Enter, fokus melompat ke main content
+    
+[ ] 2. Navbar Navigation
+    • Tab ke navbar toggle button (hamburger menu)
+    • Tekan Enter untuk buka/tutup menu
+    • Tab melalui semua menu items (Dashboard, Berita, FAQ, dll)
+    • Tekan Enter untuk navigate ke halaman
+    
+[ ] 3. Sidebar Navigation
+    • Tab ke sidebar menu
+    • Tekan Enter untuk buka/tutup submenu
+    • Tab melalui semua sidebar items
+    • Focus indicator jelas (highlight/border)
+    
+[ ] 4. Table & Action Buttons
+    • Tab ke table
+    • Tab melalui Edit/Delete buttons
+    • Aria-label muncul di screen reader
+    • Tekan Enter untuk eksekusi aksi
+    
+[ ] 5. Form Fields
+    • Tab ke form inputs
+    • Focus indicator visible pada setiap field
+    • Label terasosiasi dengan input (for attribute)
+    • Tab order logis: name → tagline → description
+    
+[ ] 6. Modal Dialog
+    • Tab ke "Add/Edit" button
+    • Tekan Enter untuk buka modal
+    • Tab trapped di dalam modal (tidak keluar)
+    • Tab kembali ke close button setelah submit
+    • Tekan Escape untuk tutup modal
+    
+[ ] 7. File Upload Input
+    • Tab ke file upload input
+    • Tekan Enter untuk buka file picker
+    • Pilih file, preview muncul
+    
+═══════════════════════════════════════════════════════════════
+
+🔊 SCREEN READER TESTING (NVDA/JAWS)
+─────────────────────────────────────
+
+[ ] 1. Page Announcement
+    • Screen reader announce page title "Admin Panel - Manajemen Berita"
+    • Navigation announced sebagai "navigation"
+    • Main content announced sebagai "main landmark"
+    
+[ ] 2. Link Reading
+    • Skip link dibaca sebagai "Skip to main content"
+    • Menu links dibaca lengkap: "Dashboard" (link)
+    • Button links dibaca dengan aria-label
+    
+[ ] 3. Button Reading
+    • Add button: "Tambah berita baru, button"
+    • Edit button: "Edit berita: [title], button"
+    • Delete button: "Hapus berita: [title], button"
+    • Submit button: "Simpan semua perubahan, button"
+    
+[ ] 4. Form Label Reading
+    • Label: "Gambar Berita, required, edit text"
+    • Label: "Judul, required, edit text"
+    • Label: "Deskripsi, required, edit text"
+    
+[ ] 5. Image Alt Text
+    • Image dibaca: "Gambar untuk berita: [title]"
+    • Logo dibaca: "Logo perusahaan saat ini"
+    • ISO logo dibaca: "ISO sertifikasi logo nomor 1"
+    
+[ ] 6. Table Reading
+    • Table header dibaca
+    • Row structure jelas
+    • Data cells sesuai header
+    
+[ ] 7. Alert/Message Reading
+    • Success message dibaca otomatis (aria-live)
+    • Error message dibaca dengan jelas
+    
+═══════════════════════════════════════════════════════════════
+
+🎨 COLOR & CONTRAST TESTING
+────────────────────────────
+
+[ ] 1. Contrast Ratio Check (Chrome DevTools)
+    • F12 → Accessibility panel
+    • Check semua text vs background
+    • Minimal WCAG AA: 4.5:1 (normal text), 3:1 (large text)
+    • ✅ Primary button (blue): High contrast
+    • ✅ Form labels: High contrast
+    • ✅ Table text: High contrast
+    
+[ ] 2. Color Blindness Test
+    • Jangan gunakan warna saja untuk conveying info
+    • ✅ Buttons: Punya icon + text
+    • ✅ Status: Punya label text + warna
+    • ✅ Alerts: Punya icon + text + warna
+    
+[ ] 3. Focus Indicator
+    • Tab ke element
+    • Focus indicator jelas visible (bukan outline saja)
+    • Color contrast minimal 3:1 vs adjacent color
+    
+═══════════════════════════════════════════════════════════════
+
+📱 RESPONSIVE & ZOOM TESTING
+──────────────────────────────
+
+[ ] 1. Text Resize (Browser Zoom)
+    • Ctrl/Cmd + Plus: 200% zoom
+    • Layout responsive, tidak ada horizontal scroll
+    • Text readable tanpa zoom
+    • Buttons masih clickable
+    
+[ ] 2. Mobile Responsive
+    • Test di mobile (320px width)
+    • Hamburger menu appears
+    • Touch targets minimum 44x44 px
+    • No overflow content
+    
+[ ] 3. Dark Mode (Optional)
+    • Prefers dark mode
+    • Contrast tetap memadai
+    • Text readable
+    
+═══════════════════════════════════════════════════════════════
+
+🔧 HTML VALIDATION TESTING
+──────────────────────────
+
+[ ] 1. Semantic HTML
+    • Use <nav> untuk navigation ✅
+    • Use <main> atau role="main" ✅
+    • Use <header> untuk header
+    • Use <footer> untuk footer
+    • Use <section> untuk logical sections
+    
+[ ] 2. ARIA Attributes
+    • aria-label pada buttons tanpa text ✅
+    • aria-labelledby pada modals ✅
+    • aria-hidden pada decorative icons ✅
+    • aria-current pada active page ✅
+    • aria-live pada dynamic content
+    
+[ ] 3. Form Associations
+    • <label for="id"> terasosiasi dengan <input id="id"> ✅
+    • <input required> ada visual indicator ✅
+    • Error messages terasosiasi dengan field
+    
+═══════════════════════════════════════════════════════════════
+
+📊 AUTOMATED TESTING (TOOLS)
+─────────────────────────────
+
+[ ] 1. Chrome Lighthouse
+    • Open → F12 → Lighthouse
+    • Select "Accessibility"
+    • Target score: 90+ (A-)
+    • Fix any issues
+    
+[ ] 2. WAVE Browser Extension
+    • Open → WAVE extension
+    • 0 Errors
+    • Review Warnings
+    • Check Contrast
+    
+[ ] 3. Axe DevTools
+    • Open → F12 → Axe DevTools
+    • Scan page
+    • 0 Critical issues
+    • 0 Serious issues
+    • Review Best practices
+    
+[ ] 4. W3C Nu HTML Validator
+    • Go to validator.w3.org
+    • Upload HTML
+    • Fix validation errors
+    
+═══════════════════════════════════════════════════════════════
+
+✅ CHECKLIST LENGKAP
+─────────────────────
+
+WCAG 2.1 Level A:
+  [ ] 1.1 Text Alternatives (alt text untuk images)
+  [ ] 1.3 Adaptable (semantic HTML)
+  [ ] 1.4 Distinguishable (color contrast)
+  [ ] 2.1 Keyboard Accessible (Tab navigation)
+  [ ] 2.2 Enough Time (no auto-refresh)
+  [ ] 3.1 Readable (language clear)
+  [ ] 3.2 Predictable (navigation consistent)
+  [ ] 4.1 Compatible (valid HTML, ARIA)
+
+WCAG 2.1 Level AA:
+  [ ] 1.4.3 Contrast (Enhanced) - 4.5:1 normal text
+  [ ] 2.4.3 Focus Order (Logical)
+  [ ] 2.4.7 Focus Visible (Clear indicator)
+  [ ] 3.2.4 Consistent Identification (Buttons same everywhere)
+  [ ] 3.3.3 Error Suggestion (Help with form errors)
+  [ ] 3.3.4 Error Prevention (Confirmation on important actions)
+
+═══════════════════════════════════════════════════════════════
+
+🎯 NEXT STEPS SETELAH TESTING
+──────────────────────────────
+
+1. DOKUMENTASI
+   • Simpan hasil testing
+   • Catat issue yang ditemukan
+   • Update ACCESSIBILITY_IMPROVEMENTS.md
+
+2. FIX ISSUES
+   • Prioritas: Critical → High → Medium → Low
+   • Update HTML/CSS sesuai hasil
+   • Retest setelah fix
+
+3. CONTINUOUS MONITORING
+   • Setup automated testing di CI/CD
+   • Regular manual testing (monthly)
+   • Monitor user feedback
+
+4. TRAINING
+   • Train developer tentang accessibility
+   • Establish accessibility guidelines
+   • Code review untuk accessibility
+
+═══════════════════════════════════════════════════════════════
+
+📚 RESOURCES
+────────────
+
+Tools:
+  • NVDA: https://www.nvaccess.org/
+  • WAVE: https://wave.webaim.org/
+  • Axe DevTools: https://www.deque.com/axe/devtools/
+  • Lighthouse: Built-in Chrome DevTools
+
+Learning:
+  • WCAG 2.1 Guidelines: https://www.w3.org/WAI/WCAG21/quickref/
+  • WebAIM: https://webaim.org/
+  • MDN Accessibility: https://developer.mozilla.org/en-US/docs/Web/Accessibility
+  • A11ycasts: https://www.youtube.com/playlist?list=PLNYkxOF6rcICWx0C9Xc-RgEzwLvePng7V
+
+═══════════════════════════════════════════════════════════════
+
+Dibuat oleh: GitHub Copilot
+Tanggal: 19 November 2025
+Status: ✅ Ready for Testing

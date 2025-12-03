@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Berita;
 use App\Models\Faq;
 use App\Models\Pedoman;
+use App\Models\Sertifikat;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -16,7 +17,7 @@ class AdminController extends Controller
             $beritas = Berita::latest()->get();
             $faqs = Faq::all();
             $pedomans = Pedoman::all();
-            $sertifikats = collect(); // Empty collection for sertifikat (table doesn't exist yet)
+            $sertifikats = Sertifikat::latest()->get();
 
             return view('admin.dashboard', compact(
                 'beritas',

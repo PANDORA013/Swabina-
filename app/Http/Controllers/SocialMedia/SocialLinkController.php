@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\socialmedia;
+namespace App\Http\Controllers\SocialMedia;
 
+
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\SocialLink;
 use Illuminate\Http\Request;
@@ -30,14 +32,29 @@ class SocialLinkController extends Controller
 
     public function index()
     {
-        $userRole = auth()->user()->role;
-        $layout = $userRole === 'admin' ? 'layouts.app' : 'layouts.ppa';
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        
+        // Super Admin: bypass permission, Admin: must have permission
+        if (!$user->isSuperAdmin() && !$user->hasPermissionTo('manage-settings')) {
+            abort(403, 'Unauthorized. Permission "manage-settings" required.');
+        }
+
+        // Fix layout logic: super_admin gets layouts.app, admin gets layouts.app-professional
+        $layout = $user->role === 'super_admin' ? 'layouts.app' : 'layouts.app-professional';
         $social = SocialLink::firstOrCreate(['id' => 1]);
-        return view('admin.sosialmedia.sosmed', compact('layout', 'social'));
+        
+        return view('admin.social-media.index', compact('layout', 'social'));
     }
 
     public function store(Request $request)
     {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        if (!$user->isSuperAdmin() && !$user->hasPermissionTo('manage-settings')) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+
         try {
             $request->validate([
                 'type' => 'required|in:facebook,youtube,youtube_landing,whatsapp,instagram,linkedin',
@@ -71,7 +88,12 @@ class SocialLinkController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->middleware('auth');
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        if (!$user->isSuperAdmin() && !$user->hasPermissionTo('manage-settings')) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+
         try {
             $request->validate([
                 'type' => 'required|in:facebook,youtube,youtube_landing,whatsapp,instagram,linkedin',
@@ -102,7 +124,12 @@ class SocialLinkController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        $this->middleware('auth');
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        if (!$user->isSuperAdmin() && !$user->hasPermissionTo('manage-settings')) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+
         try {
             $request->validate([
                 'type' => 'required|in:facebook,youtube,youtube_landing,whatsapp,instagram'

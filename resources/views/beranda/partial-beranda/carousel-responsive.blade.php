@@ -10,7 +10,7 @@
             <!-- Carousel Item 1 -->
             <div class="carousel-item active">
                 <div class="card p-3 bg-body-tertiary mx-auto d-flex flex-column align-items-center" style="width: 150px; height: 200px; border-radius:20px; box-shadow:none">
-                    <img src="/assets/gambar_landingpage/kerja.png" alt="..." class="card-img-top" style="object-fit: contain; width: 100px; height: 100px;">
+                    <x-webp-image src="assets/gambar_landingpage/kerja.png" alt="Facility Management" class="card-img-top" width="100" height="100" style="object-fit: contain; width: 100px; height: 100px;" />
                     <div class="card-body text-center card-responsive">
                         <h3 class="card-text fw-bold" style="color:#0454a3;">SWA</h3>
                         <h4 class="card-text fw-bold">Facility Management</h4>
@@ -21,7 +21,7 @@
             <!-- Carousel Item 2 -->
             <div class="carousel-item">
                 <div class="card p-3 bg-body-tertiary mx-auto d-flex flex-column align-items-center" style="width: 150px; height:200px; border-radius:20px; box-shadow:none">
-                    <img src="/assets/gambar_landingpage/air.png" alt="..." class="card-img-top justify-content-center" style="object-fit:contain; width:100px; height:100px;">
+                    <x-webp-image src="assets/gambar_landingpage/air.png" alt="SWA Segar" class="card-img-top justify-content-center" width="100" height="100" style="object-fit:contain; width:100px; height:100px;" />
                     <div class="card-body text-center">
                         <h3 class="card-text fw-bold" style="color:#0454a3;">SWA</h3>
                         <h4 class="card-text fw-bold">Segar</h4>
@@ -32,7 +32,7 @@
             <!-- Carousel Item 3 -->
             <div class="carousel-item">
                 <div class="card p-3 bg-body-tertiary mx-auto d-flex flex-column align-items-center" style="width: 150px; height:200px; border-radius:20px; box-shadow:none">
-                    <img src="/assets/gambar_landingpage/tour.png" alt="..." class="card-img-top" style="object-fit:contain; width:100px; height:100px;">
+                    <x-webp-image src="assets/gambar_landingpage/tour.png" alt="Tour & Event Organizer" class="card-img-top" width="100" height="100" style="object-fit:contain; width:100px; height:100px;" />
                     <div class="card-body text-center">
                         <h3 class="card-text fw-bold" style="color:#0454a3;">SWA</h3>
                         <h4 class="card-text fw-bold">Tour & Event Organizer</h4>
@@ -43,7 +43,7 @@
             <!-- Carousel Item 4 -->
             <div class="carousel-item">
                 <div class="card p-3 bg-body-tertiary mx-auto d-flex flex-column align-items-center" style="width: 150px; height:200px; border-radius:20px; box-shadow:none">
-                    <img src="/assets/gambar_landingpage/academy.png" alt="..." class="card-img-top" style="object-fit:contain; width:100px; height:100px;">
+                    <x-webp-image src="assets/gambar_landingpage/academy.png" alt="SWA Academy" class="card-img-top" width="100" height="100" style="object-fit:contain; width:100px; height:100px;" />
                     <div class="card-body text-center">
                         <h3 class="card-text fw-bold" style="color:#0454a3;">SWA</h3>
                         <h4 class="card-text fw-bold">Academy</h4>
@@ -54,7 +54,7 @@
             <!-- Carousel Item 5 -->
             <div class="carousel-item">
                 <div class="card p-3 bg-body-tertiary mx-auto d-flex flex-column align-items-center" style="width: 150px; height:200px; border-radius:20px; box-shadow:none">
-                    <img src="/assets/gambar_landingpage/digital.png" alt="..." class="card-img-top" style="object-fit:contain; width:100px; height:100px;">
+                    <x-webp-image src="assets/gambar_landingpage/digital.png" alt="Digital Solution" class="card-img-top" width="100" height="100" style="object-fit:contain; width:100px; height:100px;" />
                     <div class="card-body text-center">
                         <h3 class="card-text fw-bold" style="color:#0454a3;">SWA</h3>
                         <h4 class="card-text fw-bold">Digital Solution</h4>

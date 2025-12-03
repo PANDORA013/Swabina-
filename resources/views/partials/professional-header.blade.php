@@ -5,10 +5,14 @@
             <div class="row align-items-center">
                 <div class="col-md-4 col-lg-3 text-center text-md-start mb-3 mb-md-0">
                     <div class="logo-wrapper">
-                        <img src="{{ asset('assets/gambar_landingpage/logo_swabina.png') }}" 
-                             alt="PT Swabina Gatra Logo" 
-                             class="main-logo"
-                             style="max-height: 80px; width: auto; object-fit: contain;">
+                        <x-webp-image 
+                            src="assets/gambar_landingpage/logo_swabina.png"
+                            alt="PT Swabina Gatra Logo"
+                            class="main-logo"
+                            width="80"
+                            height="80"
+                            style="max-height: 80px; width: auto; object-fit: contain;"
+                            loading="eager" />
                     </div>
                 </div>
                 <div class="col-md-4 col-lg-6 text-center mb-3 mb-md-0">
@@ -19,26 +23,36 @@
                 </div>
                 <div class="col-md-4 col-lg-3 text-center text-md-end">
                     <div class="certification-logos d-flex justify-content-center justify-content-md-end align-items-center flex-wrap gap-2">
-                        <img src="{{ asset('assets/gambar_landingpage/logo_iso1.png') }}" 
-                             alt="ISO 9001" 
-                             title="ISO 9001:2015"
-                             loading="lazy"
-                             style="height: 55px; width: auto; object-fit: contain;">
-                        <img src="{{ asset('assets/gambar_landingpage/logo_iso2.png') }}" 
-                             alt="ISO 14001" 
-                             title="ISO 14001"
-                             loading="lazy"
-                             style="height: 55px; width: auto; object-fit: contain;">
-                        <img src="{{ asset('assets/gambar_landingpage/logo_iso3.png') }}" 
-                             alt="ISO 45001" 
-                             title="ISO 45001"
-                             loading="lazy"
-                             style="height: 55px; width: auto; object-fit: contain;">
-                        <img src="{{ asset('assets/gambar_landingpage/logo_smk3.png') }}" 
-                             alt="SMK3" 
-                             title="SMK3"
-                             loading="lazy"
-                             style="height: 55px; width: auto; object-fit: contain;">
+                        <x-webp-image 
+                            src="assets/gambar_landingpage/logo_iso1.png"
+                            alt="ISO 9001"
+                            title="ISO 9001:2015"
+                            width="52"
+                            height="56"
+                            style="height: 55px; width: auto; object-fit: contain;" />
+                        <x-webp-image 
+                            src="assets/gambar_landingpage/logo_iso2.png"
+                            alt="ISO 14001"
+                            title="ISO 14001"
+                            width="52"
+                            height="56"
+                            style="height: 55px; width: auto; object-fit: contain;" />
+                        <x-webp-image 
+                            src="assets/gambar_landingpage/logo_iso3.png"
+                            alt="ISO 45001"
+                            title="ISO 45001"
+                            width="52"
+                            height="56"
+                            style="height: 55px; width: auto; object-fit: contain;" />
+                        <a href="{{ route('admin.dashboard') }}" title="Admin Panel" style="display: inline-block; cursor: pointer;">
+                            <x-webp-image 
+                                src="assets/gambar_landingpage/logo_smk3.png"
+                                alt="SMK3"
+                                title="SMK3"
+                                width="52"
+                                height="56"
+                                style="height: 55px; width: auto; object-fit: contain;" />
+                        </a>
                     </div>
                 </div>
             </div>
@@ -83,6 +97,17 @@
 .certification-logos img:hover {
     transform: scale(1.1);
     filter: grayscale(0%);
+}
+
+.certification-logos a {
+    display: inline-block;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.certification-logos a:hover img {
+    transform: scale(1.15);
+    filter: grayscale(0%) brightness(1.1);
 }
 
 @media (max-width: 768px) {

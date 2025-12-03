@@ -102,6 +102,9 @@ async function handleAssetRequest(request) {
             cache.put(request, response.clone());
         }
         return response;
+    }).catch(error => {
+        console.warn(`Failed to fetch ${request.url}:`, error);
+        return new Response('', { status: 404 });
     });
     
     return cached || fetchPromise;

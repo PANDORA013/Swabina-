@@ -25,7 +25,7 @@ class RedirectIfAuthenticated
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
                 // Redirect berdasarkan peran pengguna
-                if (Auth::user()->role == 'admin') {
+                if (Auth::user()->role == 'admin' || Auth::user()->role == 'superadmin') {
                     return redirect()->route('admin.dashboard');
                 } elseif (Auth::user()->role == 'sdm') {
                     return redirect()->route('sdm.dashboard');

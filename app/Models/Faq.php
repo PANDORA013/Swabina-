@@ -9,21 +9,5 @@ class Faq extends Model
 {
     use HasFactory;
     
-    protected $fillable = ['content', 'text_align'];
-    
-    protected $casts = [
-        'content' => 'array'
-    ];
-
-    // Helper method untuk mendapatkan pertanyaan dalam bahasa tertentu
-    public function getPertanyaan($lang = 'id')
-    {
-        return $this->content[$lang]['pertanyaan'] ?? '';
-    }
-
-    // Helper method untuk mendapatkan jawaban dalam bahasa tertentu
-    public function getJawaban($lang = 'id')
-    {
-        return $this->content[$lang]['jawaban'] ?? '';
-    }
+    protected $fillable = ['question', 'answer', 'text_align'];
 }

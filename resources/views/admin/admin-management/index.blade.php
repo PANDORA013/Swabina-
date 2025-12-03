@@ -1,10 +1,15 @@
 @extends('layouts.app')
 
+@section('page-title', 'Kelola Admin')
+
+@section('breadcrumb')
+    <li class="breadcrumb-item active" aria-current="page">Admin Management</li>
+@endsection
+
 @section('content')
 <div class="container-fluid">
     <div class="row mb-4">
         <div class="col-md-8">
-            <h2><i class="fas fa-users-cog me-2"></i>Kelola Admin</h2>
             <p class="text-muted">Manage admin users and their permissions</p>
         </div>
         <div class="col-md-4 text-end">
@@ -61,7 +66,9 @@
                                     </td>
                                     <td>{{ $admin->email }}</td>
                                     <td>
-                                        @if($admin->adminRole)
+                                        @if($admin->isSuperAdmin())
+                                            <span class="badge bg-danger">Super Administrator</span>
+                                        @elseif($admin->adminRole)
                                             <span class="badge bg-info">{{ $admin->adminRole->display_name }}</span>
                                         @else
                                             <span class="badge bg-secondary">No Role</span>
@@ -74,15 +81,21 @@
                                     </td>
                                     <td>
                                         @if(!$admin->isSuperAdmin())
-                                            <a href="{{ route('admin.admin-management.edit', $admin) }}" 
-                                               class="btn btn-sm btn-warning" title="Edit">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <button type="button" class="btn btn-sm btn-danger" 
-                                                    onclick="deleteAdmin({{ $admin->id }}, '{{ $admin->name }}')" 
-                                                    title="Delete">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
+                                            <div class="btn-group btn-group-sm" role="group">
+                                                <a href="{{ route('admin.admin-management.privileges', $admin) }}" 
+                                                   class="btn btn-info" title="Kelola Privilege" aria-label="Kelola privilege admin {{ $admin->name }}">
+                                                    <i class="fas fa-lock" aria-hidden="true"></i>
+                                                </a>
+                                                <a href="{{ route('admin.admin-management.edit', $admin) }}" 
+                                                   class="btn btn-warning" title="Edit" aria-label="Edit admin {{ $admin->name }}">
+                                                    <i class="fas fa-edit" aria-hidden="true"></i>
+                                                </a>
+                                                <button type="button" class="btn btn-danger" 
+                                                        onclick="deleteAdmin({{ $admin->id }}, '{{ $admin->name }}')" 
+                                                        title="Delete" aria-label="Delete admin {{ $admin->name }}">
+                                                    <i class="fas fa-trash" aria-hidden="true"></i>
+                                                </button>
+                                            </div>
                                         @else
                                             <span class="text-muted">-</span>
                                         @endif

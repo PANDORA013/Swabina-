@@ -1,9 +1,18 @@
 @extends($layout)
 
+@section('page-title', 'Mengapa Memilih Kami')
+
+@section('breadcrumb')
+    <li class="breadcrumb-item active" aria-current="page">Mengapa Kami</li>
+@endsection
+
 @section('content')
 <div class="container">
-    <h1>Data MK (Mengapa Kami)</h1>
-    <button class="btn btn-primary" id="addMkBtn" data-bs-toggle="modal" data-bs-target="#mkModal">Tambah MK</button>
+    <div class="mb-3">
+        <button class="btn btn-primary" id="addMkBtn" data-bs-toggle="modal" data-bs-target="#mkModal">
+            <i class="fas fa-plus me-2"></i>Tambah MK
+        </button>
+    </div>
     <table class="table mt-4">
         <thead>
             <tr>

@@ -1,10 +1,15 @@
 @extends($layout)
 
+@section('page-title', 'Manajemen Sertifikat & Penghargaan')
+
+@section('breadcrumb')
+    <li class="breadcrumb-item active" aria-current="page">Sertifikat</li>
+@endsection
+
 @section('content')
 <div class="container-fluid mt-4">
     <div class="row mb-4">
         <div class="col-md-8">
-            <h2><i class="fas fa-award me-2"></i>Manajemen Sertifikat & Penghargaan</h2>
             <p class="text-muted">Kelola sertifikat dan penghargaan perusahaan</p>
         </div>
         <div class="col-md-4 text-end">
@@ -175,7 +180,7 @@
         let formData = new FormData(this);
         
         let url = isEditing 
-            ? `{{ route('admin.sertifikat.update', '') }}/${editId}`
+            ? `{{ url('admin/sertifikat/update') }}/${editId}`
             : '{{ route('admin.sertifikat.store') }}';
 
         if (isEditing) {
@@ -221,7 +226,7 @@
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    fetch(`{{ route('admin.sertifikat.destroy', '') }}/${id}`, {
+                    fetch(`{{ url('admin/sertifikat/delete') }}/${id}`, {
                         method: 'DELETE',
                         headers: {
                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,

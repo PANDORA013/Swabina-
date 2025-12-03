@@ -46,10 +46,12 @@
                         
                         <!-- Company Image -->
                         <div class="my-4">
-                            <img src="{{ asset('assets/gambar-sekilas/slide1.jpeg') }}" 
+                            <x-webp-image src="assets/gambar-sekilas/slide1.jpeg" 
                                  alt="PT Swabina Gatra Team" 
                                  class="img-fluid rounded shadow-sm"
-                                 loading="lazy">
+                                 width="600"
+                                 height="400"
+                                 loading="lazy" />
                         </div>
                         
                         <h3 class="mt-4 mb-3 text-secondary">Visi Kami</h3>
@@ -66,10 +68,12 @@
                         
                         <!-- Second Company Image -->
                         <div class="mt-4">
-                            <img src="{{ asset('assets/gambar-sekilas/slide2.jpg') }}" 
+                            <x-webp-image src="assets/gambar-sekilas/slide2.jpg" 
                                  alt="PT Swabina Gatra Facility" 
                                  class="img-fluid rounded shadow-sm"
-                                 loading="lazy">
+                                 width="600"
+                                 height="400"
+                                 loading="lazy" />
                         </div>
                     </div>
                 </div>
@@ -80,7 +84,7 @@
                 <div class="card text-center h-100">
                     <div class="card-body">
                         <i class="bi bi-trophy text-warning" style="font-size: 2.5rem;"></i>
-                        <h3 class="mt-3">20+</h3>
+                        <div class="mt-3 h3">20+</div>
                         <p class="text-muted">Tahun Pengalaman</p>
                     </div>
                 </div>
@@ -89,7 +93,7 @@
                 <div class="card text-center h-100">
                     <div class="card-body">
                         <i class="bi bi-people text-info" style="font-size: 2.5rem;"></i>
-                        <h3 class="mt-3">500+</h3>
+                        <div class="mt-3 h3">500+</div>
                         <p class="text-muted">Professional Staff</p>
                     </div>
                 </div>
@@ -101,7 +105,7 @@
                 <div class="card text-center h-100">
                     <div class="card-body">
                         <i class="bi bi-building text-success" style="font-size: 2.5rem;"></i>
-                        <h3 class="mt-3">1000+</h3>
+                        <div class="mt-3 h3">1000+</div>
                         <p class="text-muted">Klien Setia</p>
                     </div>
                 </div>
@@ -110,7 +114,7 @@
                 <div class="card text-center h-100">
                     <div class="card-body">
                         <i class="bi bi-patch-check text-primary" style="font-size: 2.5rem;"></i>
-                        <h3 class="mt-3">ISO</h3>
+                        <div class="mt-3 h3">ISO</div>
                         <p class="text-muted">Certified</p>
                     </div>
                 </div>
@@ -122,11 +126,13 @@
     <div class="col-lg-4">
         <!-- Leadership Image -->
         <div class="card border-0 shadow-sm mb-4 hover-lift">
-            <img src="{{ asset('assets/gambar_landingpage/foto_direksi.jpeg') }}" 
+            <x-webp-image src="assets/gambar_landingpage/foto_direksi.jpeg" 
                  class="card-img-top" 
                  alt="Direksi PT Swabina Gatra" 
+                 width="300"
+                 height="250"
                  style="height: 250px; object-fit: cover;"
-                 loading="lazy">
+                 loading="lazy" />
             <div class="card-body text-center">
                 <h5 class="card-title text-primary">Leadership Team</h5>
                 <p class="card-text text-muted small">Tim kepemimpinan berpengalaman yang berkomitmen pada keunggulan</p>
@@ -192,7 +198,7 @@
                          loading="lazy">
                     <div class="card-body text-center">
                         <i class="bi bi-shield-check text-primary" style="font-size: 2.5rem;"></i>
-                        <h5 class="card-title mt-3">Integritas</h5>
+                        <h4 class="card-title mt-3">Integritas</h4>
                         <p class="card-text text-muted">Kami berkomitmen pada kejujuran dan transparansi dalam setiap aspek bisnis kami.</p>
                     </div>
                 </div>
@@ -206,7 +212,7 @@
                          loading="lazy">
                     <div class="card-body text-center">
                         <i class="bi bi-star text-warning" style="font-size: 2.5rem;"></i>
-                        <h5 class="card-title mt-3">Keunggulan</h5>
+                        <h4 class="card-title mt-3">Keunggulan</h4>
                         <p class="card-text text-muted">Kami selalu berusaha memberikan kualitas terbaik dalam setiap layanan.</p>
                     </div>
             </div>
@@ -220,7 +226,7 @@
                      loading="lazy">
                 <div class="card-body text-center">
                     <i class="bi bi-heart text-danger" style="font-size: 2.5rem;"></i>
-                    <h5 class="card-title mt-3">Komitmen</h5>
+                    <h4 class="card-title mt-3">Komitmen</h4>
                     <p class="card-text text-muted">Dedikasi kami kepada kepuasan pelanggan adalah prioritas utama.</p>
                 </div>
             </div>

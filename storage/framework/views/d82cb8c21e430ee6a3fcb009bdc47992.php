@@ -137,7 +137,7 @@
                          style="max-height: 400px; object-fit: cover;">
                     <?php endif; ?>
                     <div class="card-body">
-                        <h3 class="card-title h4"><?php echo e($sekilas->title); ?></h3>
+                        <h3 class="card-title"><?php echo e($sekilas->title); ?></h3>
                         <div class="card-text">
                             <?php echo $sekilas->content; ?>
 
@@ -237,124 +237,55 @@
                     </div>
                 </div>
             </div>
-
-            <?php if(isset($beritas) && $beritas->count() > 0): ?>
-            <div class="col-md-6 col-lg-4">
-                <div class="berita-card card h-100 border-0 shadow-sm hover-lift" style="display: flex; flex-direction: column;">
-                    <!-- Berita Carousel -->
-                    <div id="beritaCarousel" class="carousel slide" data-bs-ride="carousel">
-                        <div class="carousel-inner">
-                            <?php $__currentLoopData = $beritas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $berita): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <div class="carousel-item <?php echo e($index === 0 ? 'active' : ''); ?>">
-                                <?php if($berita->image): ?>
-                                    <img src="<?php echo e(asset('storage/' . $berita->image)); ?>" class="d-block w-100" alt="<?php echo e($berita->title); ?>" style="height: 200px; object-fit: cover;">
-                                <?php else: ?>
-                                    <div class="placeholder-img" style="height: 200px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center;">
-                                        <i class="bi bi-newspaper" style="font-size: 3rem; color: white;"></i>
-                                    </div>
-                                <?php endif; ?>
-                                <div class="carousel-caption d-none d-md-block" style="background: rgba(0,0,0,0.6); padding: 10px;">
-                                    <small style="color: #ffc107;"><?php echo e($berita->created_at->format('d M Y')); ?></small>
-                                </div>
-                            </div>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                        </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#beritaCarousel" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon"></span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#beritaCarousel" data-bs-slide="next">
-                            <span class="carousel-control-next-icon"></span>
-                        </button>
-                    </div>
-
-                    <!-- Berita Content -->
-                    <div class="card-body d-flex flex-column" style="flex: 1;">
-                        <small class="text-muted mb-2">
-                            <i class="bi bi-calendar-event"></i> <?php echo e($beritas->first()->created_at->format('d M Y')); ?>
-
-                        </small>
-                        <h5 class="card-title" style="flex: 1;"><?php echo e($beritas->first()->title); ?></h5>
-                        <p class="card-text text-muted" style="font-size: 0.9rem; line-height: 1.4;">
-                            <?php echo e(Str::limit($beritas->first()->description, 80, '...')); ?>
-
-                        </p>
-                        <div class="mt-auto pt-3 border-top">
-                            <a href="<?php echo e(route('berita.show', $beritas->first()->id)); ?>" class="btn btn-sm btn-primary">
-                                <i class="bi bi-arrow-right"></i> Baca Selengkapnya
-                            </a>
-                            <a href="<?php echo e(route('berita')); ?>" class="btn btn-sm btn-outline-secondary ms-2">
-                                Lihat Semua
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <?php endif; ?>
         </div>
     </section>
     
     
     <?php if(isset($beritas) && $beritas->count() > 0): ?>
-    <section class="py-5">
-        <div class="section-header text-center mb-5">
+    <section class="mb-5 bg-light p-4 rounded">
+        <div class="section-header text-center mb-4">
             <h2 class="section-title">
                 <i class="bi bi-newspaper"></i> Berita Terbaru
             </h2>
             <div class="title-underline"></div>
-            <p class="text-muted mt-3">Informasi dan update terkini dari PT Swabina Gatra</p>
         </div>
 
         <div class="row g-4">
-            <?php $__currentLoopData = $beritas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $berita): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php $__currentLoopData = $beritas->take(3); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $berita): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <div class="col-md-6 col-lg-4">
-                <div class="card h-100 border-0 shadow-sm hover-lift berita-card-item">
-                    <?php if($berita->image): ?>
-                    <img src="<?php echo e(asset('storage/' . $berita->image)); ?>" 
-                         class="card-img-top" 
-                         alt="<?php echo e($berita->title); ?>"
-                         loading="lazy"
-                         style="height: 220px; object-fit: cover;">
-                    <?php else: ?>
-                    <div class="placeholder-img" style="height: 220px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center;">
-                        <i class="bi bi-newspaper" style="font-size: 3rem; color: white;"></i>
-                    </div>
-                    <?php endif; ?>
-                    
-                    <div class="card-body d-flex flex-column">
-                        <div class="mb-2">
-                            <small class="text-muted">
-                                <i class="bi bi-calendar-event"></i> 
-                                <?php echo e($berita->created_at->format('d M Y')); ?>
-
-                            </small>
+                <div class="service-card card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body text-center">
+                        <div class="service-icon mb-3">
+                            <?php if($berita->image): ?>
+                                <img src="<?php echo e(asset('storage/' . $berita->image)); ?>" 
+                                     alt="<?php echo e(is_array($berita->title) ? $berita->title[app()->getLocale()] ?? $berita->title['id'] : $berita->title); ?>"
+                                     loading="lazy"
+                                     style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
+                            <?php else: ?>
+                                <div style="width: 100px; height: 100px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; border-radius: 8px; margin: 0 auto;">
+                                    <i class="bi bi-newspaper" style="font-size: 2.5rem; color: white;"></i>
+                                </div>
+                            <?php endif; ?>
                         </div>
-                        
-                        <h5 class="card-title fw-bold mb-2"><?php echo e(Str::limit($berita->title, 60)); ?></h5>
-                        
-                        <p class="card-text text-muted" style="font-size: 0.95rem; text-align: justify; flex-grow: 1;">
-                            <?php echo e(Str::limit(strip_tags($berita->content), 100)); ?>
+                        <h4 class="card-title">
+                            <?php echo e(Str::limit(is_array($berita->title) ? $berita->title[app()->getLocale()] ?? $berita->title['id'] : $berita->title, 45)); ?>
+
+                        </h4>
+                        <p class="card-text" style="font-size: 0.9rem; color: var(--text-gray);">
+                            <?php echo e(Str::limit(is_array($berita->description) ? $berita->description[app()->getLocale()] ?? $berita->description['id'] : $berita->description, 70)); ?>
 
                         </p>
-                        
-                        <div class="mt-auto pt-3 border-top">
-                            <a href="<?php echo e(route('berita.show', $berita->id)); ?>" class="btn btn-primary btn-sm w-100">
-                                <i class="bi bi-arrow-right"></i> Baca Selengkapnya
-                            </a>
-                        </div>
+                        <a href="<?php echo e(route('berita.show', $berita->id)); ?>" class="btn btn-primary">
+                            <i class="bi bi-arrow-right"></i> Selengkapnya
+                        </a>
                     </div>
                 </div>
             </div>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
-
-        <div class="text-center mt-5">
-            <a href="<?php echo e(route('berita')); ?>" class="btn btn-outline-primary btn-lg">
-                <i class="bi bi-newspaper"></i> Lihat Semua Berita
-            </a>
-        </div>
     </section>
     <?php endif; ?>
-    
+
     
     <section class="cta-section mb-5">
         <div class="card bg-primary text-white border-0 shadow-lg">
@@ -367,6 +298,9 @@
                     </a>
                     <a href="<?php echo e(route('faq')); ?>" class="btn btn-outline-light btn-lg">
                         <i class="bi bi-question-circle"></i> FAQ
+                    </a>
+                    <a href="<?php echo e(route('berita')); ?>" class="btn btn-outline-light btn-lg">
+                        <i class="bi bi-newspaper"></i> Berita Terbaru
                     </a>
                 </div>
             </div>

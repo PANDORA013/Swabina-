@@ -72,9 +72,9 @@
                     </div>
                     @endif
                     <div class="card-body {{ $item->gambar ? 'pt-3' : '' }}">
-                        <h5 class="card-title fw-bold text-{{ $colors[$iconIndex] }} mb-3">
+                        <h4 class="card-title fw-bold text-{{ $colors[$iconIndex] }} mb-3">
                             <i class="bi {{ $icons[$iconIndex] }} me-2"></i>{{ $item->judul }}
-                        </h5>
+                        </h4>
                         <p class="card-text text-muted" style="text-align: justify; line-height: 1.8;">
                             {{ $item->deskripsi }}
                         </p>
@@ -92,7 +92,7 @@
                         <div class="icon-wrapper mb-3">
                             <i class="bi bi-shield-check text-primary" style="font-size: 4rem;"></i>
                         </div>
-                        <h5 class="card-title fw-bold text-primary mb-3">Terpercaya & Bersertifikat</h5>
+                        <h4 class="card-title fw-bold text-primary mb-3">Terpercaya & Bersertifikat</h4>
                         <p class="card-text text-muted">Memiliki sertifikasi ISO dan pengalaman puluhan tahun</p>
                     </div>
                 </div>
@@ -103,7 +103,7 @@
                         <div class="icon-wrapper mb-3">
                             <i class="bi bi-people-fill text-success" style="font-size: 4rem;"></i>
                         </div>
-                        <h5 class="card-title fw-bold text-success mb-3">Tim Profesional</h5>
+                        <h4 class="card-title fw-bold text-success mb-3">Tim Profesional</h4>
                         <p class="card-text text-muted">Didukung oleh tenaga ahli yang kompeten dan berpengalaman</p>
                     </div>
                 </div>
@@ -114,7 +114,7 @@
                         <div class="icon-wrapper mb-3">
                             <i class="bi bi-trophy-fill text-warning" style="font-size: 4rem;"></i>
                         </div>
-                        <h5 class="card-title fw-bold text-warning mb-3">Kualitas Terjamin</h5>
+                        <h4 class="card-title fw-bold text-warning mb-3">Kualitas Terjamin</h4>
                         <p class="card-text text-muted">Layanan berkualitas tinggi dengan standar internasional</p>
                     </div>
                 </div>
@@ -125,7 +125,7 @@
                         <div class="icon-wrapper mb-3">
                             <i class="bi bi-clock-history text-danger" style="font-size: 4rem;"></i>
                         </div>
-                        <h5 class="card-title fw-bold text-danger mb-3">Responsif 24/7</h5>
+                        <h4 class="card-title fw-bold text-danger mb-3">Responsif 24/7</h4>
                         <p class="card-text text-muted">Siap melayani kebutuhan Anda kapan saja</p>
                     </div>
                 </div>
@@ -136,7 +136,7 @@
                         <div class="icon-wrapper mb-3">
                             <i class="bi bi-gear-fill text-info" style="font-size: 4rem;"></i>
                         </div>
-                        <h5 class="card-title fw-bold text-info mb-3">Teknologi Modern</h5>
+                        <h4 class="card-title fw-bold text-info mb-3">Teknologi Modern</h4>
                         <p class="card-text text-muted">Menggunakan peralatan dan sistem terkini</p>
                     </div>
                 </div>
@@ -147,7 +147,7 @@
                         <div class="icon-wrapper mb-3">
                             <i class="bi bi-award-fill text-secondary" style="font-size: 4rem;"></i>
                         </div>
-                        <h5 class="card-title fw-bold text-secondary mb-3">Budaya 5R</h5>
+                        <h4 class="card-title fw-bold text-secondary mb-3">Budaya 5R</h4>
                         <p class="card-text text-muted">Menerapkan prinsip Ringkas, Rapi, Resik, Rawat, Rajin</p>
                     </div>
                 </div>
@@ -174,7 +174,7 @@
                         <div class="feature-icon mb-3">
                             <i class="bi bi-shield-check" style="font-size: 2.5rem; color: var(--primary-color);"></i>
                         </div>
-                        <h5 class="card-title fw-bold mb-2">Terpercaya & Profesional</h5>
+                        <h4 class="card-title fw-bold mb-2">Terpercaya & Profesional</h4>
                         <p class="card-text text-muted small">Pengalaman lebih dari 20 tahun melayani klien terkemuka dengan standar profesional tinggi.</p>
                     </div>
                 </div>
@@ -186,7 +186,7 @@
                         <div class="feature-icon mb-3">
                             <i class="bi bi-award" style="font-size: 2.5rem; color: var(--primary-color);"></i>
                         </div>
-                        <h5 class="card-title fw-bold mb-2">Tersertifikasi ISO</h5>
+                        <h4 class="card-title fw-bold mb-2">Tersertifikasi ISO</h4>
                         <p class="card-text text-muted small">Memiliki sertifikasi ISO 9001, ISO 14001, dan ISO 45001 yang menjamin kualitas layanan.</p>
                     </div>
                 </div>
@@ -198,7 +198,7 @@
                         <div class="feature-icon mb-3">
                             <i class="bi bi-people" style="font-size: 2.5rem; color: var(--primary-color);"></i>
                         </div>
-                        <h5 class="card-title fw-bold mb-2">Tim Berpengalaman</h5>
+                        <h4 class="card-title fw-bold mb-2">Tim Berpengalaman</h4>
                         <p class="card-text text-muted small">Dipimpin oleh profesional berpengalaman dengan tim terlatih siap melayani Anda 24/7.</p>
                     </div>
                 </div>
@@ -322,7 +322,7 @@
                         <div class="feature-icon mb-3">
                             <i class="bi bi-book" style="font-size: 2.5rem; color: var(--primary-color);"></i>
                         </div>
-                        <h5 class="card-title fw-bold mb-2">Kurikulum Terstruktur</h5>
+                        <h4 class="card-title fw-bold mb-2">Kurikulum Terstruktur</h4>
                         <p class="card-text text-muted small">Kurikulum yang dirancang khusus sesuai kebutuhan industri dan perkembangan terkini.</p>
                     </div>
                 </div>
@@ -334,7 +334,7 @@
                         <div class="feature-icon mb-3">
                             <i class="bi bi-person-check" style="font-size: 2.5rem; color: var(--primary-color);"></i>
                         </div>
-                        <h5 class="card-title fw-bold mb-2">Instruktur Profesional</h5>
+                        <h4 class="card-title fw-bold mb-2">Instruktur Profesional</h4>
                         <p class="card-text text-muted small">Dibimbing oleh praktisi berpengalaman dan ahli di bidangnya masing-masing.</p>
                     </div>
                 </div>
@@ -346,7 +346,7 @@
                         <div class="feature-icon mb-3">
                             <i class="bi bi-certificate" style="font-size: 2.5rem; color: var(--primary-color);"></i>
                         </div>
-                        <h5 class="card-title fw-bold mb-2">Sertifikat Resmi</h5>
+                        <h4 class="card-title fw-bold mb-2">Sertifikat Resmi</h4>
                         <p class="card-text text-muted small">Peserta mendapatkan sertifikat yang diakui industri setelah menyelesaikan program.</p>
                     </div>
                 </div>
@@ -358,7 +358,7 @@
                         <div class="feature-icon mb-3">
                             <i class="bi bi-briefcase" style="font-size: 2.5rem; color: var(--primary-color);"></i>
                         </div>
-                        <h5 class="card-title fw-bold mb-2">Praktik Langsung</h5>
+                        <h4 class="card-title fw-bold mb-2">Praktik Langsung</h4>
                         <p class="card-text text-muted small">Kombinasi teori dan praktik hands-on untuk pemahaman yang mendalam.</p>
                     </div>
                 </div>
@@ -370,7 +370,7 @@
                         <div class="feature-icon mb-3">
                             <i class="bi bi-graph-up" style="font-size: 2.5rem; color: var(--primary-color);"></i>
                         </div>
-                        <h5 class="card-title fw-bold mb-2">Pengembangan Karir</h5>
+                        <h4 class="card-title fw-bold mb-2">Pengembangan Karir</h4>
                         <p class="card-text text-muted small">Program dirancang untuk meningkatkan kompetensi dan peluang karir peserta.</p>
                     </div>
                 </div>
@@ -382,7 +382,7 @@
                         <div class="feature-icon mb-3">
                             <i class="bi bi-people-fill" style="font-size: 2.5rem; color: var(--primary-color);"></i>
                         </div>
-                        <h5 class="card-title fw-bold mb-2">Networking</h5>
+                        <h4 class="card-title fw-bold mb-2">Networking</h4>
                         <p class="card-text text-muted small">Kesempatan networking dengan profesional dan pengusaha dari berbagai industri.</p>
                     </div>
                 </div>

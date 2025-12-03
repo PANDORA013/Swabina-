@@ -4,25 +4,19 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class SuperAdminMiddleware
 {
     /**
      * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next)
     {
-        if (!auth()->check()) {
-            return redirect('/login');
-        }
+        $user = Auth::user();
 
-        $user = auth()->user();
-
-        // Check if user has super_admin role using Spatie permission
-        if (!$user->hasRole('super_admin')) {
+        if (!$user || !$user->isSuperAdmin()) {
             abort(403, 'Unauthorized. Super Admin access required.');
         }
 

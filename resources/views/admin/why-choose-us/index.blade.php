@@ -1,10 +1,15 @@
 @extends('layouts.app')
 
+@section('page-title', 'Mengapa Memilih Kami')
+
+@section('breadcrumb')
+    <li class="breadcrumb-item active" aria-current="page">Mengapa Memilih Kami</li>
+@endsection
+
 @section('content')
 <div class="container-fluid py-4">
     <div class="row mb-4">
         <div class="col-md-8">
-            <h1 class="h3 mb-0">Kelola "Mengapa Memilih Kami"</h1>
             <p class="text-muted">Manage konten untuk section "Mengapa Memilih Kami"</p>
         </div>
         <div class="col-md-4 text-end">
@@ -67,16 +72,16 @@
                                     </td>
                                     <td>
                                         <a href="{{ route('admin.why-choose-us.edit', $item->id) }}" 
-                                           class="btn btn-sm btn-warning" title="Edit">
-                                            <i class="bi bi-pencil"></i>
+                                           class="btn btn-sm btn-warning" title="Edit" aria-label="Edit item {{ $item->title }}">
+                                            <i class="bi bi-pencil" aria-hidden="true"></i>
                                         </a>
                                         <form action="{{ route('admin.why-choose-us.destroy', $item->id) }}" 
                                               method="POST" style="display:inline;">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-danger" 
-                                                    onclick="return confirm('Yakin hapus item ini?')" title="Hapus">
-                                                <i class="bi bi-trash"></i>
+                                                    onclick="return confirm('Yakin hapus item ini?')" title="Hapus" aria-label="Delete item {{ $item->title }}">
+                                                <i class="bi bi-trash" aria-hidden="true"></i>
                                             </button>
                                         </form>
                                     </td>

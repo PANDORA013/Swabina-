@@ -14,15 +14,16 @@
     <!-- Performance Optimizations -->
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
-    <link rel="preload" href="{{ asset('assets/css/bootstrap.min.css') }}" as="style">
-    <link rel="preload" href="{{ asset('assets/js/bootstrap.bundle.min.js') }}" as="script">
     
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" fetchpriority="high">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"></noscript>
-    <link rel="stylesheet" href="{{ asset('assets/css/swabina-optimized.css') }}" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="{{ asset('assets/css/swabina-optimized.css') }}"></noscript>
+    <!-- Critical Bootstrap CSS (inline for faster rendering) -->
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}?v={{ config('app.version', '1.0.0') }}" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}?v={{ config('app.version', '1.0.0') }}"></noscript>
+    
+    <!-- Bootstrap Icons (CDN - using SVG icons instead, no preload needed) -->
+    
+    <!-- Custom Styles (deferred) -->
+    <link rel="stylesheet" href="{{ asset('assets/css/swabina-main.css') }}?v={{ config('app.version', '1.0.0') }}" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="{{ asset('assets/css/swabina-main.css') }}?v={{ config('app.version', '1.0.0') }}"></noscript>
     
     <!-- Professional Styles -->
     <style>:root{--primary-color:#0454a3;--secondary-color:#00a8e8;--accent-color:#ff6b35;--success-color:#2ecc71;--danger-color:#e74c3c;--light-gray:#f8f9fa;--dark-gray:#343a40}*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;line-height:1.6;color:#333;background-color:#fff;font-display:swap}@font-face{font-family:'Segoe UI';font-display:swap}

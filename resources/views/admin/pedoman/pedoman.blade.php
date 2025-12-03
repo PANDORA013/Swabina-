@@ -1,11 +1,15 @@
 @extends('layouts.app')
 
+@section('page-title', 'Manajemen Pedoman')
+
+@section('breadcrumb')
+    <li class="breadcrumb-item active" aria-current="page">Pedoman</li>
+@endsection
+
 @section('content')
 <div class="container">
-    <h2>Manajemen Pedoman</h2>
-
     <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#pedomanModal" id="addPedomanBtn">
-        Tambah Pedoman
+        <i class="fas fa-plus me-2"></i>Tambah Pedoman
     </button>
 
     <table class="table mt-4">

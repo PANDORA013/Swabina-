@@ -1,10 +1,15 @@
 @extends($layout)
 
+@section('page-title', 'Sekilas Perusahaan')
+
+@section('breadcrumb')
+    <li class="breadcrumb-item active" aria-current="page">Sekilas Perusahaan</li>
+@endsection
+
 @section('content')
 <div class="container-fluid mt-4">
     <div class="row mb-4">
         <div class="col-md-8">
-            <h2><i class="fas fa-building-columns me-2"></i>Sekilas Perusahaan</h2>
             <p class="text-muted">Kelola informasi sekilas tentang perusahaan</p>
         </div>
         <div class="col-md-4 text-end">

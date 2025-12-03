@@ -1,10 +1,16 @@
 @extends($layout)
 
+@section('page-title', 'Manajemen FAQ')
+
+@section('breadcrumb')
+    <li class="breadcrumb-item active" aria-current="page">FAQ</li>
+@endsection
+
 @section('content')
 <div class="container mt-4">
     <div class="row mb-4">
         <div class="col-md-8">
-            <h2>Manajemen FAQ</h2>
+            <p class="text-muted">Kelola pertanyaan yang sering ditanyakan</p>
         </div>
         <div class="col-md-4 text-end">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#faqModal" id="addFaqBtn">
@@ -12,7 +18,6 @@
             </button>
         </div>
     </div>
-
     @if($faqs->count() > 0)
     <div class="table-responsive">
         <table class="table table-hover">
@@ -29,15 +34,16 @@
                 <tr>
                     <td>{{ $key + 1 }}</td>
                     <td>
-                        <strong>{{ $faq->getPertanyaan('id') }}</strong>
+                        <strong>{{ $faq->question }}</strong>
                     </td>
                     <td>
-                        <span class="text-muted">{{ Str::limit($faq->getJawaban('id'), 100) }}</span>
+                        <span class="text-muted">{{ Str::limit($faq->answer, 100) }}</span>
                     </td>
                     <td>
                         <button type="button" class="btn btn-sm btn-warning editBtn" 
                             data-id="{{ $faq->id }}"
-                            data-content="{{ json_encode($faq->content) }}"
+                            data-question="{{ $faq->question }}"
+                            data-answer="{{ $faq->answer }}"
                             data-bs-toggle="modal" 
                             data-bs-target="#faqModal">
                             <i class="fas fa-edit"></i> Edit
@@ -72,27 +78,15 @@
                     <input type="hidden" id="id" name="id">
                     
                     <div class="mb-3">
-                        <label for="pertanyaan_id" class="form-label">Pertanyaan (Indonesia)</label>
-                        <textarea class="form-control" id="pertanyaan_id" name="pertanyaan_id" rows="2" required></textarea>
-                        <small class="text-muted">Masukkan pertanyaan dalam bahasa Indonesia</small>
+                        <label for="question" class="form-label">Pertanyaan</label>
+                        <textarea class="form-control" id="question" name="question" rows="2" required></textarea>
+                        <small class="text-muted">Masukkan pertanyaan</small>
                     </div>
 
                     <div class="mb-3">
-                        <label for="jawaban_id" class="form-label">Jawaban (Indonesia)</label>
-                        <textarea class="form-control" id="jawaban_id" name="jawaban_id" rows="4" required></textarea>
-                        <small class="text-muted">Masukkan jawaban dalam bahasa Indonesia</small>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="pertanyaan_en" class="form-label">Pertanyaan (English)</label>
-                        <textarea class="form-control" id="pertanyaan_en" name="pertanyaan_en" rows="2"></textarea>
-                        <small class="text-muted">Masukkan pertanyaan dalam bahasa Inggris (opsional)</small>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="jawaban_en" class="form-label">Jawaban (English)</label>
-                        <textarea class="form-control" id="jawaban_en" name="jawaban_en" rows="4"></textarea>
-                        <small class="text-muted">Masukkan jawaban dalam bahasa Inggris (opsional)</small>
+                        <label for="answer" class="form-label">Jawaban</label>
+                        <textarea class="form-control" id="answer" name="answer" rows="4" required></textarea>
+                        <small class="text-muted">Masukkan jawaban</small>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -124,14 +118,13 @@
         btn.addEventListener('click', function() {
             isEditing = true;
             editId = this.getAttribute('data-id');
-            const content = JSON.parse(this.getAttribute('data-content'));
+            const question = this.getAttribute('data-question');
+            const answer = this.getAttribute('data-answer');
 
             document.getElementById('faqModalLabel').textContent = 'Edit FAQ';
             document.getElementById('id').value = editId;
-            document.getElementById('pertanyaan_id').value = content.id?.pertanyaan || '';
-            document.getElementById('jawaban_id').value = content.id?.jawaban || '';
-            document.getElementById('pertanyaan_en').value = content.en?.pertanyaan || '';
-            document.getElementById('jawaban_en').value = content.en?.jawaban || '';
+            document.getElementById('question').value = question;
+            document.getElementById('answer').value = answer;
         });
     });
 
@@ -142,7 +135,7 @@
         let formData = new FormData(this);
 
         let url = isEditing 
-            ? `{{ route('admin.faq.update', '') }}/${editId}`
+            ? `{{ url('admin/faq/update') }}/${editId}`
             : '{{ route('admin.faq.store') }}';
 
         if (isEditing) {
@@ -208,7 +201,7 @@
                     const formData = new FormData();
                     formData.append('_method', 'DELETE');
 
-                    fetch(`{{ route('admin.faq.destroy', '') }}/${id}`, {
+                    fetch(`{{ url('admin/faq/delete') }}/${id}`, {
                         method: 'POST',
                         body: formData,
                         headers: {

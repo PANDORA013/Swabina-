@@ -9,6 +9,7 @@ use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class AdminManagementController extends Controller
 {
@@ -26,15 +27,32 @@ class AdminManagementController extends Controller
      */
     public function index()
     {
-        $admins = User::where('role', 'admin')
-            ->with('adminRole')
-            ->latest()
-            ->paginate(10);
+        try {
+            $admins = User::where('role', 'admin')
+                ->orWhere('role', 'superadmin')
+                ->with('adminRole')
+                ->latest()
+                ->paginate(10);
 
-        $adminRoles = AdminRole::all();
-        $layout = auth()->user()->role === 'admin' ? 'layouts.app' : 'layouts.ppa';
+            // Only show Admin role (Super Admin cannot be assigned to new users)
+            $adminRoles = AdminRole::where('name', 'admin')->get();
+            $layout = Auth::user()->role === 'admin' ? 'layouts.app' : 'layouts.app-professional';
 
-        return view('admin.admin-management.index', compact('admins', 'adminRoles', 'layout'));
+            return view('admin.admin-management.index', compact('admins', 'adminRoles', 'layout'));
+        } catch (\Exception $e) {
+            // If Spatie tables don't exist, just get admins without relationship
+            Log::error('Admin management index error', ['error' => $e->getMessage()]);
+            
+            $admins = User::where('role', 'admin')
+                ->orWhere('role', 'superadmin')
+                ->latest()
+                ->paginate(10);
+
+            $adminRoles = AdminRole::where('name', 'admin')->get();
+            $layout = Auth::user()->role === 'admin' ? 'layouts.app' : 'layouts.app-professional';
+
+            return view('admin.admin-management.index', compact('admins', 'adminRoles', 'layout'));
+        }
     }
 
     /**
@@ -42,11 +60,23 @@ class AdminManagementController extends Controller
      */
     public function create()
     {
-        $adminRoles = AdminRole::all();
-        $permissions = Permission::groupedByModule();
-        $layout = auth()->user()->role === 'admin' ? 'layouts.app' : 'layouts.ppa';
+        try {
+            // Only show Admin role (Super Admin cannot be assigned to new users)
+            $adminRoles = AdminRole::where('name', 'admin')->get();
+            $permissions = Permission::groupedByModule();
+            $layout = Auth::user()->role === 'admin' ? 'layouts.app' : 'layouts.app-professional';
 
-        return view('admin.admin-management.create', compact('adminRoles', 'permissions', 'layout'));
+            return view('admin.admin-management.create', compact('adminRoles', 'permissions', 'layout'));
+        } catch (\Exception $e) {
+            // If permission tables don't exist, provide empty array
+            Log::error('Admin management create error', ['error' => $e->getMessage()]);
+            
+            $adminRoles = AdminRole::where('name', 'admin')->get();
+            $permissions = [];
+            $layout = Auth::user()->role === 'admin' ? 'layouts.app' : 'layouts.app-professional';
+
+            return view('admin.admin-management.create', compact('adminRoles', 'permissions', 'layout'));
+        }
     }
 
     /**
@@ -72,6 +102,11 @@ class AdminManagementController extends Controller
                 'permissions_json' => $validated['custom_permissions'] ?? [],
             ]);
 
+            // Assign permissions using Spatie Permission
+            if (!empty($validated['custom_permissions'])) {
+                $user->syncPermissions($validated['custom_permissions']);
+            }
+
             return response()->json([
                 'success' => true,
                 'message' => 'Admin user created successfully',
@@ -96,10 +131,11 @@ class AdminManagementController extends Controller
                 ->with('error', 'Cannot edit super admin user');
         }
 
-        $adminRoles = AdminRole::all();
+        // Only show Admin role (Super Admin cannot be assigned)
+        $adminRoles = AdminRole::where('name', 'admin')->get();
         $permissions = Permission::groupedByModule();
         $userPermissions = $admin->permissions_json ?? [];
-        $layout = auth()->user()->role === 'admin' ? 'layouts.app' : 'layouts.ppa';
+        $layout = Auth::user()->role === 'admin' ? 'layouts.app' : 'layouts.app-professional';
 
         return view('admin.admin-management.edit', compact('admin', 'adminRoles', 'permissions', 'userPermissions', 'layout'));
     }
@@ -135,6 +171,13 @@ class AdminManagementController extends Controller
 
             if (!empty($validated['password'])) {
                 $admin->update(['password' => Hash::make($validated['password'])]);
+            }
+
+            // Sync permissions using Spatie Permission
+            if (!empty($validated['custom_permissions'])) {
+                $admin->syncPermissions($validated['custom_permissions']);
+            } else {
+                $admin->syncPermissions([]);
             }
 
             return response()->json([
@@ -211,4 +254,104 @@ class AdminManagementController extends Controller
             'data' => $role->permissions->pluck('name'),
         ]);
     }
+
+    /**
+     * Show privilege assignment page for an admin
+     */
+    public function showPrivileges(User $admin)
+    {
+        // Prevent editing super admin
+        if ($admin->isSuperAdmin()) {
+            return redirect()->route('admin.admin-management.index')
+                ->with('error', 'Cannot manage privileges for super admin');
+        }
+
+        try {
+            $allPermissions = Permission::groupedByModule();
+            $userPermissions = $admin->permissions_json ?? [];
+            $layout = Auth::user()->role === 'admin' ? 'layouts.app' : 'layouts.app-professional';
+
+            return view('admin.admin-management.privileges', compact('admin', 'allPermissions', 'userPermissions', 'layout'));
+        } catch (\Exception $e) {
+            Log::error('Show admin privileges error', ['error' => $e->getMessage()]);
+            
+            return redirect()->route('admin.admin-management.index')
+                ->with('error', 'Error loading privileges: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Update privilege/permissions for an admin
+     */
+    public function updatePrivileges(Request $request, User $admin)
+    {
+        // Prevent editing super admin
+        if ($admin->isSuperAdmin()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Cannot manage privileges for super admin',
+            ], 403);
+        }
+
+        $validated = $request->validate([
+            'permissions' => 'nullable|array',
+            'permissions.*' => 'string|exists:permissions,name',
+        ]);
+
+        try {
+            $permissions = $validated['permissions'] ?? [];
+
+            // Update permissions_json on user
+            $admin->update([
+                'permissions_json' => $permissions,
+            ]);
+
+            // Also sync with Spatie permission if available
+            try {
+                $admin->syncPermissions($permissions);
+            } catch (\Exception $e) {
+                // Spatie tables may not exist, ignore
+                Log::warning('Could not sync Spatie permissions', ['error' => $e->getMessage()]);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Admin privileges updated successfully',
+                'data' => [
+                    'id' => $admin->id,
+                    'name' => $admin->name,
+                    'email' => $admin->email,
+                    'permissions' => $permissions,
+                ],
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Update admin privileges error', ['error' => $e->getMessage()]);
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating privileges: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Get all available permissions
+     */
+    public function getAvailablePermissions()
+    {
+        try {
+            $permissions = Permission::groupedByModule();
+
+            return response()->json([
+                'success' => true,
+                'data' => $permissions,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error fetching permissions: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
 }
+

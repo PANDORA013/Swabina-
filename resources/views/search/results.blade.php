@@ -31,16 +31,16 @@
                 @if(isset($results['layanan']) && count($results['layanan']) > 0)
                 <div class="card mb-4">
                     <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0">
+                        <h2 class="mb-0" style="font-size: 1.25rem;">
                             <i class="bi bi-briefcase"></i> Layanan ({{ count($results['layanan']) }})
-                        </h5>
+                        </h2>
                     </div>
                     <div class="card-body">
                         @foreach($results['layanan'] as $item)
                         <div class="search-result-item">
-                            <h6>
+                            <h3 style="font-size: 1rem;">
                                 <a href="{{ $item['url'] }}">{{ $item['title'] }}</a>
-                            </h6>
+                            </h3>
                             <p class="text-muted mb-2">{{ $item['description'] }}</p>
                             <small class="text-primary">
                                 <i class="bi bi-link-45deg"></i> {{ $item['url'] }}
@@ -58,16 +58,16 @@
                 @if(isset($results['berita']) && count($results['berita']) > 0)
                 <div class="card mb-4">
                     <div class="card-header bg-success text-white">
-                        <h5 class="mb-0">
+                        <h2 class="mb-0" style="font-size: 1.25rem;">
                             <i class="bi bi-newspaper"></i> Berita ({{ count($results['berita']) }})
-                        </h5>
+                        </h2>
                     </div>
                     <div class="card-body">
                         @foreach($results['berita'] as $item)
                         <div class="search-result-item">
-                            <h6>
+                            <h3 style="font-size: 1rem;">
                                 <a href="{{ $item['url'] }}">{{ $item['title'] }}</a>
-                            </h6>
+                            </h3>
                             <p class="text-muted mb-2">{{ $item['description'] }}</p>
                             <small class="text-muted">
                                 <i class="bi bi-calendar"></i> {{ $item['date'] ?? 'N/A' }}
@@ -85,16 +85,16 @@
                 @if(isset($results['faq']) && count($results['faq']) > 0)
                 <div class="card mb-4">
                     <div class="card-header bg-info text-white">
-                        <h5 class="mb-0">
+                        <h2 class="mb-0" style="font-size: 1.25rem;">
                             <i class="bi bi-question-circle"></i> FAQ ({{ count($results['faq']) }})
-                        </h5>
+                        </h2>
                     </div>
                     <div class="card-body">
                         @foreach($results['faq'] as $item)
                         <div class="search-result-item">
-                            <h6>
+                            <h3 style="font-size: 1rem;">
                                 <a href="{{ $item['url'] }}">{{ $item['title'] }}</a>
-                            </h6>
+                            </h3>
                             <p class="text-muted mb-0">{{ $item['description'] }}</p>
                         </div>
                         @if(!$loop->last)
@@ -109,16 +109,16 @@
                 @if(isset($results['tentang']) && count($results['tentang']) > 0)
                 <div class="card mb-4">
                     <div class="card-header bg-warning text-white">
-                        <h5 class="mb-0">
+                        <h2 class="mb-0" style="font-size: 1.25rem;">
                             <i class="bi bi-info-circle"></i> Tentang Kami ({{ count($results['tentang']) }})
-                        </h5>
+                        </h2>
                     </div>
                     <div class="card-body">
                         @foreach($results['tentang'] as $item)
                         <div class="search-result-item">
-                            <h6>
+                            <h3 style="font-size: 1rem;">
                                 <a href="{{ $item['url'] }}">{{ $item['title'] }}</a>
-                            </h6>
+                            </h3>
                             <p class="text-muted mb-0">{{ $item['description'] }}</p>
                         </div>
                         @if(!$loop->last)
@@ -133,7 +133,7 @@
                 <div class="card">
                     <div class="card-body text-center py-5">
                         <i class="bi bi-search" style="font-size: 4rem; color: #ccc;"></i>
-                        <h4 class="mt-3">Tidak Ada Hasil</h4>
+                        <h2 class="mt-3">Tidak Ada Hasil</h2>
                         <p class="text-muted">
                             Maaf, kami tidak menemukan hasil untuk "<strong>{{ $query }}</strong>".
                         </p>

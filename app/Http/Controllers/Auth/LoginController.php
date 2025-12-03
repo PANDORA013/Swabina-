@@ -62,7 +62,7 @@ class LoginController extends Controller
     private function determineRedirectRoute()
     {
         $user = Auth::user();
-        if ($user->role === 'admin') {
+        if ($user->role === 'admin' || $user->role === 'superadmin') {
             return 'admin.dashboard';
         } elseif ($user->role === 'sdm') {
             return 'sdm.dashboard';

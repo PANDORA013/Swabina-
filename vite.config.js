@@ -23,10 +23,7 @@ export default defineConfig({
                     bootstrap: ['bootstrap'],
                     
                     // Animation and performance optimizations
-                    animations: [
-                        './public/assets/js/minimal-animations.js',
-                        './public/assets/js/performance-optimizer.js'
-                    ]
+                    animations: []
                 }
             }
         },
@@ -51,9 +48,10 @@ export default defineConfig({
     optimizeDeps: {
         include: ['axios', 'bootstrap']
     },
-    // CSS optimization
+    // CSS optimization with PostCSS (PurgeCSS)
     css: {
         devSourcemap: true,
+        postcss: './postcss.config.cjs',
         preprocessorOptions: {
             css: {
                 charset: false

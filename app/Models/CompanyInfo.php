@@ -2,15 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class CompanyInfo extends Model
 {
-    use HasFactory;
-
     protected $table = 'company_info';
-
     protected $fillable = [
         'company_name',
         'company_tagline',
@@ -37,42 +33,9 @@ class CompanyInfo extends Model
         'iso_logo_3',
         'iso_logo_4',
     ];
-
     protected $casts = [
         'operating_hours_weekday' => 'array',
         'operating_hours_weekend' => 'array',
     ];
-
-    /**
-     * Get the company info instance (singleton pattern)
-     * Always returns the first (and only) record
-     */
-    public static function getInstance()
-    {
-        return static::first() ?? static::create([
-            'company_name' => 'PT Swabina Gatra',
-            'company_tagline' => 'Leading Facility Management & Services',
-            'company_description' => 'Leading Facility Management & Services provider di Indonesia dengan komitmen memberikan layanan terbaik untuk kebutuhan bisnis Anda.',
-            'head_office_address' => 'Jl. R.A. Kartini No.21 A',
-            'head_office_city' => 'Gresik',
-            'head_office_province' => 'Jawa Timur',
-            'head_office_postal_code' => '61122',
-            'email_primary' => 'marketing@swabina.id',
-            'email_secondary' => 'info@swabinagatra.co.id',
-            'phone_primary' => '+62 31 3984719',
-            'phone_secondary' => '+62 31 3985794',
-            'operating_hours_weekday' => [
-                'days' => 'Senin - Jumat',
-                'from' => '08:00',
-                'to' => '17:00',
-                'timezone' => 'WIB'
-            ],
-            'operating_hours_weekend' => [
-                'days' => 'Sabtu',
-                'from' => '08:00',
-                'to' => '12:00',
-                'timezone' => 'WIB'
-            ],
-        ]);
-    }
+    public $timestamps = true;
 }

@@ -239,7 +239,14 @@ document.getElementById('createAdminForm').addEventListener('submit', function(e
         },
         body: formData
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(data => {
+                throw { status: response.status, data: data };
+            });
+        }
+        return response.json();
+    })
     .then(data => {
         if (data.success) {
             Swal.fire({
@@ -260,10 +267,17 @@ document.getElementById('createAdminForm').addEventListener('submit', function(e
         }
     })
     .catch(error => {
+        let errorMessage = 'Terjadi kesalahan';
+        if (error.data && error.data.errors) {
+            errorMessage = Object.values(error.data.errors).flat().join('\n');
+        } else if (error.data && error.data.message) {
+            errorMessage = error.data.message;
+        }
+        
         Swal.fire({
             icon: 'error',
             title: 'Error!',
-            text: 'Terjadi kesalahan: ' + error.message,
+            text: errorMessage,
             confirmButtonText: 'OK'
         });
     });

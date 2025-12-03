@@ -2,77 +2,46 @@
 
 namespace App\Http\Controllers\Admin;
 
+
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Sertifikat;
+use App\Services\ImageCompressionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
-use Intervention\Image\ImageManager;
-use Intervention\Image\Drivers\Gd\Driver;
 
 class SertifikatController extends Controller
 {
+    protected $imageCompressionService;
+
+    public function __construct(ImageCompressionService $imageCompressionService)
+    {
+        $this->imageCompressionService = $imageCompressionService;
+    }
     public function index()
     {
-        $sertifikats = Sertifikat::all();
-        $userRole = auth()->user()->role;
-        $layout = $userRole === 'admin' ? 'layouts.app' : 'layouts.ppa';
-        return view('admin.sertifikat.index', compact('sertifikats', 'layout'));
-    }
-
-    private function compressAndSaveImage($file)
-    {
-        try {
-            Log::info('Starting image compression', ['original_size' => $file->getSize()]);
-            
-            $manager = new ImageManager(new Driver());
-            $image = $manager->read($file);
-
-            $image->scaleDown(1200);
-
-            $extension = strtolower($file->getClientOriginalExtension());
-            $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
-            $extension = in_array($extension, $allowedExtensions) ? $extension : 'jpg';
-
-            $fileName = time() . '_' . uniqid() . '.' . $extension;
-            $path = 'sertifikats/' . $fileName;
-
-            $fullPath = storage_path('app/public/' . $path);
-            
-            $directory = dirname($fullPath);
-            if (!file_exists($directory)) {
-                mkdir($directory, 0755, true);
-            }
-
-            switch ($extension) {
-                case 'gif':
-                    $image->toGif()->save($fullPath);
-                    break;
-                case 'png':
-                    $image->toPng()->save($fullPath);
-                    break;
-                default:
-                    $image->toJpeg(80)->save($fullPath);
-            }
-
-            if (!file_exists($fullPath)) {
-                throw new \Exception("Failed to save image to {$fullPath}");
-            }
-
-            Log::info('Image compression completed', ['compressed_size' => filesize($fullPath)]);
-
-            return $path;
-        } catch (\Exception $e) {
-            Log::error('Error in compressAndSaveImage', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
-            throw $e;
+        // Check permission
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        if (!$user->isSuperAdmin() && !$user->hasPermissionTo('manage-content')) {
+            abort(403, 'Unauthorized. Permission "read-sertifikat" required.');
         }
+
+        $sertifikats = Sertifikat::all();
+        $layout = $user->role === 'super_admin' ? 'layouts.app' : 'layouts.app-professional';
+        return view('admin.sertifikat.index', compact('sertifikats', 'layout'));
     }
 
     public function store(Request $request)
     {
+        // Check permission
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        if (!$user->isSuperAdmin() && !$user->hasPermissionTo('manage-content')) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+
         try {
             $request->validate([
                 'nama' => 'required|string|max:255',
@@ -80,7 +49,7 @@ class SertifikatController extends Controller
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:20480',
             ]);
 
-            $imagePath = $this->compressAndSaveImage($request->file('image'));
+            $imagePath = $this->imageCompressionService->compressAndSaveImage($request->file('image'), 'sertifikats');
 
             Sertifikat::create([
                 'nama' => $request->nama,
@@ -100,6 +69,13 @@ class SertifikatController extends Controller
 
     public function update(Request $request, $id)
     {
+        // Check permission
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        if (!$user->isSuperAdmin() && !$user->hasPermissionTo('manage-content')) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+
         try {
             $request->validate([
                 'nama' => 'nullable|string|max:255',
@@ -119,9 +95,9 @@ class SertifikatController extends Controller
 
             if ($request->hasFile('image')) {
                 if ($sertifikat->image) {
-                    Storage::disk('public')->delete($sertifikat->image);
+                    $this->imageCompressionService->deleteImage($sertifikat->image);
                 }
-                $sertifikat->image = $this->compressAndSaveImage($request->file('image'));
+                $sertifikat->image = $this->imageCompressionService->compressAndSaveImage($request->file('image'), 'sertifikats');
             }
 
             $sertifikat->save();
@@ -138,11 +114,18 @@ class SertifikatController extends Controller
 
     public function destroy($id)
     {
+        // Check permission
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        if (!$user->isSuperAdmin() && !$user->hasPermissionTo('manage-content')) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+
         try {
             $sertifikat = Sertifikat::findOrFail($id);
 
             if ($sertifikat->image) {
-                Storage::disk('public')->delete($sertifikat->image);
+                $this->imageCompressionService->deleteImage($sertifikat->image);
             }
 
             $sertifikat->delete();
@@ -157,3 +140,5 @@ class SertifikatController extends Controller
         }
     }
 }
+
+

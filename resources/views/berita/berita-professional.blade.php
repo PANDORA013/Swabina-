@@ -1,204 +1,157 @@
 @extends('layouts.app-professional')
 
+{{-- SEO Meta Tags --}}
 @section('head')
 <x-seo-meta 
-    title="Berita & Artikel Terbaru - PT Swabina Gatra"
-    description="Berita terbaru, artikel, dan informasi seputar layanan PT Swabina Gatra. Tetap update dengan perkembangan perusahaan kami."
-    :keywords="['berita swabina', 'artikel', 'news', 'company news', 'press release']"
-    url="{{ route('berita') }}"
+    title="Berita & Artikel - PT Swabina Gatra"
+    description="Berita terkini, artikel, dan update dari PT Swabina Gatra mengenai Facility Management, Digital Solution, dan layanan profesional lainnya."
+    :keywords="['Berita Swabina', 'Artikel', 'Update', 'News', 'Facility Management', 'Swabina Gatra']"
+    :image="asset('images/og-berita.jpg')"
 />
 <x-structured-data type="website" />
 @endsection
 
+{{-- Page Header --}}
 @section('page-header')
-<!-- Hero Section -->
-<section class="hero-section bg-primary text-white py-5" style="background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);">
-    <div class="container text-center py-5">
-        <h1 class="display-4 fw-bold mb-3">
-            <i class="bi bi-newspaper"></i> Berita & Artikel
-        </h1>
-        <p class="lead">Informasi Terbaru dari PT Swabina Gatra</p>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb justify-content-center">
-                <li class="breadcrumb-item"><a href="{{ route('beranda') }}" class="text-white">Beranda</a></li>
-                <li class="breadcrumb-item active text-white-50">Berita</li>
-            </ol>
-        </nav>
+<div class="page-header bg-gradient" style="background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-color) 100%); padding: 4rem 0; color: white;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold mb-3">
+                    <i class="bi bi-newspaper"></i> Berita & Artikel
+                </h1>
+                <p class="lead mb-0">Informasi dan update terkini dari PT Swabina Gatra</p>
+            </div>
+            <div class="col-lg-4 text-end">
+                <i class="bi bi-newspaper" style="font-size: 5rem; opacity: 0.2;"></i>
+            </div>
+        </div>
     </div>
-</section>
+</div>
 @endsection
 
+{{-- Main Content --}}
 @section('content')
-<!-- Berita Section -->
-<section class="py-5">
-    <div class="container">
-        @if($berita->count() > 0)
+<div class="container py-5">
+    @if($berita && $berita->count() > 0)
         <div class="row g-4">
             @foreach($berita as $item)
-            <div class="col-md-6 col-lg-4">
-                <article class="card h-100 border-0 shadow-sm hover-lift news-card">
-                    <div class="card-img-wrapper">
-                        @if($item->gambar)
-                            <img src="{{ asset('storage/beritas/' . $item->gambar) }}" 
-                                 class="card-img-top" 
-                                 alt="{{ $item->judul }}"
-                                 width="400"
-                                 height="250"
-                                 style="height: 250px; object-fit: cover;"
-                                 loading="lazy"
-                                 decoding="async"
-                                 fetchpriority="{{ $loop->index < 3 ? 'high' : 'low' }}">
+            <div class="col-md-6 col-lg-4 mb-3">
+                <div class="berita-card card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body text-center d-flex flex-column">
+                        {{-- Image/Icon Section --}}
+                        @if($item->image)
+                            <div class="berita-image mb-3">
+                                <img src="{{ asset('storage/' . $item->image) }}" 
+                                     alt="{{ is_array($item->title) ? $item->title[app()->getLocale()] ?? $item->title['id'] : $item->title }}"
+                                     loading="lazy"
+                                     class="img-fluid"
+                                     style="width: 100%; height: 160px; object-fit: cover; border-radius: 8px;">
+                            </div>
                         @else
-                            @php
-                                $fallbackImages = ['berita1.jpg', 'berita2.jpeg', 'berita3.jpg', 'berita4.jpg', 'berita5.jpg', 'berita6.jpg', 'berita7.png'];
-                                $randomImage = $fallbackImages[($loop->index % count($fallbackImages))];
-                            @endphp
-                            <img src="{{ asset('assets/gambar_berita/' . $randomImage) }}" 
-                                 class="card-img-top" 
-                                 alt="{{ $item->judul }}"
-                                 width="400"
-                                 height="250"
-                                 style="height: 250px; object-fit: cover;"
-                                 loading="lazy"
-                                 decoding="async"
-                                 fetchpriority="{{ $loop->index < 3 ? 'high' : 'low' }}">
+                            <div class="berita-icon mb-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); height: 160px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                                <i class="bi bi-newspaper" style="font-size: 3rem; color: white;"></i>
+                            </div>
                         @endif
-                        <div class="news-date-badge">
-                            <span class="badge bg-primary">
-                                <i class="bi bi-calendar3 me-1"></i>{{ \Carbon\Carbon::parse($item->created_at)->format('d M Y') }}
-                            </span>
-                        </div>
-                    </div>
-                    <div class="card-body d-flex flex-column">
-                        <div class="mb-2">
-                            <span class="badge bg-light text-dark">
-                                <i class="bi bi-tag-fill me-1"></i>Berita
-                            </span>
-                        </div>
-                        <h5 class="card-title fw-bold mb-3">{{ $item->judul }}</h5>
-                        <p class="card-text text-muted flex-grow-1" style="text-align: justify;">
-                            {{ Str::limit(strip_tags($item->deskripsi), 120) }}
+                        
+                        {{-- Date --}}
+                        <small class="text-muted mb-2" style="font-size: 0.85rem;">
+                            <i class="bi bi-calendar-event"></i> 
+                            {{ $item->created_at->format('d M Y') }}
+                        </small>
+                        
+                        {{-- Title --}}
+                        <h5 class="card-title fw-bold mb-2" style="min-height: 50px; display: flex; align-items: center; justify-content: center;">
+                            {{ Str::limit($item->title, 60) }}
+                        </h5>
+                        
+                        {{-- Description --}}
+                        <p class="card-text" style="font-size: 0.9rem; color: var(--text-gray); min-height: 60px;">
+                            {{ Str::limit($item->description, 90) }}
                         </p>
-                        <button class="btn btn-outline-primary btn-sm mt-3" data-bs-toggle="modal" data-bs-target="#newsModal{{ $item->id }}">
-                            <i class="bi bi-arrow-right-circle me-1"></i>Baca Selengkapnya
-                        </button>
-                    </div>
-                </article>
-            </div>
-
-            <!-- Modal for News Detail -->
-            <div class="modal fade" id="newsModal{{ $item->id }}" tabindex="-1">
-                <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title fw-bold">{{ $item->judul }}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-                        <div class="modal-body">
-                            @if($item->gambar)
-                                <img src="{{ asset('storage/beritas/' . $item->gambar) }}" 
-                                     class="img-fluid rounded mb-4" 
-                                     alt="{{ $item->judul }}">
-                            @endif
-                            <div class="mb-3">
-                                <span class="badge bg-primary me-2">
-                                    <i class="bi bi-calendar3 me-1"></i>{{ \Carbon\Carbon::parse($item->created_at)->format('d F Y') }}
-                                </span>
-                                <span class="badge bg-light text-dark">
-                                    <i class="bi bi-tag-fill me-1"></i>Berita
-                                </span>
-                            </div>
-                            <div class="news-content" style="text-align: justify; line-height: 1.8;">
-                                {!! nl2br(e($item->deskripsi)) !!}
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        
+                        {{-- Read More Button --}}
+                        <div class="mt-auto pt-3 border-top">
+                            <a href="{{ route('berita.show', $item->id) }}" class="btn btn-primary btn-sm w-100">
+                                <i class="bi bi-arrow-right"></i> Baca Selengkapnya
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
             @endforeach
         </div>
-        @else
-        <div class="text-center py-5">
-            <i class="bi bi-inbox text-muted" style="font-size: 5rem;"></i>
-            <h3 class="mt-4 text-muted">Belum Ada Berita</h3>
-            <p class="text-muted">Berita akan ditampilkan di sini</p>
+    @else
+        <div class="alert alert-info text-center py-5" role="alert">
+            <i class="bi bi-info-circle" style="font-size: 3rem; display: block; margin-bottom: 1rem; opacity: 0.5;"></i>
+            <h5>Belum Ada Berita</h5>
+            <p class="text-muted mb-0">Mohon tunggu, berita akan segera ditambahkan.</p>
         </div>
-        @endif
+    @endif
+</div>
+
+{{-- Call to Action Section --}}
+<section class="bg-light py-5">
+    <div class="container text-center">
+        <h3 class="mb-4">Ingin Mengetahui Lebih Lanjut?</h3>
+        <p class="text-muted mb-4">Hubungi kami untuk informasi lengkap tentang layanan dan penawaran terbaru dari PT Swabina Gatra.</p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a href="{{ route('kontakkami') }}" class="btn btn-primary">
+                <i class="bi bi-envelope"></i> Hubungi Kami
+            </a>
+            <a href="{{ route('faq') }}" class="btn btn-outline-primary">
+                <i class="bi bi-question-circle"></i> FAQ
+            </a>
+            <a href="{{ route('beranda') }}" class="btn btn-outline-secondary">
+                <i class="bi bi-house"></i> Kembali ke Beranda
+            </a>
+        </div>
     </div>
 </section>
 
-<!-- CTA Section -->
-<section class="py-5 bg-light">
-    <div class="container">
-        <div class="card border-0 shadow-lg" style="background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);">
-            <div class="card-body text-center text-white py-5">
-                <h2 class="h3 fw-bold mb-3">Butuh Informasi Lebih Lanjut?</h2>
-                <p class="lead mb-4">Hubungi tim kami untuk mendapatkan informasi detail</p>
-                <div class="d-flex gap-3 justify-content-center flex-wrap">
-                    <a href="{{ route('kontakkami') }}" class="btn btn-light btn-lg px-4">
-                        <i class="bi bi-envelope-fill me-2"></i>Hubungi Kami
-                    </a>
-                    <a href="{{ route('faq') }}" class="btn btn-outline-light btn-lg px-4">
-                        <i class="bi bi-question-circle-fill me-2"></i>FAQ
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 @endsection
 
 @section('styles')
 <style>
-.news-card {
-    transition: all 0.3s ease;
-    overflow: hidden;
-    content-visibility: auto;
-    contain-intrinsic-size: 0 500px;
-}
+    .berita-card {
+        border: none;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        border-radius: 0.5rem;
+        overflow: hidden;
+    }
 
-.hover-lift:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
-}
+    .berita-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    }
 
-.card-img-wrapper {
-    position: relative;
-    overflow: hidden;
-}
+    .berita-card .card-body {
+        padding: 1.5rem;
+    }
 
-.card-img-wrapper img {
-    transition: transform 0.3s ease;
-    will-change: transform;
-}
+    .berita-image img {
+        transition: transform 0.3s ease;
+    }
 
-.news-card:hover .card-img-wrapper img {
-    transform: scale(1.1);
-}
+    .berita-card:hover .berita-image img {
+        transform: scale(1.05);
+    }
 
-.news-date-badge {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-}
+    .page-header {
+        margin-bottom: 3rem;
+    }
 
-.hero-section {
-    position: relative;
-    overflow: hidden;
-}
+    .page-header h1 {
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
 
-.hero-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    opacity: 0.5;
-}
+    .hover-lift {
+        transition: all 0.3s ease;
+    }
+
+    .hover-lift:hover {
+        transform: translateY(-5px);
+    }
 </style>
 @endsection

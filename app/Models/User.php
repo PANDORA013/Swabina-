@@ -9,6 +9,16 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
+/**
+ * @method bool isSuperAdmin()
+ * @method bool hasPermissionTo(string $permission, $guardName = null)
+ * @method bool hasAnyPermission(...$permissions)
+ * @method bool hasAllPermissions(...$permissions)
+ * @method bool hasRole($roles, string $guard = null)
+ * @method self givePermissionTo(...$permissions)
+ * @method self syncPermissions(...$permissions)
+ * @method self revokePermissionTo($permission)
+ */
 class User extends Authenticatable
 {
     use Notifiable, HasRoles;
@@ -27,6 +37,14 @@ class User extends Authenticatable
     ];
 
     /**
+     * Get the admin role for this user
+     */
+    public function adminRole()
+    {
+        return $this->belongsTo(AdminRole::class, 'admin_role_id');
+    }
+
+    /**
      * Get all permissions for this user (using Spatie permission)
      */
     public function getPermissions()
@@ -37,10 +55,25 @@ class User extends Authenticatable
 
     /**
      * Check if user has permission (using Spatie permission)
+     * Super admin has access to ALL permissions
+     */
+    public function hasPermissionTo($permission)
+    {
+        // Super admin has ALL permissions
+        if ($this->isSuperAdmin()) {
+            return true;
+        }
+        
+        // Use Spatie default
+        return parent::hasPermissionTo($permission);
+    }
+
+    /**
+     * Check if user has permission (legacy method)
      */
     public function hasPermission($permission)
     {
-        return $this->can($permission);
+        return $this->hasPermissionTo($permission);
     }
 
     /**
@@ -57,18 +90,58 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if user is super admin (using Spatie permission)
+     * Check if user is super admin
+     * Check both Spatie role AND admin_role relationship (Spatie tables may not exist)
      */
     public function isSuperAdmin()
     {
-        return $this->hasRole('super_admin');
+        // Check role column first (primary check - no DB dependency on Spatie tables)
+        if ($this->role === 'superadmin' || $this->role === 'super_admin') {
+            return true;
+        }
+        
+        // Check admin_role relationship
+        if ($this->adminRole && $this->adminRole->name === 'super_admin') {
+            return true;
+        }
+        
+        // Check Spatie role only if table exists (to avoid errors if Spatie tables were dropped)
+        try {
+            if (method_exists($this, 'hasRole') && $this->hasRole('super_admin')) {
+                return true;
+            }
+        } catch (\Exception $e) {
+            // Spatie tables may not exist, ignore error
+        }
+
+        return false;
     }
 
     /**
-     * Check if user is admin (using Spatie permission)
+     * Check if user is admin (including super admin)
      */
     public function isAdmin()
     {
-        return $this->hasRole('admin') || $this->isSuperAdmin();
+        // Super admin is also admin
+        if ($this->isSuperAdmin()) {
+            return true;
+        }
+        
+        // Check Spatie role
+        if ($this->hasRole('admin')) {
+            return true;
+        }
+        
+        // Check admin_role relationship
+        if ($this->adminRole && $this->adminRole->name === 'admin') {
+            return true;
+        }
+        
+        // Check role column
+        if ($this->role === 'admin') {
+            return true;
+        }
+        
+        return false;
     }
 }

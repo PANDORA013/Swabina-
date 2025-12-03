@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Models\SocialLink;
+use App\Services\SettingService;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Blade;
 
@@ -14,7 +15,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Register SettingService as singleton
+        $this->app->singleton(SettingService::class, function ($app) {
+            return new SettingService();
+        });
     }
 
     /**

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Faq;
 use Illuminate\Http\Request;
@@ -11,36 +13,37 @@ class FaqController extends Controller
 {
     public function index()
     {
+        // Check permission
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        if (!$user->isSuperAdmin() && !$user->hasPermissionTo('manage-content')) {
+            abort(403, 'Unauthorized. Permission "read-faq" required.');
+        }
+
         $faqs = Faq::orderBy('created_at', 'desc')->get();
-        $userRole = auth()->user()->role;
-        $layout = $userRole === 'admin' ? 'layouts.app' : 'layouts.ppa';
+        $layout = $user->role === 'super_admin' ? 'layouts.app' : 'layouts.app-professional';
         
         return view('admin.faq.index', compact('faqs', 'layout'));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'pertanyaan_id' => 'required|string',
-            'jawaban_id' => 'required|string'
-        ]);
+        // Check permission
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        if (!$user->isSuperAdmin() && !$user->hasPermissionTo('manage-content')) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
 
-        $content = [
-            'id' => [
-                'pertanyaan' => $request->pertanyaan_id,
-                'jawaban' => $request->jawaban_id
-            ],
-            'en' => [
-                'pertanyaan' => $request->pertanyaan_en ?? '',
-                'jawaban' => $request->jawaban_en ?? ''
-            ]
-        ];
+        $request->validate([
+            'question' => 'required|string',
+            'answer' => 'required|string'
+        ]);
 
         Faq::create([
-            'content' => $content
+            'question' => $request->question,
+            'answer'   => $request->answer
         ]);
-
-        View::clearCache();
 
         return response()->json([
             'success' => true,
@@ -50,29 +53,24 @@ class FaqController extends Controller
 
     public function update(Request $request, $id)
     {
+        // Check permission
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        if (!$user->isSuperAdmin() && !$user->hasPermissionTo('manage-content')) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+
         $request->validate([
-            'pertanyaan_id' => 'required|string',
-            'jawaban_id' => 'required|string'
+            'question' => 'required|string',
+            'answer' => 'required|string'
         ]);
 
         $faq = Faq::findOrFail($id);
         
-        $content = [
-            'id' => [
-                'pertanyaan' => $request->pertanyaan_id,
-                'jawaban' => $request->jawaban_id
-            ],
-            'en' => [
-                'pertanyaan' => $request->pertanyaan_en ?? '',
-                'jawaban' => $request->jawaban_en ?? ''
-            ]
-        ];
-
         $faq->update([
-            'content' => $content
+            'question' => $request->question,
+            'answer'   => $request->answer
         ]);
-
-        View::clearCache();
 
         return response()->json([
             'success' => true,
@@ -82,10 +80,15 @@ class FaqController extends Controller
 
     public function destroy($id)
     {
+        // Check permission
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        if (!$user->isSuperAdmin() && !$user->hasPermissionTo('manage-content')) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+
         $faq = Faq::findOrFail($id);
         $faq->delete();
-
-        View::clearCache();
 
         return response()->json([
             'success' => true,
@@ -93,3 +96,5 @@ class FaqController extends Controller
         ]);
     }
 }
+
+

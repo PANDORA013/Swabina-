@@ -2,20 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class JejakLangkah extends Model
 {
-    use HasFactory;
-
-    // Tentukan nama tabel yang digunakan
     protected $table = 'jejak_langkahs';
-
-    // Tentukan kolom yang dapat diisi secara massal
-    protected $fillable = [
-        'tahun',       // Tahun milestone
-        'deskripsi',   // Deskripsi milestone
-        'image',       // Menyimpan path gambar
-    ];
+    protected $fillable = ['image'];
+    public $timestamps = true;
 }
