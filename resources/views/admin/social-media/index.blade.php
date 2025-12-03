@@ -1,123 +1,61 @@
-@extends($layout)
-
-@section('page-title', 'Pengaturan Social Media')
-
-@section('breadcrumb')
-    <li class="breadcrumb-item active" aria-current="page">Social Media</li>
-@endsection
+@extends('layouts.app')
 
 @section('content')
-<div class="container-fluid mt-4">
-    <div class="row mb-4">
-        <div class="col-md-8">
-            <p class="text-muted">Kelola semua link social media perusahaan</p>
+<div class="container-fluid">
+    <div class="card w-100">
+        <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="card-title fw-semibold mb-0">Kelola Media Sosial</h5>
+                <a href="{{ route('admin.social-media.create') }}" class="btn btn-primary">
+                    <i class="ti ti-plus me-1"></i> Tambah Link
+                </a>
+            </div>
+            
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show">{{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
+
+            <div class="table-responsive">
+                <table class="table mb-0 align-middle">
+                    <thead class="text-dark fs-4">
+                        <tr>
+                            <th>No</th>
+                            <th>Platform</th>
+                            <th>Link URL</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($socialLinks as $link)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>
+                                <span class="badge bg-secondary">{{ $link->platform }}</span>
+                            </td>
+                            <td><a href="{{ $link->url }}" target="_blank" class="text-truncate d-inline-block" style="max-width: 200px;">{{ $link->url }}</a></td>
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    <a href="{{ route('admin.social-media.edit', $link->id) }}" class="btn btn-warning btn-sm"><i class="ti ti-edit"></i></a>
+                                    <form action="{{ route('admin.social-media.destroy', $link->id) }}" method="POST" onsubmit="return confirm('Hapus link ini?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm"><i class="ti ti-trash"></i></button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr><td colspan="4" class="text-center">Belum ada link sosial media</td></tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class="col-md-4 text-end">
-            <a href="{{ route('admin.social-media.edit', $social->id) }}" class="btn btn-primary">
-                <i class="bi bi-pencil-circle me-2"></i>Edit Social Media
-            </a>
-        </div>
     </div>
-
-    @if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <i class="bi bi-check-circle me-2"></i>
-        {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    @endif
-
-    @if(session('error'))
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <i class="bi bi-exclamation-circle me-2"></i>
-        {{ session('error') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    @endif
-
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <div class="row">
-                <!-- Facebook -->
-                <div class="col-md-6 mb-4">
-                    <div class="d-flex align-items-center p-3 border rounded">
-                        <i class="bi bi-facebook" style="font-size: 2rem; color: #0a66c2; margin-right: 15px;"></i>
-                        <div class="flex-grow-1">
-                            <h6 class="mb-1">Facebook</h6>
-                            @if($social->facebook)
-                                <a href="{{ $social->facebook }}" target="_blank" class="text-muted small">
-                                    {{ Str::limit($social->facebook, 40) }}
-                                </a>
-                            @else
-                                <span class="text-muted small">-</span>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Instagram -->
-                <div class="col-md-6 mb-4">
-                    <div class="d-flex align-items-center p-3 border rounded">
-                        <i class="bi bi-instagram" style="font-size: 2rem; color: #e4405f; margin-right: 15px;"></i>
-                        <div class="flex-grow-1">
-                            <h6 class="mb-1">Instagram</h6>
-                            @if($social->instagram)
-                                <a href="{{ $social->instagram }}" target="_blank" class="text-muted small">
-                                    {{ Str::limit($social->instagram, 40) }}
-                                </a>
-                            @else
-                                <span class="text-muted small">-</span>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-
-                <!-- YouTube -->
-                <div class="col-md-6 mb-4">
-                    <div class="d-flex align-items-center p-3 border rounded">
-                        <i class="bi bi-youtube" style="font-size: 2rem; color: #ff0000; margin-right: 15px;"></i>
-                        <div class="flex-grow-1">
-                            <h6 class="mb-1">YouTube</h6>
-                            @if($social->youtube)
-                                <a href="{{ $social->youtube }}" target="_blank" class="text-muted small">
-                                    {{ Str::limit($social->youtube, 40) }}
-                                </a>
-                            @else
-                                <span class="text-muted small">-</span>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-
-                <!-- YouTube Landing -->
-                <div class="col-md-6 mb-4">
-                    <div class="d-flex align-items-center p-3 border rounded">
-                        <i class="bi bi-youtube" style="font-size: 2rem; color: #ff0000; margin-right: 15px;"></i>
-                        <div class="flex-grow-1">
-                            <h6 class="mb-1">YouTube Landing</h6>
-                            @if($social->youtube_landing)
-                                <a href="{{ $social->youtube_landing }}" target="_blank" class="text-muted small">
-                                    {{ Str::limit($social->youtube_landing, 40) }}
-                                </a>
-                            @else
-                                <span class="text-muted small">-</span>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-
-                <!-- WhatsApp -->
-                <div class="col-md-6 mb-4">
-                    <div class="d-flex align-items-center p-3 border rounded">
-                        <i class="bi bi-whatsapp" style="font-size: 2rem; color: #25d366; margin-right: 15px;"></i>
-                        <div class="flex-grow-1">
-                            <h6 class="mb-1">WhatsApp</h6>
-                            @if($social->whatsapp)
-                                <a href="https://wa.me/{{ str_replace(['+', '-', ' '], '', $social->whatsapp) }}" target="_blank" class="text-muted small">
-                                    {{ Str::limit($social->whatsapp, 40) }}
-                                </a>
-                            @else
-                                <span class="text-muted small">-</span>
+</div>
+@endsection
                             @endif
                         </div>
                     </div>
