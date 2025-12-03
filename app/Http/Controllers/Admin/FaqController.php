@@ -2,99 +2,65 @@
 
 namespace App\Http\Controllers\Admin;
 
-
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Faq;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\View;
 
 class FaqController extends Controller
 {
+    // Menampilkan daftar FAQ
     public function index()
     {
-        // Check permission
-        /** @var \App\Models\User $user */
-        $user = Auth::user();
-        if (!$user->isSuperAdmin() && !$user->hasPermissionTo('manage-content')) {
-            abort(403, 'Unauthorized. Permission "read-faq" required.');
-        }
-
-        $faqs = Faq::orderBy('created_at', 'desc')->get();
-        $layout = $user->role === 'super_admin' ? 'layouts.app' : 'layouts.app-professional';
-        
+        $faqs = Faq::latest()->get();
+        $layout = 'layouts.app';
         return view('admin.faq.index', compact('faqs', 'layout'));
     }
 
+    // Menampilkan form tambah
+    public function create()
+    {
+        $layout = 'layouts.app';
+        return view('admin.faq.create', compact('layout'));
+    }
+
+    // Menyimpan FAQ baru
     public function store(Request $request)
     {
-        // Check permission
-        /** @var \App\Models\User $user */
-        $user = Auth::user();
-        if (!$user->isSuperAdmin() && !$user->hasPermissionTo('manage-content')) {
-            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
-        }
-
         $request->validate([
-            'question' => 'required|string',
-            'answer' => 'required|string'
+            'question' => 'required|string|max:500',
+            'answer'   => 'required|string',
         ]);
 
-        Faq::create([
-            'question' => $request->question,
-            'answer'   => $request->answer
-        ]);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'FAQ berhasil ditambahkan'
-        ]);
+        Faq::create($request->all());
+        return redirect()->route('admin.faq.index')->with('success', 'FAQ berhasil ditambahkan');
     }
 
+    // Menampilkan form edit
+    public function edit($id)
+    {
+        $faq = Faq::findOrFail($id);
+        $layout = 'layouts.app';
+        return view('admin.faq.edit', compact('faq', 'layout'));
+    }
+
+    // Mengupdate FAQ
     public function update(Request $request, $id)
     {
-        // Check permission
-        /** @var \App\Models\User $user */
-        $user = Auth::user();
-        if (!$user->isSuperAdmin() && !$user->hasPermissionTo('manage-content')) {
-            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
-        }
-
         $request->validate([
-            'question' => 'required|string',
-            'answer' => 'required|string'
+            'question' => 'required|string|max:500',
+            'answer'   => 'required|string',
         ]);
 
         $faq = Faq::findOrFail($id);
-        
-        $faq->update([
-            'question' => $request->question,
-            'answer'   => $request->answer
-        ]);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'FAQ berhasil diupdate'
-        ]);
+        $faq->update($request->all());
+        return redirect()->route('admin.faq.index')->with('success', 'FAQ berhasil diperbarui');
     }
 
+    // Menghapus FAQ
     public function destroy($id)
     {
-        // Check permission
-        /** @var \App\Models\User $user */
-        $user = Auth::user();
-        if (!$user->isSuperAdmin() && !$user->hasPermissionTo('manage-content')) {
-            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
-        }
-
         $faq = Faq::findOrFail($id);
         $faq->delete();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'FAQ berhasil dihapus'
-        ]);
+        return redirect()->route('admin.faq.index')->with('success', 'FAQ berhasil dihapus');
     }
 }
-
-

@@ -122,13 +122,20 @@ Route::middleware(['auth'])->group(function () {
     
     // FAQ Management (Requires: manage_faq)
     Route::middleware(['check.privilege:manage_faq'])
-         ->prefix('admin/faq')
-         ->name('admin.faq.')
+         ->prefix('admin')
+         ->name('admin.')
          ->group(function () {
-             Route::get('/', [AdminFaqController::class, 'index'])->name('index');
-             Route::post('/store', [AdminFaqController::class, 'store'])->name('store');
-             Route::put('/update/{id}', [AdminFaqController::class, 'update'])->name('update');
-             Route::delete('/delete/{id}', [AdminFaqController::class, 'destroy'])->name('destroy');
+             Route::resource('faq', AdminFaqController::class, [
+                 'names' => [
+                     'index' => 'faq.index',
+                     'create' => 'faq.create',
+                     'store' => 'faq.store',
+                     'show' => 'faq.show',
+                     'edit' => 'faq.edit',
+                     'update' => 'faq.update',
+                     'destroy' => 'faq.destroy',
+                 ]
+             ]);
          });
     
     // Layanan Pages Management (Requires: manage_services)
