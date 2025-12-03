@@ -3,7 +3,7 @@
 @section('page-title', 'Tambah Jejak Langkah')
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('admin.jejak-langkah.index') }}">Jejak Langkah</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('admin.jejak.index') }}">Jejak Langkah</a></li>
     <li class="breadcrumb-item active" aria-current="page">Tambah</li>
 @endsection
 
@@ -29,7 +29,7 @@
                     </div>
                     @endif
 
-                    <form action="{{ route('admin.jejak-langkah.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('admin.jejak.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
                         <!-- Tahun -->
@@ -99,7 +99,7 @@
                             <button type="submit" class="btn btn-primary">
                                 <i class="bi bi-save me-2"></i>Simpan Jejak Langkah
                             </button>
-                            <a href="{{ route('admin.jejak-langkah.index') }}" class="btn btn-secondary">
+                            <a href="{{ route('admin.jejak.index') }}" class="btn btn-secondary">
                                 <i class="bi bi-arrow-left me-2"></i>Kembali
                             </a>
                         </div>

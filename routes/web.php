@@ -175,15 +175,15 @@ Route::middleware(['auth'])->group(function () {
          ->prefix('admin')
          ->name('admin.')
          ->group(function () {
-             Route::resource('jejak-langkah', JejakLangkahController::class, [
+             Route::resource('jejak', JejakLangkahController::class, [
                  'names' => [
-                     'index' => 'jejak-langkah.index',
-                     'create' => 'jejak-langkah.create',
-                     'store' => 'jejak-langkah.store',
-                     'show' => 'jejak-langkah.show',
-                     'edit' => 'jejak-langkah.edit',
-                     'update' => 'jejak-langkah.update',
-                     'destroy' => 'jejak-langkah.destroy',
+                     'index' => 'jejak.index',
+                     'create' => 'jejak.create',
+                     'store' => 'jejak.store',
+                     'show' => 'jejak.show',
+                     'edit' => 'jejak.edit',
+                     'update' => 'jejak.update',
+                     'destroy' => 'jejak.destroy',
                  ]
              ]);
          });

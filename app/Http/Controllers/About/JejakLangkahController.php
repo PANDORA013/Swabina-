@@ -44,7 +44,7 @@ class JejakLangkahController extends Controller
         }
 
         JejakLangkah::create($data);
-        return redirect()->route('admin.jejak-langkah.index')->with('success', 'Jejak Langkah berhasil ditambahkan');
+        return redirect()->route('admin.jejak.index')->with('success', 'Jejak Langkah berhasil ditambahkan');
     }
 
     // Menampilkan form edit
@@ -84,7 +84,7 @@ class JejakLangkahController extends Controller
         }
 
         $jejakLangkah->update($data);
-        return redirect()->route('admin.jejak-langkah.index')->with('success', 'Jejak Langkah berhasil diperbarui');
+        return redirect()->route('admin.jejak.index')->with('success', 'Jejak Langkah berhasil diperbarui');
     }
 
     // Menghapus jejak langkah
@@ -98,7 +98,7 @@ class JejakLangkahController extends Controller
         }
 
         $jejakLangkah->delete();
-        return redirect()->route('admin.jejak-langkah.index')->with('success', 'Jejak Langkah berhasil dihapus');
+        return redirect()->route('admin.jejak.index')->with('success', 'Jejak Langkah berhasil dihapus');
     }
 }
 

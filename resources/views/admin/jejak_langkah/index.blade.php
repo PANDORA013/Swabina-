@@ -6,7 +6,7 @@
         <div class="card-body p-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h5 class="card-title fw-semibold mb-0">Jejak Langkah Perusahaan</h5>
-                <a href="{{ route('admin.jejak-langkah.create') }}" class="btn btn-primary">
+                <a href="{{ route('admin.jejak.create') }}" class="btn btn-primary">
                     <i class="ti ti-plus me-1"></i> Tambah Data
                 </a>
             </div>
@@ -48,12 +48,12 @@
                             </td>
                             <td class="border-bottom-0">
                                 <div class="d-flex align-items-center gap-2">
-                                    <a href="{{ route('admin.jejak-langkah.edit', $item->id) }}" class="btn btn-warning btn-sm">
+                                    <a href="{{ route('admin.jejak.edit', $item->id) }}" class="btn btn-warning btn-sm">
                                         <i class="ti ti-edit"></i> Edit
                                     </a>
                                     
                                     {{-- Form Delete --}}
-                                    <form action="{{ route('admin.jejak-langkah.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Yakin hapus jejak langkah tahun {{ $item->tahun }}?');">
+                                    <form action="{{ route('admin.jejak.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Yakin hapus jejak langkah tahun {{ $item->tahun }}?');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm">
