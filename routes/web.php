@@ -140,6 +140,7 @@ Route::middleware(['auth'])->group(function () {
              Route::get('/{slug}/edit', [\App\Http\Controllers\Admin\LayananController::class, 'edit'])->name('edit');
              Route::put('/{slug}', [\App\Http\Controllers\Admin\LayananController::class, 'update'])->name('update');
              Route::put('/{slug}/status', [\App\Http\Controllers\Admin\LayananController::class, 'updateStatus'])->name('updateStatus');
+             Route::delete('/{slug}', [\App\Http\Controllers\Admin\LayananController::class, 'destroy'])->name('destroy');
          });
     
     // Pedoman/Guidelines Management (Requires: manage_content)

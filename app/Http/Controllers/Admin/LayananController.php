@@ -12,25 +12,21 @@ class LayananController extends Controller
     public function index()
     {
         $layanan = DB::table('layanan_pages')->orderBy('order')->get();
+        $layout = 'layouts.app';
         
-        return view('admin.layanan.index', [
-            'layout' => 'layouts.app',
-            'layanan' => $layanan
-        ]);
+        return view('admin.layanan.index', compact('layanan', 'layout'));
     }
 
     public function edit($slug)
     {
         $layanan = DB::table('layanan_pages')->where('slug', $slug)->first();
+        $layout = 'layouts.app';
         
         if (!$layanan) {
             return redirect()->route('admin.layanan.index')->with('error', 'Layanan tidak ditemukan');
         }
         
-        return view('admin.layanan.edit', [
-            'layout' => 'layouts.app',
-            'layanan' => $layanan
-        ]);
+        return view('admin.layanan.edit', compact('layanan', 'layout'));
     }
 
     public function update(Request $request, $slug)
@@ -89,5 +85,25 @@ class LayananController extends Controller
             'success' => true,
             'message' => 'Status layanan berhasil diupdate'
         ]);
+    }
+
+    // Menghapus layanan
+    public function destroy($slug)
+    {
+        $layanan = DB::table('layanan_pages')->where('slug', $slug)->first();
+        
+        if (!$layanan) {
+            return redirect()->route('admin.layanan.index')->with('error', 'Layanan tidak ditemukan');
+        }
+
+        // Hapus gambar jika ada
+        if ($layanan->image && Storage::disk('public')->exists($layanan->image)) {
+            Storage::disk('public')->delete($layanan->image);
+        }
+
+        // Hapus data dari database
+        DB::table('layanan_pages')->where('slug', $slug)->delete();
+
+        return redirect()->route('admin.layanan.index')->with('success', 'Layanan berhasil dihapus');
     }
 }
