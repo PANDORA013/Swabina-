@@ -104,18 +104,18 @@ Route::middleware(['auth'])->group(function () {
     
     // Berita/News Management (Requires: manage_news)
     Route::middleware(['check.privilege:manage_news'])
-         ->prefix('admin/berita')
-         ->name('admin.berita.')
+         ->prefix('admin')
+         ->name('admin.')
          ->group(function () {
-             Route::resource('', NewsController::class, [
+             Route::resource('berita', NewsController::class, [
                  'names' => [
-                     'index' => 'index',
-                     'create' => 'create',
-                     'store' => 'store',
-                     'show' => 'show',
-                     'edit' => 'edit',
-                     'update' => 'update',
-                     'destroy' => 'destroy',
+                     'index' => 'berita.index',
+                     'create' => 'berita.create',
+                     'store' => 'berita.store',
+                     'show' => 'berita.show',
+                     'edit' => 'berita.edit',
+                     'update' => 'berita.update',
+                     'destroy' => 'berita.destroy',
                  ]
              ]);
          });

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Berita;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class NewsController extends Controller
@@ -47,9 +48,9 @@ class NewsController extends Controller
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '_' . $image->getClientOriginalName();
-            // Simpan ke folder public/assets/gambar_berita
-            $image->move(public_path('assets/gambar_berita'), $imageName);
-            $data['image'] = $imageName;
+            // Simpan ke folder storage/app/public/beritas
+            $image->storeAs('beritas', $imageName, 'public');
+            $data['image'] = 'beritas/' . $imageName;
         }
 
         Berita::create($data);
@@ -81,14 +82,14 @@ class NewsController extends Controller
         // Cek jika ada upload gambar baru
         if ($request->hasFile('image')) {
             // Hapus gambar lama jika ada
-            if ($berita->image && File::exists(public_path('assets/gambar_berita/' . $berita->image))) {
-                File::delete(public_path('assets/gambar_berita/' . $berita->image));
+            if ($berita->image && Storage::disk('public')->exists($berita->image)) {
+                Storage::disk('public')->delete($berita->image);
             }
 
             $image = $request->file('image');
             $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->move(public_path('assets/gambar_berita'), $imageName);
-            $data['image'] = $imageName;
+            $image->storeAs('beritas', $imageName, 'public');
+            $data['image'] = 'beritas/' . $imageName;
         } else {
             // Jika tidak upload gambar, pakai gambar lama (jangan di-overwrite null)
             unset($data['image']);
@@ -104,9 +105,9 @@ class NewsController extends Controller
     {
         $berita = Berita::findOrFail($id);
 
-        // Hapus gambar dari folder
-        if ($berita->image && File::exists(public_path('assets/gambar_berita/' . $berita->image))) {
-            File::delete(public_path('assets/gambar_berita/' . $berita->image));
+        // Hapus gambar dari storage
+        if ($berita->image && Storage::disk('public')->exists($berita->image)) {
+            Storage::disk('public')->delete($berita->image);
         }
 
         $berita->delete();
