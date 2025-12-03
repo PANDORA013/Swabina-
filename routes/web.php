@@ -7,6 +7,9 @@ use App\Http\Controllers\Admin\CompanyInfoController;
 use App\Http\Controllers\Admin\FaqController as AdminFaqController;
 use App\Http\Controllers\Admin\AdminManagementController;
 use App\Http\Controllers\Admin\ContactPageController;
+use App\Http\Controllers\Admin\WhyChooseUsController;
+use App\Http\Controllers\Admin\LayananController;
+use App\Http\Controllers\Admin\SertifikatController;
 use App\Http\Controllers\SocialMedia\SocialLinkController;
 use App\Http\Controllers\Public\PedomanController;
 use App\Http\Controllers\About\JejakLangkahController;
@@ -181,13 +184,20 @@ Route::middleware(['auth'])->group(function () {
     
     // Why Choose Us Management (Requires: manage_content)
     Route::middleware(['check.privilege:manage_content'])
-         ->prefix('admin/why-choose-us')
-         ->name('admin.why-choose-us.')
+         ->prefix('admin')
+         ->name('admin.')
          ->group(function () {
-             Route::get('/', [PedomanController::class, 'index'])->name('index');
-             Route::post('/store', [PedomanController::class, 'store'])->name('store');
-             Route::put('/update/{id}', [PedomanController::class, 'update'])->name('update');
-             Route::delete('/delete/{id}', [PedomanController::class, 'destroy'])->name('destroy');
+             Route::resource('why-choose-us', WhyChooseUsController::class, [
+                 'names' => [
+                     'index' => 'why-choose-us.index',
+                     'create' => 'why-choose-us.create',
+                     'store' => 'why-choose-us.store',
+                     'show' => 'why-choose-us.show',
+                     'edit' => 'why-choose-us.edit',
+                     'update' => 'why-choose-us.update',
+                     'destroy' => 'why-choose-us.destroy',
+                 ]
+             ]);
          });
     
     // Sekilas Perusahaan Management (Requires: manage_company_info)
