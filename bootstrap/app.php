@@ -61,3 +61,6 @@ $app->singleton(
 */
 
 return $app;
+
+// Clear any Spatie permission cache if needed
+\Illuminate\Support\Facades\Schema::disableForeignKeyConstraints();
