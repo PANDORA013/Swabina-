@@ -15,24 +15,8 @@ if (!function_exists('userHasPrivilege')) {
             return false;
         }
 
-        // Super admin has all privileges
-        if ($user->isSuperAdmin()) {
-            return true;
-        }
-
-        // Check permission in user's permissions_json
-        $userPermissions = $user->permissions_json ?? [];
-        
-        if (is_array($userPermissions) && in_array($permission, $userPermissions)) {
-            return true;
-        }
-
-        // Fallback to Spatie permission if available
-        try {
-            return $user->hasPermissionTo($permission);
-        } catch (\Exception $e) {
-            return false;
-        }
+        // Use the simplified hasPermissionTo method from User model
+        return $user->hasPermissionTo($permission);
     }
 }
 
@@ -52,11 +36,25 @@ if (!function_exists('getUserPrivileges')) {
 
         // Super admin has all privileges
         if ($user->isSuperAdmin()) {
-            return \App\Models\Permission::pluck('name')->toArray();
+            try {
+                return \App\Models\AdminRole::where('is_super_admin', true)
+                    ->first()
+                    ?->permissions()
+                    ?->pluck('permission_key')
+                    ?->toArray() ?? [];
+            } catch (\Exception $e) {
+                return [];
+            }
         }
 
-        // Return user's permissions from permissions_json
-        return $user->permissions_json ?? [];
+        // Return user's permissions via admin role
+        try {
+            return $user->adminRole?->permissions()
+                ->pluck('permission_key')
+                ->toArray() ?? [];
+        } catch (\Exception $e) {
+            return [];
+        }
     }
 }
 
@@ -69,7 +67,16 @@ if (!function_exists('getAvailablePrivileges')) {
     function getAvailablePrivileges()
     {
         try {
-            return \App\Models\Permission::groupedByModule();
+            $permissions = \App\Models\Permission::all()->groupBy('module');
+            return $permissions->map(function($items) {
+                return $items->map(function($item) {
+                    return [
+                        'key' => $item->permission_key,
+                        'name' => $item->name,
+                        'description' => $item->description,
+                    ];
+                })->toArray();
+            })->toArray();
         } catch (\Exception $e) {
             return [];
         }
@@ -86,7 +93,7 @@ if (!function_exists('privilegeExists')) {
     function privilegeExists($permission)
     {
         try {
-            return \App\Models\Permission::where('name', $permission)->exists();
+            return \App\Models\Permission::where('permission_key', $permission)->exists();
         } catch (\Exception $e) {
             return false;
         }

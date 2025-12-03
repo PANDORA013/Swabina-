@@ -7,37 +7,50 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Traits\HasRoles;
 
-/**
- * @method bool isSuperAdmin()
- * @method bool hasPermissionTo(string $permission, $guardName = null)
- * @method bool hasAnyPermission(...$permissions)
- * @method bool hasAllPermissions(...$permissions)
- * @method bool hasRole($roles, string $guard = null)
- * @method self givePermissionTo(...$permissions)
- * @method self syncPermissions(...$permissions)
- * @method self revokePermissionTo($permission)
- */
 class User extends Authenticatable
 {
-    use Notifiable, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
-        'name', 'email', 'password', 'role', 'admin_role_id', 'permissions_json',
-    ];
-
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
-
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'permissions_json' => 'array',
+        'name',
+        'email',
+        'password',
+        'role',           // String role (e.g. 'super_admin', 'admin')
+        'admin_role_id',  // Foreign key to admin_roles table
+        'image',
+        'is_active',
+        'username'
     ];
 
     /**
-     * Get the admin role for this user
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'is_active' => 'boolean',
+    ];
+
+    /**
+     * Relasi ke AdminRole
      */
     public function adminRole()
     {
@@ -45,76 +58,45 @@ class User extends Authenticatable
     }
 
     /**
-     * Get all permissions for this user (using Spatie permission)
-     */
-    public function getPermissions()
-    {
-        // Get permissions from Spatie permission system
-        return $this->getAllPermissions()->pluck('name')->toArray();
-    }
-
-    /**
-     * Check if user has permission (using Spatie permission)
-     * Super admin has access to ALL permissions
-     */
-    public function hasPermissionTo($permission)
-    {
-        // Super admin has ALL permissions
-        if ($this->isSuperAdmin()) {
-            return true;
-        }
-        
-        // Use Spatie default
-        return parent::hasPermissionTo($permission);
-    }
-
-    /**
-     * Check if user has permission (legacy method)
-     */
-    public function hasPermission($permission)
-    {
-        return $this->hasPermissionTo($permission);
-    }
-
-    /**
-     * Check if user has any of the given permissions (using Spatie permission)
-     */
-    public function hasAnyPermission($permissions)
-    {
-        foreach ($permissions as $permission) {
-            if ($this->can($permission)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Check if user is super admin
-     * Check both Spatie role AND admin_role relationship (Spatie tables may not exist)
+     * Cek apakah user adalah Super Admin
+     * @return bool
      */
     public function isSuperAdmin()
     {
-        // Check role column first (primary check - no DB dependency on Spatie tables)
+        // Cek kolom 'role' legacy (support 'superadmin' dan 'super_admin')
         if ($this->role === 'superadmin' || $this->role === 'super_admin') {
             return true;
         }
-        
-        // Check admin_role relationship
-        if ($this->adminRole && $this->adminRole->name === 'super_admin') {
+
+        // Cek via relasi AdminRole jika menggunakan sistem role baru
+        if ($this->adminRole && $this->adminRole->is_super_admin) {
             return true;
-        }
-        
-        // Check Spatie role only if table exists (to avoid errors if Spatie tables were dropped)
-        try {
-            if (method_exists($this, 'hasRole') && $this->hasRole('super_admin')) {
-                return true;
-            }
-        } catch (\Exception $e) {
-            // Spatie tables may not exist, ignore error
         }
 
         return false;
+    }
+
+    /**
+     * Cek apakah user memiliki permission tertentu
+     * @param string $permissionKey
+     * @return bool
+     */
+    public function hasPermissionTo($permissionKey)
+    {
+        // Super admin selalu punya akses penuh
+        if ($this->isSuperAdmin()) {
+            return true;
+        }
+
+        // Jika tidak punya role, tolak akses
+        if (!$this->adminRole) {
+            return false;
+        }
+
+        // Cek permission spesifik via relasi role -> permissions
+        return $this->adminRole->permissions()
+                    ->where('permission_key', $permissionKey)
+                    ->exists();
     }
 
     /**
@@ -124,11 +106,6 @@ class User extends Authenticatable
     {
         // Super admin is also admin
         if ($this->isSuperAdmin()) {
-            return true;
-        }
-        
-        // Check Spatie role
-        if ($this->hasRole('admin')) {
             return true;
         }
         

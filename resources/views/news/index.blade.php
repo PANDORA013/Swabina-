@@ -33,17 +33,17 @@
 {{-- Main Content --}}
 @section('content')
 <div class="container py-5">
-    @if($berita && $berita->count() > 0)
+    @if(isset($beritas) && $beritas->count() > 0)
         <div class="row g-4">
-            @foreach($berita as $item)
+            @foreach($beritas as $berita)
             <div class="col-md-6 col-lg-4 mb-3">
                 <div class="berita-card card h-100 border-0 shadow-sm hover-lift">
                     <div class="card-body text-center d-flex flex-column">
                         {{-- Image/Icon Section --}}
-                        @if($item->image)
+                        @if($berita->image)
                             <div class="berita-image mb-3">
-                                <img src="{{ asset('storage/' . $item->image) }}" 
-                                     alt="{{ is_array($item->title) ? $item->title[app()->getLocale()] ?? $item->title['id'] : $item->title }}"
+                                <img src="{{ asset('storage/' . $berita->image) }}" 
+                                     alt="{{ $berita->title }}"
                                      loading="lazy"
                                      class="img-fluid"
                                      style="width: 100%; height: 160px; object-fit: cover; border-radius: 8px;">
@@ -57,22 +57,22 @@
                         {{-- Date --}}
                         <small class="text-muted mb-2" style="font-size: 0.85rem;">
                             <i class="bi bi-calendar-event"></i> 
-                            {{ $item->created_at->format('d M Y') }}
+                            {{ $berita->created_at->format('d M Y') }}
                         </small>
                         
                         {{-- Title --}}
                         <h5 class="card-title fw-bold mb-2" style="min-height: 50px; display: flex; align-items: center; justify-content: center;">
-                            {{ Str::limit(is_array($item->title) ? $item->title[app()->getLocale()] ?? $item->title['id'] : $item->title, 60) }}
+                            {{ Str::limit($berita->title, 60) }}
                         </h5>
                         
                         {{-- Description --}}
                         <p class="card-text" style="font-size: 0.9rem; color: var(--text-gray); min-height: 60px;">
-                            {{ Str::limit(is_array($item->description) ? $item->description[app()->getLocale()] ?? $item->description['id'] : $item->description, 90) }}
+                            {{ Str::limit(strip_tags($berita->description), 90) }}
                         </p>
                         
                         {{-- Read More Button --}}
                         <div class="mt-auto pt-3 border-top">
-                            <a href="{{ route('berita.show', $item->id) }}" class="btn btn-primary btn-sm w-100">
+                            <a href="{{ route('berita.show', $berita->id) }}" class="btn btn-primary btn-sm w-100">
                                 <i class="bi bi-arrow-right"></i> Baca Selengkapnya
                             </a>
                         </div>
