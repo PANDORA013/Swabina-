@@ -107,12 +107,17 @@ Route::middleware(['auth'])->group(function () {
          ->prefix('admin/berita')
          ->name('admin.berita.')
          ->group(function () {
-             Route::get('/', [NewsController::class, 'index'])->name('index');
-             Route::get('/create', [NewsController::class, 'create'])->name('create');
-             Route::post('/store', [NewsController::class, 'store'])->name('store');
-             Route::get('/edit/{id}', [NewsController::class, 'edit'])->name('edit');
-             Route::put('/update/{id}', [NewsController::class, 'update'])->name('update');
-             Route::delete('/delete/{id}', [NewsController::class, 'destroy'])->name('destroy');
+             Route::resource('', NewsController::class, [
+                 'names' => [
+                     'index' => 'index',
+                     'create' => 'create',
+                     'store' => 'store',
+                     'show' => 'show',
+                     'edit' => 'edit',
+                     'update' => 'update',
+                     'destroy' => 'destroy',
+                 ]
+             ]);
          });
     
     // FAQ Management (Requires: manage_faq)

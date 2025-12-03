@@ -91,7 +91,7 @@
 <div class="modal fade" id="beritaModal" tabindex="-1" aria-labelledby="beritaModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form id="beritaForm" method="POST" enctype="multipart/form-data" novalidate>
+            <form id="beritaForm" method="POST" action="{{ route('admin.berita.store') }}" enctype="multipart/form-data" novalidate>
                 @csrf
                 <div class="modal-header bg-primary text-white">
                     <h5 class="modal-title" id="beritaModalLabel">
