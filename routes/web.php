@@ -207,13 +207,20 @@ Route::middleware(['auth'])->group(function () {
     
     // Sertifikat & Penghargaan Management (Requires: manage_content)
     Route::middleware(['check.privilege:manage_content'])
-         ->prefix('admin/sertifikat')
-         ->name('admin.sertifikat.')
+         ->prefix('admin')
+         ->name('admin.')
          ->group(function () {
-             Route::get('/', [\App\Http\Controllers\Admin\SertifikatController::class, 'index'])->name('index');
-             Route::post('/store', [\App\Http\Controllers\Admin\SertifikatController::class, 'store'])->name('store');
-             Route::put('/update/{id}', [\App\Http\Controllers\Admin\SertifikatController::class, 'update'])->name('update');
-             Route::delete('/delete/{id}', [\App\Http\Controllers\Admin\SertifikatController::class, 'destroy'])->name('destroy');
+             Route::resource('sertifikat', \App\Http\Controllers\Admin\SertifikatController::class, [
+                 'names' => [
+                     'index' => 'sertifikat.index',
+                     'create' => 'sertifikat.create',
+                     'store' => 'sertifikat.store',
+                     'show' => 'sertifikat.show',
+                     'edit' => 'sertifikat.edit',
+                     'update' => 'sertifikat.update',
+                     'destroy' => 'sertifikat.destroy',
+                 ]
+             ]);
          });
 
     // Website Settings Management (Requires: manage_settings)
