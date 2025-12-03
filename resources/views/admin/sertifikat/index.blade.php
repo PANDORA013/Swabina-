@@ -1,103 +1,63 @@
-@extends($layout)
-
-@section('page-title', 'Manajemen Sertifikat & Penghargaan')
-
-@section('breadcrumb')
-    <li class="breadcrumb-item active" aria-current="page">Sertifikat</li>
-@endsection
+@extends('layouts.app')
 
 @section('content')
-<div class="container-fluid mt-4">
-    <div class="row mb-4">
-        <div class="col-md-8">
-            <p class="text-muted">Kelola sertifikat dan penghargaan perusahaan</p>
-        </div>
-        <div class="col-md-4 text-end">
-            <a href="{{ route('admin.sertifikat.create') }}" class="btn btn-primary">
-                <i class="bi bi-plus-circle me-2"></i>Tambah Sertifikat
-            </a>
-        </div>
-    </div>
+<div class="container-fluid">
+    <div class="card w-100 position-relative overflow-hidden">
+        <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="card-title fw-semibold mb-0">Sertifikat & Penghargaan</h5>
+                <a href="{{ route('admin.sertifikat.create') }}" class="btn btn-primary">
+                    <i class="ti ti-plus me-1"></i> Tambah
+                </a>
+            </div>
+            
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
 
-    @if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <i class="bi bi-check-circle me-2"></i>
-        {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    @endif
-
-    @if(session('error'))
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <i class="bi bi-exclamation-circle me-2"></i>
-        {{ session('error') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    @endif
-
-    @if($sertifikats->count() > 0)
-    <div class="card shadow-sm">
-        <div class="table-responsive">
-            <table class="table table-hover mb-0">
-                <thead class="table-light">
-                    <tr>
-                        <th style="width: 5%">No</th>
-                        <th style="width: 25%">Nama Sertifikat</th>
-                        <th style="width: 40%">Deskripsi</th>
-                        <th style="width: 20%">Gambar</th>
-                        <th style="width: 10%" class="text-center">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($sertifikats as $index => $sertifikat)
-                    <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>
-                            <strong>{{ $sertifikat->nama ?? 'N/A' }}</strong>
-                        </td>
-                        <td>
-                            <small class="text-muted">{{ Str::limit($sertifikat->deskripsi ?? '-', 100) }}</small>
-                        </td>
-                        <td>
-                            @if($sertifikat->image)
-                                <img src="{{ asset('storage/' . $sertifikat->image) }}" 
-                                     alt="{{ $sertifikat->nama }}" 
-                                     style="max-height: 50px; max-width: 50px; object-fit: cover; border-radius: 4px;" />
+            <div class="row">
+                @forelse($sertifikats as $item)
+                <div class="col-md-4 col-lg-3 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="position-relative">
+                            @if($item->image)
+                                <img src="{{ asset('storage/' . $item->image) }}" class="card-img-top p-3" alt="Sertifikat" style="height: 200px; object-fit: contain;">
                             @else
-                                <span class="text-muted">-</span>
+                                <div class="d-flex align-items-center justify-content-center bg-light" style="height: 200px;">
+                                    <span class="text-muted">No Image</span>
+                                </div>
                             @endif
-                        </td>
-                        <td class="text-center">
-                            <div class="btn-group btn-group-sm" role="group">
-                                <a href="{{ route('admin.sertifikat.edit', $sertifikat->id) }}" 
-                                   class="btn btn-warning" 
-                                   title="Edit">
-                                    <i class="bi bi-pencil"></i>
+                        </div>
+                        <div class="card-body p-3">
+                            <h6 class="card-title fw-semibold mb-1 text-center">{{ $item->nama ?? 'Sertifikat' }}</h6>
+                            <div class="d-flex justify-content-center gap-2 mt-3">
+                                <a href="{{ route('admin.sertifikat.edit', $item->id) }}" class="btn btn-warning btn-sm w-100">
+                                    <i class="ti ti-edit"></i> Edit
                                 </a>
-                                <form action="{{ route('admin.sertifikat.destroy', $sertifikat->id) }}" 
-                                      method="POST" 
-                                      style="display:inline;" 
-                                      onsubmit="return confirm('Yakin ingin menghapus sertifikat ini?');">
+                                <form action="{{ route('admin.sertifikat.destroy', $item->id) }}" method="POST" class="w-100" onsubmit="return confirm('Hapus sertifikat ini?');">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger" title="Hapus">
-                                        <i class="bi bi-trash"></i>
+                                    <button type="submit" class="btn btn-danger btn-sm w-100">
+                                        <i class="ti ti-trash"></i> Hapus
                                     </button>
                                 </form>
                             </div>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                        </div>
+                    </div>
+                </div>
+                @empty
+                <div class="col-12 text-center py-5">
+                    <h6 class="fw-semibold text-muted">Belum ada sertifikat</h6>
+                </div>
+                @endforelse
+            </div>
         </div>
     </div>
-    @else
-    <div class="alert alert-info" role="alert">
-        <i class="bi bi-info-circle me-2"></i>
-        Belum ada sertifikat. Silakan tambahkan sertifikat baru dengan klik tombol "Tambah Sertifikat".
-    </div>
-    @endif
+</div>
+@endsection
 </div>
 
 @endsection
