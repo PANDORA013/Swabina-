@@ -122,8 +122,8 @@ class NewsController extends Controller
     // Menampilkan daftar berita untuk publik
     public function publicIndex()
     {
-        $beritas = Berita::latest()->paginate(10);
-        return view('news.index', compact('beritas'));
+        $news = Berita::latest()->paginate(9);
+        return view('berita.berita-professional', compact('news'));
     }
 
     // Menampilkan detail berita publik
@@ -137,6 +137,6 @@ class NewsController extends Controller
                                ->limit(3)
                                ->get();
         
-        return view('news.show', compact('berita', 'relatedBerita'));
+        return view('berita.berita-detail', compact('berita', 'relatedBerita'));
     }
 }
