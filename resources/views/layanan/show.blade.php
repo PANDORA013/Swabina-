@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app-professional')
 
 @section('title', $service->title . ' - ' . ($companyInfo->company_name ?? 'Swabina Gatra'))
 
