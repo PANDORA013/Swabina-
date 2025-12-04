@@ -10,8 +10,9 @@ use App\Http\Controllers\Admin\ContactPageController;
 use App\Http\Controllers\Admin\WhyChooseUsController;
 use App\Http\Controllers\Admin\LayananController;
 use App\Http\Controllers\Admin\SertifikatController;
+use App\Http\Controllers\Admin\PedomanController;
+use App\Http\Controllers\Admin\SekilasPerusahaanController;
 use App\Http\Controllers\SocialMedia\SocialLinkController;
-use App\Http\Controllers\Public\PedomanController;
 use App\Http\Controllers\About\JejakLangkahController;
 use App\Http\Controllers\Public\LandingPageController;
 use App\Http\Controllers\Public\AboutController;
@@ -100,10 +101,10 @@ Route::middleware(['auth'])->group(function () {
          ->name('admin.company-info.')
          ->group(function () {
              Route::get('/', [CompanyInfoController::class, 'index'])->name('index');
-             Route::put('/update', [CompanyInfoController::class, 'update'])->name('update');
-             Route::post('/upload-logo', [CompanyInfoController::class, 'uploadLogo'])->name('upload-logo');
-             Route::post('/upload-iso-logo', [CompanyInfoController::class, 'uploadISOLogo'])->name('upload-iso-logo');
-             Route::delete('/delete-iso-logo/{number}', [CompanyInfoController::class, 'deleteISOLogo'])->name('delete-iso-logo');
+             Route::post('/store', [CompanyInfoController::class, 'store'])->name('store');
+             Route::get('/create', [CompanyInfoController::class, 'create'])->name('create');
+             Route::get('/{id}/edit', [CompanyInfoController::class, 'edit'])->name('edit');
+             Route::put('/{id}', [CompanyInfoController::class, 'update'])->name('update');
          });
     
     // Social Media Links (Requires: manage_settings)
@@ -174,12 +175,12 @@ Route::middleware(['auth'])->group(function () {
          ->prefix('admin/pedoman')
          ->name('admin.pedoman.')
          ->group(function () {
-             Route::get('/', [PedomanController::class, 'index'])->name('index');
-             Route::get('/create', [PedomanController::class, 'create'])->name('create');
-             Route::post('/', [PedomanController::class, 'store'])->name('store');
-             Route::get('/{id}/edit', [PedomanController::class, 'edit'])->name('edit');
-             Route::put('/{id}', [PedomanController::class, 'update'])->name('update');
-             Route::delete('/{id}', [PedomanController::class, 'destroy'])->name('destroy');
+             Route::get('/', [\App\Http\Controllers\Admin\PedomanController::class, 'index'])->name('index');
+             Route::get('/create', [\App\Http\Controllers\Admin\PedomanController::class, 'create'])->name('create');
+             Route::post('/', [\App\Http\Controllers\Admin\PedomanController::class, 'store'])->name('store');
+             Route::get('/{id}/edit', [\App\Http\Controllers\Admin\PedomanController::class, 'edit'])->name('edit');
+             Route::put('/{id}', [\App\Http\Controllers\Admin\PedomanController::class, 'update'])->name('update');
+             Route::delete('/{id}', [\App\Http\Controllers\Admin\PedomanController::class, 'destroy'])->name('destroy');
          });
     
     // Jejak Langkah Management (Requires: manage_content)
@@ -218,18 +219,7 @@ Route::middleware(['auth'])->group(function () {
              ]);
          });
     
-    // Sekilas Perusahaan Management (Requires: manage_company_info)
-    Route::middleware(['check.privilege:manage_company_info'])
-         ->prefix('admin/sekilas')
-         ->name('admin.sekilas.')
-         ->group(function () {
-             Route::get('/', [PedomanController::class, 'index'])->name('index');
-             Route::get('/create', [PedomanController::class, 'create'])->name('create');
-             Route::post('/', [PedomanController::class, 'store'])->name('store');
-             Route::get('/{id}/edit', [PedomanController::class, 'edit'])->name('edit');
-             Route::put('/{id}', [PedomanController::class, 'update'])->name('update');
-             Route::delete('/{id}', [PedomanController::class, 'destroy'])->name('destroy');
-         });
+    // Sekilas Perusahaan Management - Removed (duplicate/unused functionality)
     
     // Contact Page Management (Requires: manage_settings)
     Route::middleware(['check.privilege:manage_settings'])
