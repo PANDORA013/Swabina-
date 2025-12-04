@@ -12,12 +12,13 @@
                     <input type="text" name="title" class="form-control" required>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Deskripsi</label>
-                    <textarea name="description" class="form-control" rows="5" required></textarea>
+                    <label class="form-label">Gambar</label>
+                    <input type="file" name="image" class="form-control">
+                    <small class="text-muted">Format: jpg, png, webp. Max 2MB.</small>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Gambar</label>
-                    <input type="file" name="image" class="form-control" accept="image/*">
+                    <label class="form-label">Deskripsi</label>
+                    <textarea name="description" class="form-control" rows="5" required></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">Simpan</button>
                 <a href="{{ route('admin.sekilas.index') }}" class="btn btn-secondary">Batal</a>

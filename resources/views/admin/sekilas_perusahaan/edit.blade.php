@@ -13,15 +13,18 @@
                     <input type="text" name="title" class="form-control" value="{{ $item->title }}" required>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Deskripsi</label>
-                    <textarea name="description" class="form-control" rows="5" required>{{ $item->description }}</textarea>
-                </div>
-                <div class="mb-3">
                     <label class="form-label">Gambar</label>
                     @if($item->image)
-                        <div class="mb-2"><img src="{{ asset('assets/gambar_sekilas/'.$item->image) }}" width="100"></div>
+                        <div class="mb-2">
+                            <img src="{{ asset('assets/gambar_sekilas/' . $item->image) }}" width="120" class="rounded">
+                        </div>
                     @endif
-                    <input type="file" name="image" class="form-control" accept="image/*">
+                    <input type="file" name="image" class="form-control">
+                    <small class="text-muted">Format: jpg, png, webp. Max 2MB. Kosongkan jika tidak ingin mengubah.</small>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Deskripsi</label>
+                    <textarea name="description" class="form-control" rows="5" required>{{ $item->description }}</textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">Update</button>
                 <a href="{{ route('admin.sekilas.index') }}" class="btn btn-secondary">Batal</a>
