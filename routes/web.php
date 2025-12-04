@@ -219,7 +219,23 @@ Route::middleware(['auth'])->group(function () {
              ]);
          });
     
-    // Sekilas Perusahaan Management - Removed (duplicate/unused functionality)
+    // Sekilas Perusahaan Management (Requires: manage_content)
+    Route::middleware(['check.privilege:manage_content'])
+         ->prefix('admin')
+         ->name('admin.')
+         ->group(function () {
+             Route::resource('sekilas', SekilasPerusahaanController::class, [
+                 'names' => [
+                     'index' => 'sekilas.index',
+                     'create' => 'sekilas.create',
+                     'store' => 'sekilas.store',
+                     'show' => 'sekilas.show',
+                     'edit' => 'sekilas.edit',
+                     'update' => 'sekilas.update',
+                     'destroy' => 'sekilas.destroy',
+                 ]
+             ]);
+         });
     
     // Contact Page Management (Requires: manage_settings)
     Route::middleware(['check.privilege:manage_settings'])
