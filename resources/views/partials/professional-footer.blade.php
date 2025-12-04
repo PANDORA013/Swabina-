@@ -27,11 +27,11 @@
             <div class="col-md-3 footer-section">
                 <h5>Layanan Kami</h5>
                 <ul>
-                    <li><a href="{{ route('swaacademy') }}">Swa Academy</a></li>
-                    <li><a href="{{ route('facility-management') }}">Facility Management</a></li>
-                    <li><a href="{{ route('digitalsolution') }}">Digital Solution</a></li>
-                    <li><a href="{{ route('swatour') }}">Swa Tour Organizer</a></li>
-                    <li><a href="{{ route('swasegar') }}">Swasegar AMDK</a></li>
+                    <li><a href="{{ route('layanan.show', 'swa-academy') }}">Swa Academy</a></li>
+                    <li><a href="{{ route('layanan.show', 'facility-management') }}">Facility Management</a></li>
+                    <li><a href="{{ route('layanan.show', 'digital-solution') }}">Digital Solution</a></li>
+                    <li><a href="{{ route('layanan.show', 'swa-tour-organizer') }}">Swa Tour Organizer</a></li>
+                    <li><a href="{{ route('layanan.show', 'swasegar-amdk') }}">Swasegar AMDK</a></li>
                 </ul>
             </div>
             
