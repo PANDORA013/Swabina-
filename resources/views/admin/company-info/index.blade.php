@@ -49,10 +49,3 @@
     </div>
 </div>
 @endsection
-
-                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-            </form>
-        </div>
-    </div>
-</div>
-@endsection
