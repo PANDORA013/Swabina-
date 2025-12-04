@@ -59,14 +59,12 @@ Route::redirect('/mengapa-memilih-kami', '/tentang-kami#memilihkami', 301)->name
 // SERVICES - Dynamic Pages (NEW Architecture)
 // ============================================
 Route::get('/layanan', [PublicLayananController::class, 'index'])->name('layanan.index');
-Route::get('/layanan/{slug}', [PublicLayananController::class, 'show'])->name('layanan.show');
 
-// Legacy Service Routes (Backward Compatibility - Redirect to Dynamic)
-Route::redirect('/layanan/swa-academy', '/layanan/swa-academy', 301)->name('swaacademy');
-Route::redirect('/layanan/facility-management', '/layanan/facility-management', 301)->name('facility-management');
-Route::redirect('/layanan/digital-solution', '/layanan/digital-solution', 301)->name('digitalsolution');
-Route::redirect('/layanan/tour-organizer', '/layanan/tour-organizer', 301)->name('swatour');
-Route::redirect('/swasegar', '/layanan/swasegar', 301)->name('swasegar');
+// SEO-Friendly Redirect for Swasegar (short URL → dynamic page)
+Route::redirect('/swasegar', '/layanan/swasegar-amdk', 301)->name('swasegar');
+
+// Dynamic service route (must be last to avoid conflicts)
+Route::get('/layanan/{slug}', [PublicLayananController::class, 'show'])->name('layanan.show');
 
 // Other Pages
 Route::get('/kontak', [ContactController::class, 'index'])->name('kontakkami');

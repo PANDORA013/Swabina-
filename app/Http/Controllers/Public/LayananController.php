@@ -26,7 +26,13 @@ class LayananController extends Controller
     public function show($slug)
     {
         $companyInfo = CompanyInfo::first();
-        $service = LayananPage::findBySlug($slug);
+        
+        try {
+            $service = LayananPage::findBySlug($slug);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            // If service not found, redirect to services index or show 404
+            abort(404, "Layanan dengan slug '$slug' tidak ditemukan. Silakan tambahkan di Admin Panel.");
+        }
         
         // Get related services (for "Other Services" section)
         $relatedServices = LayananPage::where('is_active', true)
