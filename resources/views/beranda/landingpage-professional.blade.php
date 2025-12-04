@@ -118,7 +118,7 @@
                         </div>
                         <h4 class="card-title">Facility Management</h4>
                         <p class="card-text">Layanan pengelolaan fasilitas profesional untuk gedung dan perkantoran.</p>
-                        <a href="{{ route('facility-management') }}" class="btn btn-primary">
+                        <a href="{{ route('layanan.show', 'facility-management') }}" class="btn btn-primary">
                             <i class="bi bi-arrow-right"></i> Selengkapnya
                         </a>
                     </div>
@@ -133,7 +133,7 @@
                         </div>
                         <h4 class="card-title">Digital Solution</h4>
                         <p class="card-text">Solusi teknologi digital untuk transformasi bisnis Anda.</p>
-                        <a href="{{ route('digitalsolution') }}" class="btn btn-primary">
+                        <a href="{{ route('layanan.show', 'digital-solution') }}" class="btn btn-primary">
                             <i class="bi bi-arrow-right"></i> Selengkapnya
                         </a>
                     </div>
@@ -148,7 +148,7 @@
                         </div>
                         <h4 class="card-title">SWA Academy</h4>
                         <p class="card-text">Pelatihan dan pengembangan SDM profesional.</p>
-                        <a href="{{ route('swaacademy') }}" class="btn btn-primary">
+                        <a href="{{ route('layanan.show', 'swa-academy') }}" class="btn btn-primary">
                             <i class="bi bi-arrow-right"></i> Selengkapnya
                         </a>
                     </div>
@@ -163,7 +163,7 @@
                         </div>
                         <h4 class="card-title">SWA Tour Organizer</h4>
                         <p class="card-text">Layanan travel dan tour organizer profesional.</p>
-                        <a href="{{ route('swatour') }}" class="btn btn-primary">
+                        <a href="{{ route('layanan.show', 'swa-tour-organizer') }}" class="btn btn-primary">
                             <i class="bi bi-arrow-right"></i> Selengkapnya
                         </a>
                     </div>
@@ -178,7 +178,7 @@
                         </div>
                         <h4 class="card-title">Swasegar AMDK</h4>
                         <p class="card-text">Air minum dalam kemasan berkualitas tinggi.</p>
-                        <a href="{{ route('swasegar') }}" class="btn btn-primary">
+                        <a href="{{ route('layanan.show', 'swasegar-amdk') }}" class="btn btn-primary">
                             <i class="bi bi-arrow-right"></i> Selengkapnya
                         </a>
                     </div>
