@@ -13,10 +13,20 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            // 1. Create Admin Roles Structure
             AdminRoleSeeder::class,
-            AssignSuperAdminRoleSeeder::class,
+            
+            // 2. Create Permissions System
             CreatePermissionsSeeder::class,
-            LayananSeeder::class, // Seed service pages data
+            
+            // 3. Create Super Admin User (Hardcoded)
+            CreateSpecificSuperAdminSeeder::class,
+            
+            // 4. Seed Service Pages (Dynamic Content)
+            LayananSeeder::class,
+            
+            // 5. Seed Company Info (Optional - can be managed via admin)
+            CompanyInfoSeeder::class,
         ]);
     }
 }
