@@ -733,7 +733,7 @@
                             </nav>
                         </div>
                         <div class="text-muted small">
-                            <i class="fas fa-user-shield"></i> {{ Auth::user()->name }}
+                            <i class="fas fa-user-shield"></i> {{ auth()->user()->name ?? 'Guest' }}
                         </div>
                     </div>
                 </div>
