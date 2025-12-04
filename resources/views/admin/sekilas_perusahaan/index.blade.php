@@ -19,7 +19,7 @@
             @endif
 
             <div class="table-responsive">
-                <table class="table text-nowrap mb-0 align-middle">
+                <table class="table mb-0 align-middle">
                     <thead class="text-dark fs-4">
                         <tr>
                             <th>No</th>
@@ -35,32 +35,32 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>
                                 @if($item->image)
-                                    <img src="{{ asset('assets/gambar_sekilas/'.$item->image) }}" width="80" class="rounded">
+                                    <img src="{{ asset('assets/gambar_sekilas/' . $item->image) }}" width="80" class="rounded">
                                 @else
-                                    <span class="text-muted">No image</span>
+                                    <span class="badge bg-light text-dark">No Image</span>
                                 @endif
                             </td>
-                            <td>
-                                <h6 class="fw-semibold mb-1">{{ $item->title }}</h6>
-                            </td>
-                            <td>{{ Str::limit($item->description, 100) }}</td>
+                            <td><h6 class="fw-semibold">{{ $item->title }}</h6></td>
+                            <td>{{ Str::limit(strip_tags($item->description), 50) }}</td>
                             <td>
                                 <div class="d-flex gap-2">
                                     <a href="{{ route('admin.sekilas.edit', $item->id) }}" class="btn btn-warning btn-sm">
-                                        <i class="ti ti-edit"></i> Edit
+                                        <i class="ti ti-edit"></i>
                                     </a>
                                     <form action="{{ route('admin.sekilas.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Hapus data ini?');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm">
-                                            <i class="ti ti-trash"></i> Hapus
+                                            <i class="ti ti-trash"></i>
                                         </button>
                                     </form>
                                 </div>
                             </td>
                         </tr>
                         @empty
-                        <tr><td colspan="5" class="text-center">Belum ada data</td></tr>
+                        <tr>
+                            <td colspan="5" class="text-center">Belum ada data sekilas perusahaan</td>
+                        </tr>
                         @endforelse
                     </tbody>
                 </table>
