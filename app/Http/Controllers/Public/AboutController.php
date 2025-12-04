@@ -26,13 +26,11 @@ class AboutController extends Controller
         // Jejak Langkah (Timeline)
         $jejakLangkahs = JejakLangkah::orderBy('year', 'desc')->get();
         
-        // Sertifikat & Penghargaan
-        $sertifikats = Sertifikat::where('is_active', true)
-            ->orderBy('year', 'desc')
-            ->get();
+        // Sertifikat & Penghargaan (hapus filter is_active dan year jika tidak ada)
+        $sertifikats = Sertifikat::latest()->get();
         
         // Why Choose Us
-        $whyChooseUs = WhyChooseUs::getActive();
+        $whyChooseUs = WhyChooseUs::all();
         
         return view('about.index', compact(
             'companyInfo',
