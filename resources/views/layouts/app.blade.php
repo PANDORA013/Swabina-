@@ -653,7 +653,7 @@
                     </li>
 
                     <!-- Admin Management (Super Admin Only) -->
-                    @if(auth()->user()->isSuperAdmin())
+                    @if(auth()->check() && auth()->user()->isSuperAdmin())
                         <li>
                             <a href="{{ route('admin.admin-management.index') }}" class="@if(request()->routeIs('admin.admin-management.*')) active @endif">
                                 <i class="fas fa-cog me-2"></i>
