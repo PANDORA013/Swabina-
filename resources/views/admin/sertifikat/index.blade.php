@@ -20,19 +20,20 @@
 
             <div class="row">
                 @forelse($sertifikats as $item)
-                <div class="col-md-4 col-lg-3 mb-4">
+                <div class="col-md-3 mb-4">
                     <div class="card h-100 shadow-sm">
-                        <div class="position-relative">
+                        <div class="position-relative text-center p-2">
                             @if($item->image)
-                                <img src="{{ asset('storage/' . $item->image) }}" class="card-img-top p-3" alt="Sertifikat" style="height: 200px; object-fit: contain;">
+                                <img src="{{ asset('storage/' . $item->image) }}" class="card-img-top" alt="Sertifikat" style="height: 200px; object-fit: contain;">
                             @else
                                 <div class="d-flex align-items-center justify-content-center bg-light" style="height: 200px;">
                                     <span class="text-muted">No Image</span>
                                 </div>
                             @endif
                         </div>
-                        <div class="card-body p-3">
-                            <h6 class="card-title fw-semibold mb-1 text-center">{{ $item->nama ?? 'Sertifikat' }}</h6>
+                        <div class="card-body p-3 text-center">
+                            {{-- Pastikan kolom database sesuai, biasanya 'title' atau 'nama' --}}
+                            <h6 class="card-title fw-semibold mb-1 text-center">{{ $item->title ?? $item->nama ?? 'Sertifikat' }}</h6>
                             <div class="d-flex justify-content-center gap-2 mt-3">
                                 <a href="{{ route('admin.sertifikat.edit', $item->id) }}" class="btn btn-warning btn-sm w-100">
                                     <i class="ti ti-edit"></i> Edit
@@ -57,7 +58,4 @@
         </div>
     </div>
 </div>
-@endsection
-</div>
-
 @endsection
