@@ -8,24 +8,28 @@
             <form action="{{ route('admin.sekilas.update', $item->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
+                
                 <div class="mb-3">
                     <label class="form-label">Judul</label>
                     <input type="text" name="title" class="form-control" value="{{ $item->title }}" required>
                 </div>
+                
                 <div class="mb-3">
                     <label class="form-label">Gambar</label>
                     @if($item->image)
                         <div class="mb-2">
-                            <img src="{{ asset('assets/gambar_sekilas/' . $item->image) }}" width="120" class="rounded">
+                            <img src="{{ asset('assets/gambar_sekilas/' . $item->image) }}" width="150" class="rounded shadow-sm">
                         </div>
                     @endif
                     <input type="file" name="image" class="form-control">
-                    <small class="text-muted">Format: jpg, png, webp. Max 2MB. Kosongkan jika tidak ingin mengubah.</small>
+                    <small class="text-muted">Biarkan kosong jika tidak ingin mengubah gambar.</small>
                 </div>
+                
                 <div class="mb-3">
                     <label class="form-label">Deskripsi</label>
                     <textarea name="description" class="form-control" rows="5" required>{{ $item->description }}</textarea>
                 </div>
+                
                 <button type="submit" class="btn btn-primary">Update</button>
                 <a href="{{ route('admin.sekilas.index') }}" class="btn btn-secondary">Batal</a>
             </form>
