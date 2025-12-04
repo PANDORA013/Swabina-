@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             AdminRoleSeeder::class,
             AssignSuperAdminRoleSeeder::class,
             CreatePermissionsSeeder::class,
+            LayananSeeder::class, // Seed service pages data
         ]);
     }
 }
