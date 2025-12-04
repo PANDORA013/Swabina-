@@ -20,20 +20,20 @@
                             <i class="bi bi-briefcase-fill me-1"></i> Layanan
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="<?php echo e(route('swaacademy')); ?>">
+                            <li><a class="dropdown-item" href="<?php echo e(route('layanan.show', 'swa-academy')); ?>">
                                 <i class="bi bi-mortarboard me-2"></i>Swa Academy
                             </a></li>
-                            <li><a class="dropdown-item" href="<?php echo e(route('facility-management')); ?>">
+                            <li><a class="dropdown-item" href="<?php echo e(route('layanan.show', 'facility-management')); ?>">
                                 <i class="bi bi-building me-2"></i>Facility Management
                             </a></li>
-                            <li><a class="dropdown-item" href="<?php echo e(route('digitalsolution')); ?>">
+                            <li><a class="dropdown-item" href="<?php echo e(route('layanan.show', 'digital-solution')); ?>">
                                 <i class="bi bi-cpu me-2"></i>Digital Solution
                             </a></li>
-                            <li><a class="dropdown-item" href="<?php echo e(route('swatour')); ?>">
+                            <li><a class="dropdown-item" href="<?php echo e(route('layanan.show', 'swa-tour-organizer')); ?>">
                                 <i class="bi bi-airplane me-2"></i>Swa Tour Organizer
                             </a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="<?php echo e(route('swasegar')); ?>">
+                            <li><a class="dropdown-item" href="<?php echo e(route('layanan.show', 'swasegar-amdk')); ?>">
                                 <i class="bi bi-cup-straw me-2"></i>Swasegar AMDK
                             </a></li>
                         </ul>
