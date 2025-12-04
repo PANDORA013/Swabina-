@@ -12,13 +12,14 @@
             </div>
             
             @if(session('success'))
-                <div class="alert alert-success alert-dismissible fade show">{{ session('success') }}
+                <div class="alert alert-success alert-dismissible fade show">
+                    {{ session('success') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             @endif
 
             <div class="table-responsive">
-                <table class="table mb-0 align-middle">
+                <table class="table text-nowrap mb-0 align-middle">
                     <thead class="text-dark fs-4">
                         <tr>
                             <th class="border-bottom-0"><h6 class="fw-semibold mb-0">No</h6></th>
@@ -32,37 +33,43 @@
                         <tr>
                             <td class="border-bottom-0"><h6 class="fw-semibold mb-0">{{ $loop->iteration }}</h6></td>
                             <td class="border-bottom-0">
-                                <h6 class="fw-semibold mb-1" style="max-width: 250px; overflow:hidden; text-overflow:ellipsis;">{{ $item->question }}</h6>
+                                <h6 class="fw-semibold mb-1" style="max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $item->question }}</h6>
                             </td>
                             <td class="border-bottom-0">
-                                <p class="mb-0 text-muted" style="max-width: 300px; overflow:hidden; text-overflow:ellipsis;">{{ Str::limit(strip_tags($item->answer), 60) }}</p>
+                                <p class="mb-0 text-muted" style="max-width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    {{ Str::limit(strip_tags($item->answer), 60) }}
+                                </p>
                             </td>
                             <td class="border-bottom-0">
                                 <div class="d-flex align-items-center gap-2">
-                                    <a href="{{ route('admin.faq.edit', $item->id) }}" class="btn btn-warning btn-sm"><i class="ti ti-edit"></i></a>
+                                    {{-- Tombol Edit --}}
+                                    <a href="{{ route('admin.faq.edit', $item->id) }}" class="btn btn-warning btn-sm">
+                                        <i class="ti ti-edit"></i>
+                                    </a>
+                                    
+                                    {{-- Tombol Hapus --}}
                                     <form action="{{ route('admin.faq.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Hapus FAQ ini?');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm"><i class="ti ti-trash"></i></button>
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            <i class="ti ti-trash"></i>
+                                        </button>
                                     </form>
                                 </div>
                             </td>
                         </tr>
                         @empty
-                        <tr><td colspan="4" class="text-center">Belum ada data FAQ</td></tr>
+                        <tr>
+                            <td colspan="4" class="text-center py-5">
+                                <img src="{{ asset('admin/images/backgrounds/rocket.png') }}" width="100" class="mb-3" alt="No Data">
+                                <h6 class="fw-semibold text-muted">Belum ada data FAQ</h6>
+                            </td>
+                        </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-</div>
-@endsection
-                    <h5 class="alert-heading mb-2">Belum ada FAQ</h5>
-                    <p class="mb-0">Silakan <a href="{{ route('admin.faq.create') }}" class="alert-link">tambahkan FAQ baru</a> untuk memulai.</p>
-                </div>
-            </div>
-        </div>
-    @endif
 </div>
 @endsection
