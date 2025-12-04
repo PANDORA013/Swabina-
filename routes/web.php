@@ -50,10 +50,10 @@ Route::get('/faq', function () {
 Route::get('/tentang-kami', [AboutController::class, 'index'])->name('tentangkami');
 
 // SEO-Friendly Redirects (Old URLs → New Consolidated Page with Anchors)
-Route::redirect('/sekilas', '/tentang-kami#sekilas', 301);
-Route::redirect('/jejak-langkah', '/tentang-kami#jejak-langkah', 301);
-Route::redirect('/sertifikat-penghargaan', '/tentang-kami#sertifikat', 301);
-Route::redirect('/mengapa-memilih-kami', '/tentang-kami#mengapa-kami', 301);
+Route::redirect('/sekilas', '/tentang-kami#sekilas', 301)->name('sekilas');
+Route::redirect('/jejak-langkah', '/tentang-kami#jejaklangkah', 301)->name('jejaklangkah');
+Route::redirect('/sertifikat-penghargaan', '/tentang-kami#sertif', 301)->name('sertif');
+Route::redirect('/mengapa-memilih-kami', '/tentang-kami#memilihkami', 301)->name('memilihkami');
 
 // ============================================
 // SERVICES - Dynamic Pages (NEW Architecture)
