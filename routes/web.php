@@ -14,6 +14,8 @@ use App\Http\Controllers\SocialMedia\SocialLinkController;
 use App\Http\Controllers\Public\PedomanController;
 use App\Http\Controllers\About\JejakLangkahController;
 use App\Http\Controllers\Public\LandingPageController;
+use App\Http\Controllers\Public\AboutController;
+use App\Http\Controllers\Public\LayananController as PublicLayananController;
 use App\Http\Controllers\Contact\ContactController;
 use App\Http\Controllers\Public\SeoController;
 use App\Http\Controllers\Public\SearchController;
@@ -41,19 +43,29 @@ Route::get('/faq', function () {
     return view('kontakkami.faq-professional', compact('faqs'));
 })->name('faq');
 
-// About Us - Tentang Kami
-Route::get('/tentang-kami', [LandingPageController::class, 'tentangkami'])->name('tentangkami');
-Route::get('/sekilas', [LandingPageController::class, 'sekilas'])->name('sekilas');
-Route::get('/jejak-langkah', [LandingPageController::class, 'jejaklangkah'])->name('jejaklangkah');
-Route::get('/mengapa-memilih-kami', [LandingPageController::class, 'memilihkami'])->name('memilihkami');
-Route::get('/sertifikat-penghargaan', [LandingPageController::class, 'sertifikatpenghargaan'])->name('sertif');
+// ============================================
+// ABOUT US - Consolidated (NEW Architecture)
+// ============================================
+Route::get('/tentang-kami', [AboutController::class, 'index'])->name('tentangkami');
 
-// Services - Layanan
-Route::get('/layanan/swa-academy', [LandingPageController::class, 'layananss'])->name('swaacademy');
-Route::get('/layanan/facility-management', [LandingPageController::class, 'layananfm'])->name('facility-management');
-Route::get('/layanan/digital-solution', [LandingPageController::class, 'layananteknologi'])->name('digitalsolution');
-Route::get('/layanan/tour-organizer', [LandingPageController::class, 'layanandownstream'])->name('swatour');
-Route::get('/swasegar', [LandingPageController::class, 'swasegar'])->name('swasegar');
+// SEO-Friendly Redirects (Old URLs → New Consolidated Page with Anchors)
+Route::redirect('/sekilas', '/tentang-kami#sekilas', 301);
+Route::redirect('/jejak-langkah', '/tentang-kami#jejak-langkah', 301);
+Route::redirect('/sertifikat-penghargaan', '/tentang-kami#sertifikat', 301);
+Route::redirect('/mengapa-memilih-kami', '/tentang-kami#mengapa-kami', 301);
+
+// ============================================
+// SERVICES - Dynamic Pages (NEW Architecture)
+// ============================================
+Route::get('/layanan', [PublicLayananController::class, 'index'])->name('layanan.index');
+Route::get('/layanan/{slug}', [PublicLayananController::class, 'show'])->name('layanan.show');
+
+// Legacy Service Routes (Backward Compatibility - Redirect to Dynamic)
+Route::redirect('/layanan/swa-academy', '/layanan/swa-academy', 301)->name('swaacademy');
+Route::redirect('/layanan/facility-management', '/layanan/facility-management', 301)->name('facility-management');
+Route::redirect('/layanan/digital-solution', '/layanan/digital-solution', 301)->name('digitalsolution');
+Route::redirect('/layanan/tour-organizer', '/layanan/tour-organizer', 301)->name('swatour');
+Route::redirect('/swasegar', '/layanan/swasegar', 301)->name('swasegar');
 
 // Other Pages
 Route::get('/kontak', [ContactController::class, 'index'])->name('kontakkami');
