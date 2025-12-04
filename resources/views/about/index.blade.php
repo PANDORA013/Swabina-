@@ -185,7 +185,7 @@
                     @if($sertifikat->image)
                     <img 
                         src="{{ asset('storage/' . $sertifikat->image) }}" 
-                        alt="{{ $sertifikat->name }}"
+                        alt="{{ $sertifikat->name ?? $sertifikat->nama ?? 'Sertifikat' }}"
                         class="card-img-top"
                         loading="lazy"
                         width="300"
@@ -197,8 +197,8 @@
                     </div>
                     @endif
                     <div class="card-body text-center">
-                        <h5 class="h6 mb-2">{{ $sertifikat->name }}</h5>
-                        @if($sertifikat->year)
+                        <h5 class="h6 mb-2">{{ $sertifikat->name ?? $sertifikat->nama ?? 'Sertifikat' }}</h5>
+                        @if(isset($sertifikat->year) && $sertifikat->year)
                         <p class="text-muted small mb-0">{{ $sertifikat->year }}</p>
                         @endif
                     </div>
