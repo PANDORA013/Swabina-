@@ -32,8 +32,7 @@
                             @endif
                         </div>
                         <div class="card-body p-3 text-center">
-                            {{-- Pastikan kolom database sesuai, biasanya 'title' atau 'nama' --}}
-                            <h6 class="card-title fw-semibold mb-1 text-center">{{ $item->title ?? $item->nama ?? 'Sertifikat' }}</h6>
+                            <h6 class="card-title fw-semibold mb-1 text-center">{{ $item->title }}</h6>
                             <div class="d-flex justify-content-center gap-2 mt-3">
                                 <a href="{{ route('admin.sertifikat.edit', $item->id) }}" class="btn btn-warning btn-sm w-100">
                                     <i class="ti ti-edit"></i> Edit

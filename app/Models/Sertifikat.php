@@ -12,8 +12,7 @@ class Sertifikat extends Model
     protected $table = 'sertifikats';
 
     protected $fillable = [
-        'nama',
-        'deskripsi',
+        'title',
         'image',
     ];
 }

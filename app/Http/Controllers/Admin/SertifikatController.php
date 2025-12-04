@@ -13,14 +13,14 @@ class SertifikatController extends Controller
     public function index()
     {
         $sertifikats = Sertifikat::latest()->get();
-        $layout = 'layouts.app';
+        $layout = 'vertical';
         return view('admin.sertifikat.index', compact('sertifikats', 'layout'));
     }
 
     // Menampilkan form tambah
     public function create()
     {
-        $layout = 'layouts.app';
+        $layout = 'vertical';
         return view('admin.sertifikat.create', compact('layout'));
     }
 
@@ -28,8 +28,7 @@ class SertifikatController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama'       => 'required|string|max:255',
-            'deskripsi'  => 'nullable|string',
+            'title'      => 'required|string|max:255',
             'image'      => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
@@ -51,7 +50,7 @@ class SertifikatController extends Controller
     public function edit($id)
     {
         $sertifikat = Sertifikat::findOrFail($id);
-        $layout = 'layouts.app';
+        $layout = 'vertical';
         return view('admin.sertifikat.edit', compact('sertifikat', 'layout'));
     }
 
@@ -59,8 +58,7 @@ class SertifikatController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nama'       => 'required|string|max:255',
-            'deskripsi'  => 'nullable|string',
+            'title'      => 'required|string|max:255',
             'image'      => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
