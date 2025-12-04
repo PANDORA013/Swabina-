@@ -33,8 +33,8 @@ class AboutController extends Controller
         // Why Choose Us
         $whyChooseUs = WhyChooseUs::all();
 
-        // Mengirim data ke view 'about.index'
-        return view('about.index', compact(
+        // Mengirim data ke view 'tentangkami.tentangkami'
+        return view('tentangkami.tentangkami', compact(
             'companyInfo',
             'sekilas',
             'jejakLangkahs',
