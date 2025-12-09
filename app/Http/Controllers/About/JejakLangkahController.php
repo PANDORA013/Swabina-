@@ -12,7 +12,7 @@ class JejakLangkahController extends Controller
     // Menampilkan daftar jejak langkah
     public function index()
     {
-        $jejakLangkahs = JejakLangkah::orderBy('tahun', 'desc')->get();
+        $jejakLangkahs = JejakLangkah::orderBy('year', 'desc')->get();
         $layout = 'layouts.app';
         return view('admin.jejak_langkah.index', compact('jejakLangkahs', 'layout'));
     }
@@ -28,8 +28,9 @@ class JejakLangkahController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'tahun'      => 'required|integer|min:1900|max:2100',
-            'deskripsi'  => 'required|string',
+            'year'       => 'required|integer|min:1900|max:2100',
+            'title'      => 'required|string|max:255',
+            'description' => 'required|string',
             'image'      => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
@@ -59,8 +60,9 @@ class JejakLangkahController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'tahun'      => 'required|integer|min:1900|max:2100',
-            'deskripsi'  => 'required|string',
+            'year'       => 'required|integer|min:1900|max:2100',
+            'title'      => 'required|string|max:255',
+            'description' => 'required|string',
             'image'      => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 

@@ -5,59 +5,83 @@ namespace App\Http\Controllers\SocialMedia;
 use App\Http\Controllers\Controller;
 use App\Models\SocialLink;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\View;
 
 class SocialLinkController extends Controller
 {
-    // Method publik untuk mengambil social links yang aman
-    public function getPublicSocialLinks()
-    {
-        $social = SocialLink::select('facebook', 'youtube', 'instagram')
-            ->firstOrCreate(['id' => 1]);
-            
-        return response()->json([
-            'facebook' => $social->facebook,
-            'youtube' => $social->youtube,
-            'instagram' => $social->instagram
-        ]);
-    }
-
-    // Menampilkan daftar social media links
     public function index()
     {
-        $social = SocialLink::firstOrCreate(['id' => 1]);
+        $socialLinks = SocialLink::all(); 
         $layout = 'layouts.app';
-        return view('admin.social-media.index', compact('social', 'layout'));
+        return view('admin.social-media.index', compact('socialLinks', 'layout'));
     }
 
-    // Menampilkan form edit (SocialLink is a single row table)
+    public function create()
+    {
+        $layout = 'layouts.app';
+        return view('admin.social-media.create', compact('layout'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'platform' => 'required|string',
+            'url' => 'required|url',
+        ]);
+
+        SocialLink::create([
+            'platform' => $request->platform,
+            'url' => $request->url,
+            'icon' => $this->getIcon($request->platform),
+            'is_active' => $request->has('is_active'),
+        ]);
+
+        return redirect()->route('admin.social-media.index')->with('success', 'Sosial media berhasil ditambahkan');
+    }
+
     public function edit($id)
     {
-        $social = SocialLink::findOrFail($id);
+        $socialLink = SocialLink::findOrFail($id);
         $layout = 'layouts.app';
-        return view('admin.social-media.edit', compact('social', 'layout'));
+        return view('admin.social-media.edit', compact('socialLink', 'layout'));
     }
 
-    // Mengupdate social media links
     public function update(Request $request, $id)
     {
         $request->validate([
-            'facebook'       => 'nullable|url',
-            'instagram'      => 'nullable|url',
-            'youtube'        => 'nullable|url',
-            'youtube_landing' => 'nullable|url',
-            'whatsapp'       => 'nullable|string',
-            'linkedin'       => 'nullable|url',
+            'platform' => 'required|string',
+            'url' => 'required|url',
         ]);
 
-        $social = SocialLink::findOrFail($id);
-        $data = $request->all();
+        $socialLink = SocialLink::findOrFail($id);
+        $socialLink->update([
+            'platform' => $request->platform,
+            'url' => $request->url,
+            'icon' => $this->getIcon($request->platform),
+            'is_active' => $request->has('is_active'),
+        ]);
 
-        $social->update($data);
+        return redirect()->route('admin.social-media.index')->with('success', 'Sosial media berhasil diperbarui');
+    }
 
-        // Clear view cache after update
-        View::clearCache();
+    public function destroy($id)
+    {
+        $socialLink = SocialLink::findOrFail($id);
+        $socialLink->delete();
 
-        return redirect()->route('admin.social-media.index')->with('success', 'Social media links berhasil diperbarui');
+        return redirect()->route('admin.social-media.index')->with('success', 'Sosial media berhasil dihapus');
+    }
+
+    private function getIcon($platform)
+    {
+        $icons = [
+            'facebook' => 'ti ti-brand-facebook',
+            'instagram' => 'ti ti-brand-instagram',
+            'twitter' => 'ti ti-brand-twitter',
+            'linkedin' => 'ti ti-brand-linkedin',
+            'youtube' => 'ti ti-brand-youtube',
+            'tiktok' => 'ti ti-brand-tiktok',
+        ];
+
+        return $icons[strtolower($platform)] ?? 'ti ti-link';
     }
 } 

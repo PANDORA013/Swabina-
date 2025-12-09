@@ -56,30 +56,3 @@
     </div>
 </div>
 @endsection
-                            @endif
-                        </div>
-                    </div>
-                </div>
-
-                <!-- LinkedIn -->
-                <div class="col-md-6 mb-4">
-                    <div class="d-flex align-items-center p-3 border rounded">
-                        <i class="bi bi-linkedin" style="font-size: 2rem; color: #0a66c2; margin-right: 15px;"></i>
-                        <div class="flex-grow-1">
-                            <h6 class="mb-1">LinkedIn</h6>
-                            @if($social->linkedin)
-                                <a href="{{ $social->linkedin }}" target="_blank" class="text-muted small">
-                                    {{ Str::limit($social->linkedin, 40) }}
-                                </a>
-                            @else
-                                <span class="text-muted small">-</span>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-@endsection
