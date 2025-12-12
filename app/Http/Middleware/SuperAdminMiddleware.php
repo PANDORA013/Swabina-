@@ -5,7 +5,6 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 
 class SuperAdminMiddleware
 {
@@ -14,12 +13,18 @@ class SuperAdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $user = Auth::user();
-
-        if (!$user || !$user->isSuperAdmin()) {
-            abort(403, 'Unauthorized. Super Admin access required.');
+        // 1. Pastikan user login
+        if (!Auth::check()) {
+            return redirect('login');
         }
 
-        return $next($request);
+        // 2. Cek apakah role-nya superadmin
+        // Asumsi: kolom di database bernama 'role'
+        if (Auth::user()->role === 'super_admin') {
+            return $next($request);
+        }
+
+        // 3. Jika bukan, tolak akses (403 Forbidden)
+        abort(403, 'AKSES DITOLAK: Halaman ini khusus Super Admin.');
     }
 }

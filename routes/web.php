@@ -94,101 +94,12 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->midd
 // ============================================
 // ADMIN ROUTES (Protected by Auth)
 // ============================================
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+
+// 1. SUPER ADMIN ONLY - User Management
+Route::middleware(['auth', \App\Http\Middleware\SuperAdminMiddleware::class])
+    ->prefix('admin')->name('admin.')->group(function () {
     
-    // Dashboard (Accessible to all authenticated admins)
-    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
-
-    // 1. Module Berita/News (Requires: manage_news)
-    Route::middleware(['check.privilege:manage_news'])->group(function () {
-        Route::resource('berita', NewsController::class, [
-            'names' => [
-                'index' => 'berita.index',
-                'create' => 'berita.create',
-                'store' => 'berita.store',
-                'show' => 'berita.show',
-                'edit' => 'berita.edit',
-                'update' => 'berita.update',
-                'destroy' => 'berita.destroy',
-            ]
-        ]);
-    });
-
-    // 2. Module FAQ (Requires: manage_faq)
-    Route::middleware(['check.privilege:manage_faq'])->group(function () {
-        Route::resource('faq', FaqController::class);
-    });
-
-    // 3. Module Layanan (Requires: manage_services)
-    Route::middleware(['check.privilege:manage_services'])->group(function () {
-        Route::resource('layanan', LayananController::class, [
-            'parameters' => ['layanan' => 'slug']
-        ]);
-        Route::put('layanan/{slug}/status', [LayananController::class, 'updateStatus'])->name('layanan.updateStatus');
-    });
-
-    // 4. Module Sertifikat & Penghargaan (Requires: manage_content)
-    Route::middleware(['check.privilege:manage_content'])->group(function () {
-        Route::resource('sertifikat', SertifikatController::class);
-    });
-
-    // 5. Module Why Choose Us (Requires: manage_content)
-    Route::middleware(['check.privilege:manage_content'])->group(function () {
-        Route::resource('why-choose-us', WhyChooseUsController::class);
-    });
-
-    // 6. Module Pedoman/Guidelines (Requires: manage_content)
-    Route::middleware(['check.privilege:manage_content'])->group(function () {
-        Route::resource('pedoman', PedomanController::class);
-    });
-
-    // 7. Module Sekilas Perusahaan (Requires: manage_content)
-    Route::middleware(['check.privilege:manage_content'])->group(function () {
-        Route::resource('sekilas', SekilasPerusahaanController::class);
-    });
-
-    // 8. Module Jejak Langkah (Requires: manage_content)
-    Route::middleware(['check.privilege:manage_content'])->group(function () {
-        Route::resource('jejak', JejakLangkahController::class);
-    });
-
-    // 9. Module Company Info (Requires: manage_company_info)
-    Route::middleware(['check.privilege:manage_company_info'])->prefix('company-info')->name('company-info.')->group(function () {
-        Route::get('/', [CompanyInfoController::class, 'index'])->name('index');
-        Route::post('/store', [CompanyInfoController::class, 'store'])->name('store');
-        Route::get('/create', [CompanyInfoController::class, 'create'])->name('create');
-        Route::get('/{id}/edit', [CompanyInfoController::class, 'edit'])->name('edit');
-        Route::put('/{id}', [CompanyInfoController::class, 'update'])->name('update');
-    });
-
-    // 10. Module Contact Page (Requires: manage_settings)
-    Route::middleware(['check.privilege:manage_settings'])->prefix('contact-page')->name('contact-page.')->group(function () {
-        Route::get('/', [ContactPageController::class, 'index'])->name('index');
-        Route::get('/create', [ContactPageController::class, 'create'])->name('create');
-        Route::post('/', [ContactPageController::class, 'store'])->name('store');
-        Route::get('/{id}/edit', [ContactPageController::class, 'edit'])->name('edit');
-        Route::put('/{id}', [ContactPageController::class, 'update'])->name('update');
-        Route::delete('/{id}', [ContactPageController::class, 'destroy'])->name('destroy');
-    });
-
-    // 11. Module Social Media Links (Requires: manage_settings)
-    Route::middleware(['check.privilege:manage_settings'])->prefix('social-media')->name('social-media.')->group(function () {
-        Route::get('/', [SocialLinkController::class, 'index'])->name('index');
-        Route::get('/create', [SocialLinkController::class, 'create'])->name('create');
-        Route::post('/', [SocialLinkController::class, 'store'])->name('store');
-        Route::get('/{id}/edit', [SocialLinkController::class, 'edit'])->name('edit');
-        Route::put('/{id}', [SocialLinkController::class, 'update'])->name('update');
-        Route::delete('/{id}', [SocialLinkController::class, 'destroy'])->name('destroy');
-    });
-
-    // 12. Website Settings (Requires: manage_settings)
-    Route::middleware(['check.privilege:manage_settings'])->prefix('settings')->name('settings.')->group(function () {
-        Route::get('/', [\App\Http\Controllers\Admin\SettingController::class, 'edit'])->name('edit');
-        Route::post('/', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('update');
-    });
-
-    // 13. Admin Management (Super Admin Only)
-    Route::middleware(['super_admin'])->prefix('admin-management')->name('admin-management.')->group(function () {
+    Route::prefix('admin-management')->name('admin-management.')->group(function () {
         Route::get('/', [AdminManagementController::class, 'index'])->name('index');
         Route::get('/create', [AdminManagementController::class, 'create'])->name('create');
         Route::post('/store', [AdminManagementController::class, 'store'])->name('store');
@@ -196,11 +107,89 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::put('/{admin}', [AdminManagementController::class, 'update'])->name('update');
         Route::delete('/{admin}', [AdminManagementController::class, 'destroy'])->name('destroy');
         Route::get('/{role}/permissions', [AdminManagementController::class, 'getRolePermissions'])->name('get-permissions');
-        
-        // Privilege Management Routes
         Route::get('/{admin}/privileges', [AdminManagementController::class, 'showPrivileges'])->name('privileges');
         Route::post('/{admin}/privileges', [AdminManagementController::class, 'updatePrivileges'])->name('update-privileges');
         Route::get('/api/permissions', [AdminManagementController::class, 'getAvailablePermissions'])->name('api-permissions');
+    });
+});
+
+// 2. ADMIN AREA - Content Management (Admin + Super Admin)
+Route::middleware(['auth', \App\Http\Middleware\CheckAdminPrivilege::class])
+    ->prefix('admin')->name('admin.')->group(function () {
+    
+    // Dashboard
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+    
+    // Berita/News
+    Route::resource('berita', NewsController::class, [
+        'names' => [
+            'index' => 'berita.index',
+            'create' => 'berita.create',
+            'store' => 'berita.store',
+            'show' => 'berita.show',
+            'edit' => 'berita.edit',
+            'update' => 'berita.update',
+            'destroy' => 'berita.destroy',
+        ]
+    ]);
+    
+    // FAQ
+    Route::resource('faq', FaqController::class);
+    
+    // Layanan
+    Route::resource('layanan', LayananController::class, [
+        'parameters' => ['layanan' => 'slug']
+    ]);
+    Route::put('layanan/{slug}/status', [LayananController::class, 'updateStatus'])->name('layanan.updateStatus');
+    
+    // Sertifikat & Penghargaan
+    Route::resource('sertifikat', SertifikatController::class);
+    
+    // Why Choose Us
+    Route::resource('why-choose-us', WhyChooseUsController::class);
+    
+    // Pedoman/Guidelines
+    Route::resource('pedoman', PedomanController::class);
+    
+    // Sekilas Perusahaan
+    Route::resource('sekilas', SekilasPerusahaanController::class);
+    
+    // Jejak Langkah
+    Route::resource('jejak', JejakLangkahController::class);
+    
+    // Company Info
+    Route::prefix('company-info')->name('company-info.')->group(function () {
+        Route::get('/', [CompanyInfoController::class, 'index'])->name('index');
+        Route::post('/store', [CompanyInfoController::class, 'store'])->name('store');
+        Route::get('/create', [CompanyInfoController::class, 'create'])->name('create');
+        Route::get('/{id}/edit', [CompanyInfoController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [CompanyInfoController::class, 'update'])->name('update');
+    });
+    
+    // Contact Page
+    Route::prefix('contact-page')->name('contact-page.')->group(function () {
+        Route::get('/', [ContactPageController::class, 'index'])->name('index');
+        Route::get('/create', [ContactPageController::class, 'create'])->name('create');
+        Route::post('/', [ContactPageController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [ContactPageController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [ContactPageController::class, 'update'])->name('update');
+        Route::delete('/{id}', [ContactPageController::class, 'destroy'])->name('destroy');
+    });
+    
+    // Social Media Links
+    Route::prefix('social-media')->name('social-media.')->group(function () {
+        Route::get('/', [SocialLinkController::class, 'index'])->name('index');
+        Route::get('/create', [SocialLinkController::class, 'create'])->name('create');
+        Route::post('/', [SocialLinkController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [SocialLinkController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [SocialLinkController::class, 'update'])->name('update');
+        Route::delete('/{id}', [SocialLinkController::class, 'destroy'])->name('destroy');
+    });
+    
+    // Website Settings
+    Route::prefix('settings')->name('settings.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\SettingController::class, 'edit'])->name('edit');
+        Route::post('/', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('update');
     });
 });
 

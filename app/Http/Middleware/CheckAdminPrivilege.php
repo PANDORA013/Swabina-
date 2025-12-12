@@ -10,32 +10,21 @@ class CheckAdminPrivilege
 {
     /**
      * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @param  string  $permission
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next, $permission = null)
+    public function handle(Request $request, Closure $next)
     {
+        if (!Auth::check()) {
+            return redirect('login');
+        }
+
         $user = Auth::user();
 
-        // Super Admin has access to everything
-        if ($user && $user->isSuperAdmin()) {
+        // Izinkan jika role adalah 'super_admin' ATAU 'admin'
+        // Sesuaikan string ini dengan isi database kolom 'role' Anda
+        if (in_array($user->role, ['super_admin', 'admin'])) {
             return $next($request);
         }
 
-        // Check if permission is required
-        if ($permission) {
-            // Check if user has permission
-            if ($user && $user->hasPermissionTo($permission)) {
-                return $next($request);
-            }
-
-            // If no permission, abort
-            abort(403, 'Unauthorized. Permission "' . $permission . '" required.');
-        }
-
-        return $next($request);
+        abort(403, 'AKSES DITOLAK: Anda tidak memiliki akses admin.');
     }
 }
