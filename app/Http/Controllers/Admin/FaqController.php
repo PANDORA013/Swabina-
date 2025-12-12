@@ -8,59 +8,56 @@ use Illuminate\Http\Request;
 
 class FaqController extends Controller
 {
-    // Menampilkan daftar FAQ
     public function index()
     {
-        $faqs = Faq::latest()->get();
-        $layout = 'layouts.app';
-        return view('admin.faq.index', compact('faqs', 'layout'));
+        $faqs = Faq::latest()->paginate(10);
+        return view('admin.faq.index', compact('faqs'));
     }
 
-    // Menampilkan form tambah
     public function create()
     {
-        $layout = 'layouts.app';
-        return view('admin.faq.create', compact('layout'));
+        return view('admin.faq.create');
     }
 
-    // Menyimpan FAQ baru
     public function store(Request $request)
     {
-        $request->validate([
-            'question' => 'required|string|max:500',
+        $validated = $request->validate([
+            'question' => 'required|string|max:255|unique:faqs,question',
             'answer'   => 'required|string',
+            'kategori' => 'nullable|string', // Opsional jika ada grouping
         ]);
 
-        Faq::create($request->all());
-        return redirect()->route('admin.faq.index')->with('success', 'FAQ berhasil ditambahkan');
+        Faq::create($validated);
+
+        return redirect()->route('admin.faq.index')->with('success', 'FAQ berhasil ditambahkan.');
     }
 
-    // Menampilkan form edit
     public function edit($id)
     {
         $faq = Faq::findOrFail($id);
-        $layout = 'layouts.app';
-        return view('admin.faq.edit', compact('faq', 'layout'));
+        return view('admin.faq.edit', compact('faq'));
     }
 
-    // Mengupdate FAQ
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'question' => 'required|string|max:500',
+        $faq = Faq::findOrFail($id);
+
+        // FIX: Ignore ID saat validasi unique agar tidak error saat save tanpa ubah judul
+        $validated = $request->validate([
+            'question' => 'required|string|max:255|unique:faqs,question,' . $id,
             'answer'   => 'required|string',
+            'kategori' => 'nullable|string',
         ]);
 
-        $faq = Faq::findOrFail($id);
-        $faq->update($request->all());
-        return redirect()->route('admin.faq.index')->with('success', 'FAQ berhasil diperbarui');
+        $faq->update($validated);
+
+        return redirect()->route('admin.faq.index')->with('success', 'FAQ berhasil diperbarui.');
     }
 
-    // Menghapus FAQ
     public function destroy($id)
     {
         $faq = Faq::findOrFail($id);
         $faq->delete();
-        return redirect()->route('admin.faq.index')->with('success', 'FAQ berhasil dihapus');
+        return redirect()->route('admin.faq.index')->with('success', 'FAQ berhasil dihapus.');
     }
 }

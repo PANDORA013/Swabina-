@@ -9,94 +9,74 @@ use Illuminate\Support\Facades\Storage;
 
 class SertifikatController extends Controller
 {
-    // Menampilkan daftar sertifikat
     public function index()
     {
-        $sertifikats = Sertifikat::latest()->get();
-        $layout = 'vertical';
-        return view('admin.sertifikat.index', compact('sertifikats', 'layout'));
+        $sertifikats = Sertifikat::latest()->paginate(10);
+        return view('admin.sertifikat.index', compact('sertifikats'));
     }
 
-    // Menampilkan form tambah
     public function create()
     {
-        $layout = 'vertical';
-        return view('admin.sertifikat.create', compact('layout'));
+        return view('admin.sertifikat.create');
     }
 
-    // Menyimpan sertifikat baru
     public function store(Request $request)
     {
-        $request->validate([
-            'title'      => 'required|string|max:255',
-            'image'      => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
+        $validated = $request->validate([
+            'title'       => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'image'       => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'issued_date' => 'nullable|date',
         ]);
 
-        $data = $request->all();
-
-        // Upload Image
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->storeAs('sertifikats', $imageName, 'public');
-            $data['image'] = 'sertifikats/' . $imageName;
+            $validated['image'] = $request->file('image')->store('sertifikats', 'public');
         }
 
-        Sertifikat::create($data);
-        return redirect()->route('admin.sertifikat.index')->with('success', 'Sertifikat berhasil ditambahkan');
+        Sertifikat::create($validated);
+
+        return redirect()->route('admin.sertifikat.index')->with('success', 'Sertifikat berhasil ditambahkan.');
     }
 
-    // Menampilkan form edit
     public function edit($id)
     {
         $sertifikat = Sertifikat::findOrFail($id);
-        $layout = 'vertical';
-        return view('admin.sertifikat.edit', compact('sertifikat', 'layout'));
+        return view('admin.sertifikat.edit', compact('sertifikat'));
     }
 
-    // Mengupdate sertifikat
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'title'      => 'required|string|max:255',
-            'image'      => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+        $sertifikat = Sertifikat::findOrFail($id);
+
+        $validated = $request->validate([
+            'title'       => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'image'       => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'issued_date' => 'nullable|date',
         ]);
 
-        $sertifikat = Sertifikat::findOrFail($id);
-        $data = $request->all();
-
-        // Cek jika ada upload gambar baru
         if ($request->hasFile('image')) {
-            // Hapus gambar lama jika ada
             if ($sertifikat->image && Storage::disk('public')->exists($sertifikat->image)) {
                 Storage::disk('public')->delete($sertifikat->image);
             }
-
-            $image = $request->file('image');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->storeAs('sertifikats', $imageName, 'public');
-            $data['image'] = 'sertifikats/' . $imageName;
+            $validated['image'] = $request->file('image')->store('sertifikats', 'public');
         } else {
-            // Jika tidak upload gambar, pakai gambar lama (jangan di-overwrite null)
-            unset($data['image']);
+            unset($validated['image']);
         }
 
-        $sertifikat->update($data);
-        return redirect()->route('admin.sertifikat.index')->with('success', 'Sertifikat berhasil diperbarui');
+        $sertifikat->update($validated);
+
+        return redirect()->route('admin.sertifikat.index')->with('success', 'Sertifikat berhasil diperbarui.');
     }
 
-    // Menghapus sertifikat
     public function destroy($id)
     {
         $sertifikat = Sertifikat::findOrFail($id);
-
-        // Hapus gambar dari storage
         if ($sertifikat->image && Storage::disk('public')->exists($sertifikat->image)) {
             Storage::disk('public')->delete($sertifikat->image);
         }
-
         $sertifikat->delete();
-        return redirect()->route('admin.sertifikat.index')->with('success', 'Sertifikat berhasil dihapus');
+        return redirect()->route('admin.sertifikat.index')->with('success', 'Sertifikat dihapus.');
     }
 }
 

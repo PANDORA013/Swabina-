@@ -1,17 +1,18 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\auth\AdminController;
 use App\Http\Controllers\News\NewsController;
-use App\Http\Controllers\Admin\CompanyInfoController;
-use App\Http\Controllers\Admin\FaqController as AdminFaqController;
-use App\Http\Controllers\Admin\AdminManagementController;
-use App\Http\Controllers\Admin\ContactPageController;
-use App\Http\Controllers\Admin\WhyChooseUsController;
+use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\LayananController;
 use App\Http\Controllers\Admin\SertifikatController;
+use App\Http\Controllers\Admin\WhyChooseUsController;
+use App\Http\Controllers\Admin\CompanyInfoController;
 use App\Http\Controllers\Admin\PedomanController;
 use App\Http\Controllers\Admin\SekilasPerusahaanController;
+use App\Http\Controllers\Admin\AdminManagementController;
+use App\Http\Controllers\Admin\ContactPageController;
 use App\Http\Controllers\SocialMedia\SocialLinkController;
 use App\Http\Controllers\About\JejakLangkahController;
 use App\Http\Controllers\Public\LandingPageController;
@@ -20,7 +21,12 @@ use App\Http\Controllers\Public\LayananController as PublicLayananController;
 use App\Http\Controllers\Contact\ContactController;
 use App\Http\Controllers\Public\SeoController;
 use App\Http\Controllers\Public\SearchController;
-use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+*/
 
 // ============================================
 // SEO ROUTES
@@ -88,209 +94,113 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->midd
 // ============================================
 // ADMIN ROUTES (Protected by Auth)
 // ============================================
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     
     // Dashboard (Accessible to all authenticated admins)
-    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-    
-    // Company Info Management (Requires: manage_company_info)
-    Route::middleware(['check.privilege:manage_company_info'])
-         ->prefix('admin/company-info')
-         ->name('admin.company-info.')
-         ->group(function () {
-             Route::get('/', [CompanyInfoController::class, 'index'])->name('index');
-             Route::post('/store', [CompanyInfoController::class, 'store'])->name('store');
-             Route::get('/create', [CompanyInfoController::class, 'create'])->name('create');
-             Route::get('/{id}/edit', [CompanyInfoController::class, 'edit'])->name('edit');
-             Route::put('/{id}', [CompanyInfoController::class, 'update'])->name('update');
-         });
-    
-    // Social Media Links (Requires: manage_settings)
-    Route::middleware(['check.privilege:manage_settings'])
-         ->prefix('admin/social-media')
-         ->name('admin.social-media.')
-         ->group(function () {
-             Route::get('/', [SocialLinkController::class, 'index'])->name('index');
-             Route::get('/create', [SocialLinkController::class, 'create'])->name('create');
-             Route::post('/', [SocialLinkController::class, 'store'])->name('store');
-             Route::get('/{id}/edit', [SocialLinkController::class, 'edit'])->name('edit');
-             Route::put('/{id}', [SocialLinkController::class, 'update'])->name('update');
-             Route::delete('/{id}', [SocialLinkController::class, 'destroy'])->name('destroy');
-         });
-    
-    // Berita/News Management (Requires: manage_news)
-    Route::middleware(['check.privilege:manage_news'])
-         ->prefix('admin')
-         ->name('admin.')
-         ->group(function () {
-             Route::resource('berita', NewsController::class, [
-                 'names' => [
-                     'index' => 'berita.index',
-                     'create' => 'berita.create',
-                     'store' => 'berita.store',
-                     'show' => 'berita.show',
-                     'edit' => 'berita.edit',
-                     'update' => 'berita.update',
-                     'destroy' => 'berita.destroy',
-                 ]
-             ]);
-         });
-    
-    // FAQ Management (Requires: manage_faq)
-    Route::middleware(['check.privilege:manage_faq'])
-         ->prefix('admin')
-         ->name('admin.')
-         ->group(function () {
-             Route::resource('faq', AdminFaqController::class, [
-                 'names' => [
-                     'index' => 'faq.index',
-                     'create' => 'faq.create',
-                     'store' => 'faq.store',
-                     'show' => 'faq.show',
-                     'edit' => 'faq.edit',
-                     'update' => 'faq.update',
-                     'destroy' => 'faq.destroy',
-                 ]
-             ]);
-         });
-    
-    // Layanan Pages Management (Requires: manage_services)
-    Route::middleware(['check.privilege:manage_services'])
-         ->prefix('admin/layanan')
-         ->name('admin.layanan.')
-         ->group(function () {
-             Route::get('/', [\App\Http\Controllers\Admin\LayananController::class, 'index'])->name('index');
-             Route::get('/create', [\App\Http\Controllers\Admin\LayananController::class, 'create'])->name('create');
-             Route::post('/', [\App\Http\Controllers\Admin\LayananController::class, 'store'])->name('store');
-             Route::get('/{slug}/edit', [\App\Http\Controllers\Admin\LayananController::class, 'edit'])->name('edit');
-             Route::put('/{slug}', [\App\Http\Controllers\Admin\LayananController::class, 'update'])->name('update');
-             Route::put('/{slug}/status', [\App\Http\Controllers\Admin\LayananController::class, 'updateStatus'])->name('updateStatus');
-             Route::delete('/{slug}', [\App\Http\Controllers\Admin\LayananController::class, 'destroy'])->name('destroy');
-         });
-    
-    // Pedoman/Guidelines Management (Requires: manage_content)
-    Route::middleware(['check.privilege:manage_content'])
-         ->prefix('admin/pedoman')
-         ->name('admin.pedoman.')
-         ->group(function () {
-             Route::get('/', [\App\Http\Controllers\Admin\PedomanController::class, 'index'])->name('index');
-             Route::get('/create', [\App\Http\Controllers\Admin\PedomanController::class, 'create'])->name('create');
-             Route::post('/', [\App\Http\Controllers\Admin\PedomanController::class, 'store'])->name('store');
-             Route::get('/{id}/edit', [\App\Http\Controllers\Admin\PedomanController::class, 'edit'])->name('edit');
-             Route::put('/{id}', [\App\Http\Controllers\Admin\PedomanController::class, 'update'])->name('update');
-             Route::delete('/{id}', [\App\Http\Controllers\Admin\PedomanController::class, 'destroy'])->name('destroy');
-         });
-    
-    // Jejak Langkah Management (Requires: manage_content)
-    Route::middleware(['check.privilege:manage_content'])
-         ->prefix('admin')
-         ->name('admin.')
-         ->group(function () {
-             Route::resource('jejak', JejakLangkahController::class, [
-                 'names' => [
-                     'index' => 'jejak.index',
-                     'create' => 'jejak.create',
-                     'store' => 'jejak.store',
-                     'show' => 'jejak.show',
-                     'edit' => 'jejak.edit',
-                     'update' => 'jejak.update',
-                     'destroy' => 'jejak.destroy',
-                 ]
-             ]);
-         });
-    
-    // Why Choose Us Management (Requires: manage_content)
-    Route::middleware(['check.privilege:manage_content'])
-         ->prefix('admin')
-         ->name('admin.')
-         ->group(function () {
-             Route::resource('why-choose-us', WhyChooseUsController::class, [
-                 'names' => [
-                     'index' => 'why-choose-us.index',
-                     'create' => 'why-choose-us.create',
-                     'store' => 'why-choose-us.store',
-                     'show' => 'why-choose-us.show',
-                     'edit' => 'why-choose-us.edit',
-                     'update' => 'why-choose-us.update',
-                     'destroy' => 'why-choose-us.destroy',
-                 ]
-             ]);
-         });
-    
-    // Sekilas Perusahaan Management (Requires: manage_content)
-    Route::middleware(['check.privilege:manage_content'])
-         ->prefix('admin')
-         ->name('admin.')
-         ->group(function () {
-             Route::resource('sekilas', SekilasPerusahaanController::class, [
-                 'names' => [
-                     'index' => 'sekilas.index',
-                     'create' => 'sekilas.create',
-                     'store' => 'sekilas.store',
-                     'show' => 'sekilas.show',
-                     'edit' => 'sekilas.edit',
-                     'update' => 'sekilas.update',
-                     'destroy' => 'sekilas.destroy',
-                 ]
-             ]);
-         });
-    
-    // Contact Page Management (Requires: manage_settings)
-    Route::middleware(['check.privilege:manage_settings'])
-         ->prefix('admin/contact-page')
-         ->name('admin.contact-page.')
-         ->group(function () {
-             Route::get('/', [\App\Http\Controllers\Admin\ContactPageController::class, 'index'])->name('index');
-             Route::get('/create', [\App\Http\Controllers\Admin\ContactPageController::class, 'create'])->name('create');
-             Route::post('/', [\App\Http\Controllers\Admin\ContactPageController::class, 'store'])->name('store');
-             Route::get('/{id}/edit', [\App\Http\Controllers\Admin\ContactPageController::class, 'edit'])->name('edit');
-             Route::put('/{id}', [\App\Http\Controllers\Admin\ContactPageController::class, 'update'])->name('update');
-             Route::delete('/{id}', [\App\Http\Controllers\Admin\ContactPageController::class, 'destroy'])->name('destroy');
-         });
-    
-    // Sertifikat & Penghargaan Management (Requires: manage_content)
-    Route::middleware(['check.privilege:manage_content'])
-         ->prefix('admin')
-         ->name('admin.')
-         ->group(function () {
-             Route::resource('sertifikat', \App\Http\Controllers\Admin\SertifikatController::class, [
-                 'names' => [
-                     'index' => 'sertifikat.index',
-                     'create' => 'sertifikat.create',
-                     'store' => 'sertifikat.store',
-                     'show' => 'sertifikat.show',
-                     'edit' => 'sertifikat.edit',
-                     'update' => 'sertifikat.update',
-                     'destroy' => 'sertifikat.destroy',
-                 ]
-             ]);
-         });
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
 
-    // Website Settings Management (Requires: manage_settings)
-    Route::middleware(['check.privilege:manage_settings'])
-         ->prefix('admin/settings')
-         ->name('admin.settings.')
-         ->group(function () {
-             Route::get('/', [\App\Http\Controllers\Admin\SettingController::class, 'edit'])->name('edit');
-             Route::post('/', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('update');
-         });
+    // 1. Module Berita/News (Requires: manage_news)
+    Route::middleware(['check.privilege:manage_news'])->group(function () {
+        Route::resource('berita', NewsController::class, [
+            'names' => [
+                'index' => 'berita.index',
+                'create' => 'berita.create',
+                'store' => 'berita.store',
+                'show' => 'berita.show',
+                'edit' => 'berita.edit',
+                'update' => 'berita.update',
+                'destroy' => 'berita.destroy',
+            ]
+        ]);
+    });
 
-    // Admin Management (Super Admin Only)
-    Route::middleware(['super_admin'])->group(function () {
-        Route::prefix('admin/admin-management')->name('admin.admin-management.')->group(function () {
-            Route::get('/', [AdminManagementController::class, 'index'])->name('index');
-            Route::get('/create', [AdminManagementController::class, 'create'])->name('create');
-            Route::post('/store', [AdminManagementController::class, 'store'])->name('store');
-            Route::get('/{admin}/edit', [AdminManagementController::class, 'edit'])->name('edit');
-            Route::put('/{admin}', [AdminManagementController::class, 'update'])->name('update');
-            Route::delete('/{admin}', [AdminManagementController::class, 'destroy'])->name('destroy');
-            Route::get('/{role}/permissions', [AdminManagementController::class, 'getRolePermissions'])->name('get-permissions');
-            
-            // Privilege Management Routes
-            Route::get('/{admin}/privileges', [AdminManagementController::class, 'showPrivileges'])->name('privileges');
-            Route::post('/{admin}/privileges', [AdminManagementController::class, 'updatePrivileges'])->name('update-privileges');
-            Route::get('/api/permissions', [AdminManagementController::class, 'getAvailablePermissions'])->name('api-permissions');
-        });
+    // 2. Module FAQ (Requires: manage_faq)
+    Route::middleware(['check.privilege:manage_faq'])->group(function () {
+        Route::resource('faq', FaqController::class);
+    });
+
+    // 3. Module Layanan (Requires: manage_services)
+    Route::middleware(['check.privilege:manage_services'])->group(function () {
+        Route::resource('layanan', LayananController::class, [
+            'parameters' => ['layanan' => 'slug']
+        ]);
+        Route::put('layanan/{slug}/status', [LayananController::class, 'updateStatus'])->name('layanan.updateStatus');
+    });
+
+    // 4. Module Sertifikat & Penghargaan (Requires: manage_content)
+    Route::middleware(['check.privilege:manage_content'])->group(function () {
+        Route::resource('sertifikat', SertifikatController::class);
+    });
+
+    // 5. Module Why Choose Us (Requires: manage_content)
+    Route::middleware(['check.privilege:manage_content'])->group(function () {
+        Route::resource('why-choose-us', WhyChooseUsController::class);
+    });
+
+    // 6. Module Pedoman/Guidelines (Requires: manage_content)
+    Route::middleware(['check.privilege:manage_content'])->group(function () {
+        Route::resource('pedoman', PedomanController::class);
+    });
+
+    // 7. Module Sekilas Perusahaan (Requires: manage_content)
+    Route::middleware(['check.privilege:manage_content'])->group(function () {
+        Route::resource('sekilas', SekilasPerusahaanController::class);
+    });
+
+    // 8. Module Jejak Langkah (Requires: manage_content)
+    Route::middleware(['check.privilege:manage_content'])->group(function () {
+        Route::resource('jejak', JejakLangkahController::class);
+    });
+
+    // 9. Module Company Info (Requires: manage_company_info)
+    Route::middleware(['check.privilege:manage_company_info'])->prefix('company-info')->name('company-info.')->group(function () {
+        Route::get('/', [CompanyInfoController::class, 'index'])->name('index');
+        Route::post('/store', [CompanyInfoController::class, 'store'])->name('store');
+        Route::get('/create', [CompanyInfoController::class, 'create'])->name('create');
+        Route::get('/{id}/edit', [CompanyInfoController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [CompanyInfoController::class, 'update'])->name('update');
+    });
+
+    // 10. Module Contact Page (Requires: manage_settings)
+    Route::middleware(['check.privilege:manage_settings'])->prefix('contact-page')->name('contact-page.')->group(function () {
+        Route::get('/', [ContactPageController::class, 'index'])->name('index');
+        Route::get('/create', [ContactPageController::class, 'create'])->name('create');
+        Route::post('/', [ContactPageController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [ContactPageController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [ContactPageController::class, 'update'])->name('update');
+        Route::delete('/{id}', [ContactPageController::class, 'destroy'])->name('destroy');
+    });
+
+    // 11. Module Social Media Links (Requires: manage_settings)
+    Route::middleware(['check.privilege:manage_settings'])->prefix('social-media')->name('social-media.')->group(function () {
+        Route::get('/', [SocialLinkController::class, 'index'])->name('index');
+        Route::get('/create', [SocialLinkController::class, 'create'])->name('create');
+        Route::post('/', [SocialLinkController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [SocialLinkController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [SocialLinkController::class, 'update'])->name('update');
+        Route::delete('/{id}', [SocialLinkController::class, 'destroy'])->name('destroy');
+    });
+
+    // 12. Website Settings (Requires: manage_settings)
+    Route::middleware(['check.privilege:manage_settings'])->prefix('settings')->name('settings.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\SettingController::class, 'edit'])->name('edit');
+        Route::post('/', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('update');
+    });
+
+    // 13. Admin Management (Super Admin Only)
+    Route::middleware(['super_admin'])->prefix('admin-management')->name('admin-management.')->group(function () {
+        Route::get('/', [AdminManagementController::class, 'index'])->name('index');
+        Route::get('/create', [AdminManagementController::class, 'create'])->name('create');
+        Route::post('/store', [AdminManagementController::class, 'store'])->name('store');
+        Route::get('/{admin}/edit', [AdminManagementController::class, 'edit'])->name('edit');
+        Route::put('/{admin}', [AdminManagementController::class, 'update'])->name('update');
+        Route::delete('/{admin}', [AdminManagementController::class, 'destroy'])->name('destroy');
+        Route::get('/{role}/permissions', [AdminManagementController::class, 'getRolePermissions'])->name('get-permissions');
+        
+        // Privilege Management Routes
+        Route::get('/{admin}/privileges', [AdminManagementController::class, 'showPrivileges'])->name('privileges');
+        Route::post('/{admin}/privileges', [AdminManagementController::class, 'updatePrivileges'])->name('update-privileges');
+        Route::get('/api/permissions', [AdminManagementController::class, 'getAvailablePermissions'])->name('api-permissions');
     });
 });
 

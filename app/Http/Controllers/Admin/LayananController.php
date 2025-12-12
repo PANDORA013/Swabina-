@@ -3,69 +3,95 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\LayananPage;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class LayananController extends Controller
 {
     public function index()
     {
-        $layanan = DB::table('layanan_pages')->orderBy('order')->get();
-        $layout = 'layouts.app';
-        
-        return view('admin.layanan.index', compact('layanan', 'layout'));
+        $layanan = LayananPage::latest()->paginate(10);
+        return view('admin.layanan.index', compact('layanan'));
+    }
+
+    public function create()
+    {
+        return view('admin.layanan.create');
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'title'       => 'required|string|max:255',
+            'subtitle'    => 'nullable|string|max:500',
+            'description' => 'required|string',
+            'icon'        => 'nullable|string|max:100',
+            'features'    => 'nullable|string',
+            'image'       => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'order'       => 'nullable|integer',
+            'is_active'   => 'boolean',
+        ]);
+
+        // Auto generate slug from title
+        $validated['slug'] = Str::slug($request->title);
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('layanan', 'public');
+        }
+
+        LayananPage::create($validated);
+
+        return redirect()->route('admin.layanan.index')->with('success', 'Layanan berhasil dibuat.');
     }
 
     public function edit($slug)
     {
-        $layanan = DB::table('layanan_pages')->where('slug', $slug)->first();
-        $layout = 'layouts.app';
+        $layanan = LayananPage::where('slug', $slug)->firstOrFail();
         
-        if (!$layanan) {
-            return redirect()->route('admin.layanan.index')->with('error', 'Layanan tidak ditemukan');
-        }
-        
-        return view('admin.layanan.edit', compact('layanan', 'layout'));
+        return view('admin.layanan.edit', compact('layanan'));
     }
 
     public function update(Request $request, $slug)
     {
+        $layanan = LayananPage::where('slug', $slug)->firstOrFail();
+
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'subtitle' => 'required|string|max:500',
+            'title'       => 'required|string|max:255',
+            'subtitle'    => 'nullable|string|max:500',
             'description' => 'required|string',
-            'icon' => 'nullable|string|max:100',
-            'features' => 'nullable|string',
-            'is_active' => 'boolean'
+            'icon'        => 'nullable|string|max:100',
+            'features'    => 'nullable|string',
+            'image'       => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'order'       => 'nullable|integer',
+            'is_active'   => 'boolean',
         ]);
 
-        // Handle image upload if exists
-        if ($request->hasFile('image')) {
-            $request->validate([
-                'image' => 'image|mimes:jpeg,png,jpg,webp|max:2048'
-            ]);
-
-            $layanan = DB::table('layanan_pages')->where('slug', $slug)->first();
-            
-            // Delete old image
-            if ($layanan && $layanan->image) {
-                Storage::disk('public')->delete($layanan->image);
-            }
-
-            $imagePath = $request->file('image')->store('layanan', 'public');
-            $validated['image'] = $imagePath;
+        // Update slug if title changed
+        if ($request->title !== $layanan->title) {
+            $validated['slug'] = Str::slug($request->title);
         }
 
-        DB::table('layanan_pages')
-            ->where('slug', $slug)
-            ->update(array_merge($validated, [
-                'updated_at' => now()
-            ]));
+        // Handle Image Update
+        if ($request->hasFile('image')) {
+            // 1. Hapus gambar lama
+            if ($layanan->image && Storage::disk('public')->exists($layanan->image)) {
+                Storage::disk('public')->delete($layanan->image);
+            }
+            // 2. Simpan gambar baru
+            $validated['image'] = $request->file('image')->store('layanan', 'public');
+        } else {
+            // Jika tidak ada gambar baru, hapus key 'image' dari array validated agar tidak menimpa data lama dengan null
+            unset($validated['image']);
+        }
+
+        $layanan->update($validated);
 
         return redirect()
-            ->route('admin.layanan.edit', $slug)
-            ->with('success', 'Layanan berhasil diupdate');
+            ->route('admin.layanan.edit', $validated['slug'] ?? $slug)
+            ->with('success', 'Layanan berhasil diperbarui.');
     }
 
     public function updateStatus(Request $request, $slug)
@@ -74,12 +100,8 @@ class LayananController extends Controller
             'is_active' => 'required|boolean'
         ]);
 
-        DB::table('layanan_pages')
-            ->where('slug', $slug)
-            ->update([
-                'is_active' => $validated['is_active'],
-                'updated_at' => now()
-            ]);
+        $layanan = LayananPage::where('slug', $slug)->firstOrFail();
+        $layanan->update(['is_active' => $validated['is_active']]);
 
         return response()->json([
             'success' => true,
@@ -87,23 +109,17 @@ class LayananController extends Controller
         ]);
     }
 
-    // Menghapus layanan
     public function destroy($slug)
     {
-        $layanan = DB::table('layanan_pages')->where('slug', $slug)->first();
+        $layanan = LayananPage::where('slug', $slug)->firstOrFail();
         
-        if (!$layanan) {
-            return redirect()->route('admin.layanan.index')->with('error', 'Layanan tidak ditemukan');
-        }
-
         // Hapus gambar jika ada
         if ($layanan->image && Storage::disk('public')->exists($layanan->image)) {
             Storage::disk('public')->delete($layanan->image);
         }
 
-        // Hapus data dari database
-        DB::table('layanan_pages')->where('slug', $slug)->delete();
+        $layanan->delete();
 
-        return redirect()->route('admin.layanan.index')->with('success', 'Layanan berhasil dihapus');
+        return redirect()->route('admin.layanan.index')->with('success', 'Layanan berhasil dihapus.');
     }
 }

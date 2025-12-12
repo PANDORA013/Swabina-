@@ -5,81 +5,78 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Pedoman;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class PedomanController extends Controller
 {
     public function index()
     {
-        $layout = 'vertical';
-        $pedomans = Pedoman::latest()->get();
-        return view('admin.pedoman.pedoman', compact('pedomans', 'layout')); // Sesuai nama file view Anda 'pedoman.blade.php'
+        $pedomans = Pedoman::latest()->paginate(10);
+        return view('admin.pedoman.index', compact('pedomans'));
     }
 
     public function create()
     {
-        $layout = 'vertical';
-        return view('admin.pedoman.create', compact('layout'));
+        return view('admin.pedoman.create');
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => 'required',
-            'file_pdf' => 'required|mimes:pdf|max:10000' // max 10MB
+        $validated = $request->validate([
+            'title'       => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'file_pdf'    => 'required|mimes:pdf|max:10240', // max 10MB
         ]);
 
-        $data = $request->all();
-
         if ($request->hasFile('file_pdf')) {
-            $file = $request->file('file_pdf');
-            $name = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('assets/file_pdf'), $name);
-            $data['file_path'] = $name; // Sesuaikan nama kolom di database, misal 'file_path' atau 'file_pdf'
+            $validated['file_path'] = $request->file('file_pdf')->store('pedoman', 'public');
         }
 
-        Pedoman::create($data);
-        return redirect()->route('admin.pedoman.index')->with('success', 'Pedoman berhasil ditambahkan');
+        Pedoman::create($validated);
+
+        return redirect()->route('admin.pedoman.index')->with('success', 'Pedoman berhasil ditambahkan.');
     }
 
     public function edit($id)
     {
         $pedoman = Pedoman::findOrFail($id);
-        $layout = 'vertical';
-        return view('admin.pedoman.edit', compact('pedoman', 'layout'));
+        return view('admin.pedoman.edit', compact('pedoman'));
     }
 
     public function update(Request $request, $id)
     {
         $pedoman = Pedoman::findOrFail($id);
-        $request->validate([
-            'title' => 'required',
-            'file_pdf' => 'nullable|mimes:pdf|max:10000'
+
+        $validated = $request->validate([
+            'title'       => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'file_pdf'    => 'nullable|mimes:pdf|max:10240',
         ]);
 
-        $data = $request->all();
-
         if ($request->hasFile('file_pdf')) {
-            if ($pedoman->file_path && File::exists(public_path('assets/file_pdf/' . $pedoman->file_path))) {
-                File::delete(public_path('assets/file_pdf/' . $pedoman->file_path));
+            if ($pedoman->file_path && Storage::disk('public')->exists($pedoman->file_path)) {
+                Storage::disk('public')->delete($pedoman->file_path);
             }
-            $file = $request->file('file_pdf');
-            $name = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('assets/file_pdf'), $name);
-            $data['file_path'] = $name;
+            $validated['file_path'] = $request->file('file_pdf')->store('pedoman', 'public');
+        } else {
+            unset($validated['file_path']);
         }
 
-        $pedoman->update($data);
-        return redirect()->route('admin.pedoman.index')->with('success', 'Pedoman berhasil diperbarui');
+        $pedoman->update($validated);
+
+        return redirect()->route('admin.pedoman.index')->with('success', 'Pedoman berhasil diperbarui.');
     }
 
     public function destroy($id)
     {
         $pedoman = Pedoman::findOrFail($id);
-        if ($pedoman->file_path && File::exists(public_path('assets/file_pdf/' . $pedoman->file_path))) {
-            File::delete(public_path('assets/file_pdf/' . $pedoman->file_path));
+
+        if ($pedoman->file_path && Storage::disk('public')->exists($pedoman->file_path)) {
+            Storage::disk('public')->delete($pedoman->file_path);
         }
+
         $pedoman->delete();
-        return redirect()->route('admin.pedoman.index')->with('success', 'Pedoman berhasil dihapus');
+
+        return redirect()->route('admin.pedoman.index')->with('success', 'Pedoman berhasil dihapus.');
     }
 }

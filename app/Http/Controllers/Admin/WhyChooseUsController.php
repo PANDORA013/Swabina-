@@ -9,101 +9,82 @@ use Illuminate\Support\Facades\Storage;
 
 class WhyChooseUsController extends Controller
 {
-    // Menampilkan daftar why choose us
     public function index()
     {
-        $items = WhyChooseUs::orderBy('order')->get();
-        $layout = 'layouts.app';
-        return view('admin.why-choose-us.index', compact('items', 'layout'));
+        $items = WhyChooseUs::orderBy('order')->paginate(10);
+        return view('admin.why-choose-us.index', compact('items'));
     }
 
-    // Menampilkan form tambah
     public function create()
     {
-        $layout = 'layouts.app';
-        return view('admin.why-choose-us.create', compact('layout'));
+        return view('admin.why-choose-us.create');
     }
 
-    // Menyimpan why choose us baru
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'title'       => 'required|string|max:255',
             'description' => 'required|string',
-            'icon'        => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'icon'        => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:2048',
             'order'       => 'nullable|integer',
             'status'      => 'nullable|in:active,inactive',
         ]);
 
-        $data = $request->all();
-        $data['status'] = $data['status'] ?? 'active';
+        $validated['status'] = $validated['status'] ?? 'active';
 
-        // Upload Icon
         if ($request->hasFile('icon')) {
-            $icon = $request->file('icon');
-            $iconName = time() . '_' . $icon->getClientOriginalName();
-            $icon->storeAs('why_choose_us', $iconName, 'public');
-            $data['icon'] = 'why_choose_us/' . $iconName;
+            $validated['icon'] = $request->file('icon')->store('why_choose_us', 'public');
         }
 
-        WhyChooseUs::create($data);
-        return redirect()->route('admin.why-choose-us.index')->with('success', 'Why Choose Us berhasil ditambahkan');
+        WhyChooseUs::create($validated);
+
+        return redirect()->route('admin.why-choose-us.index')->with('success', 'Why Choose Us berhasil ditambahkan.');
     }
 
-    // Menampilkan form edit
     public function edit($id)
     {
         $item = WhyChooseUs::findOrFail($id);
-        $layout = 'layouts.app';
-        return view('admin.why-choose-us.edit', compact('item', 'layout'));
+        return view('admin.why-choose-us.edit', compact('item'));
     }
 
-    // Mengupdate why choose us
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $item = WhyChooseUs::findOrFail($id);
+
+        $validated = $request->validate([
             'title'       => 'required|string|max:255',
             'description' => 'required|string',
-            'icon'        => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'icon'        => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:2048',
             'order'       => 'nullable|integer',
             'status'      => 'nullable|in:active,inactive',
         ]);
 
-        $item = WhyChooseUs::findOrFail($id);
-        $data = $request->all();
-        $data['status'] = $data['status'] ?? $item->status;
+        $validated['status'] = $validated['status'] ?? $item->status;
 
-        // Cek jika ada upload icon baru
         if ($request->hasFile('icon')) {
-            // Hapus icon lama jika ada
             if ($item->icon && Storage::disk('public')->exists($item->icon)) {
                 Storage::disk('public')->delete($item->icon);
             }
-
-            $icon = $request->file('icon');
-            $iconName = time() . '_' . $icon->getClientOriginalName();
-            $icon->storeAs('why_choose_us', $iconName, 'public');
-            $data['icon'] = 'why_choose_us/' . $iconName;
+            $validated['icon'] = $request->file('icon')->store('why_choose_us', 'public');
         } else {
-            // Jika tidak upload icon, pakai icon lama (jangan di-overwrite null)
-            unset($data['icon']);
+            unset($validated['icon']);
         }
 
-        $item->update($data);
-        return redirect()->route('admin.why-choose-us.index')->with('success', 'Why Choose Us berhasil diperbarui');
+        $item->update($validated);
+
+        return redirect()->route('admin.why-choose-us.index')->with('success', 'Why Choose Us berhasil diperbarui.');
     }
 
-    // Menghapus why choose us
     public function destroy($id)
     {
         $item = WhyChooseUs::findOrFail($id);
 
-        // Hapus icon dari storage
         if ($item->icon && Storage::disk('public')->exists($item->icon)) {
             Storage::disk('public')->delete($item->icon);
         }
 
         $item->delete();
-        return redirect()->route('admin.why-choose-us.index')->with('success', 'Why Choose Us berhasil dihapus');
+
+        return redirect()->route('admin.why-choose-us.index')->with('success', 'Why Choose Us berhasil dihapus.');
     }
 }
