@@ -3,77 +3,44 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     */
+    use AuthenticatesUsers;
+
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
     }
 
-    /**
-     * Tampilkan form login.
-     */
     public function showLoginForm()
     {
         return view('auth.login');
     }
 
     /**
-     * Proses login dengan redirect dinamis berdasarkan role.
-     */
-    public function login(Request $request)
-    {
-        // Validasi input
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-
-        $credentials = $request->only('email', 'password');
-        $remember = $request->has('remember');
-
-        // Cek kredensial
-        if (Auth::attempt($credentials, $remember)) {
-            $request->session()->regenerate();
-            
-            // Redirect berdasarkan role
-            return $this->authenticated($request, Auth::user());
-        }
-
-        // Jika login gagal
-        throw ValidationException::withMessages([
-            'email' => ['Email atau password salah.'],
-        ]);
-    }
-
-    /**
-     * Logika redirect setelah user berhasil login.
-     * Menggantikan property $redirectTo agar dinamis berdasarkan role.
+     * Logika Redirect Dinamis setelah Login
      */
     protected function authenticated(Request $request, $user)
     {
-        // Jika role adalah Admin atau Super Admin -> Ke Dashboard
-        if (in_array($user->role, ['admin', 'super_admin'])) {
+        // 1. Cek Role (Pastikan kolom 'role' ada di tabel users)
+        $role = $user->role;
+
+        // 2. Arahkan Admin & Super Admin ke Dashboard
+        if (in_array($role, ['super_admin', 'admin'])) {
             return redirect()->route('admin.dashboard');
         }
 
-        // Jika user biasa -> Ke Homepage (atau redirect ke halaman lain sesuai kebutuhan)
+        // 3. Arahkan User Biasa ke Home
         return redirect()->route('beranda');
     }
 
-    /**
-     * Proses logout.
-     */
     public function logout(Request $request)
     {
-        Auth::logout();
+        $this->guard()->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
