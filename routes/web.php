@@ -95,101 +95,84 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->midd
 // ADMIN ROUTES (Protected by Auth)
 // ============================================
 
-// 1. SUPER ADMIN ONLY - User Management
+// --- BLOK 1: SUPER ADMIN ONLY (User Management) ---
 Route::middleware(['auth', \App\Http\Middleware\SuperAdminMiddleware::class])
-    ->prefix('admin')->name('admin.')->group(function () {
+    ->prefix('admin/admin-management')->name('admin.admin-management.')->group(function () {
     
-    Route::prefix('admin-management')->name('admin-management.')->group(function () {
-        Route::get('/', [AdminManagementController::class, 'index'])->name('index');
-        Route::get('/create', [AdminManagementController::class, 'create'])->name('create');
-        Route::post('/store', [AdminManagementController::class, 'store'])->name('store');
-        Route::get('/{admin}/edit', [AdminManagementController::class, 'edit'])->name('edit');
-        Route::put('/{admin}', [AdminManagementController::class, 'update'])->name('update');
-        Route::delete('/{admin}', [AdminManagementController::class, 'destroy'])->name('destroy');
-        Route::get('/{role}/permissions', [AdminManagementController::class, 'getRolePermissions'])->name('get-permissions');
-        Route::get('/{admin}/privileges', [AdminManagementController::class, 'showPrivileges'])->name('privileges');
-        Route::post('/{admin}/privileges', [AdminManagementController::class, 'updatePrivileges'])->name('update-privileges');
-        Route::get('/api/permissions', [AdminManagementController::class, 'getAvailablePermissions'])->name('api-permissions');
-    });
+    Route::get('/', [AdminManagementController::class, 'index'])->name('index');
+    Route::get('/create', [AdminManagementController::class, 'create'])->name('create');
+    Route::post('/store', [AdminManagementController::class, 'store'])->name('store');
+    Route::get('/{admin}/edit', [AdminManagementController::class, 'edit'])->name('edit');
+    Route::put('/{admin}', [AdminManagementController::class, 'update'])->name('update');
+    Route::delete('/{admin}', [AdminManagementController::class, 'destroy'])->name('destroy');
+    Route::get('/{admin}/privileges', [AdminManagementController::class, 'showPrivileges'])->name('privileges');
+    Route::post('/{admin}/privileges', [AdminManagementController::class, 'updatePrivileges'])->name('update-privileges');
 });
 
-// 2. ADMIN AREA - Content Management (Admin + Super Admin)
+// --- BLOK 2: ADMIN CONTENT AREA (Admin + Super Admin) ---
 Route::middleware(['auth', \App\Http\Middleware\CheckAdminPrivilege::class])
     ->prefix('admin')->name('admin.')->group(function () {
     
     // Dashboard
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
     
-    // Berita/News
-    Route::resource('berita', NewsController::class, [
-        'names' => [
-            'index' => 'berita.index',
-            'create' => 'berita.create',
-            'store' => 'berita.store',
-            'show' => 'berita.show',
-            'edit' => 'berita.edit',
-            'update' => 'berita.update',
-            'destroy' => 'berita.destroy',
-        ]
+    // Content Modules (CRUD Resources)
+    Route::resource('berita', NewsController::class)->names([
+        'index' => 'berita.index',
+        'create' => 'berita.create',
+        'store' => 'berita.store',
+        'show' => 'berita.show',
+        'edit' => 'berita.edit',
+        'update' => 'berita.update',
+        'destroy' => 'berita.destroy',
     ]);
     
-    // FAQ
     Route::resource('faq', FaqController::class);
-    
-    // Layanan
-    Route::resource('layanan', LayananController::class, [
-        'parameters' => ['layanan' => 'slug']
-    ]);
-    Route::put('layanan/{slug}/status', [LayananController::class, 'updateStatus'])->name('layanan.updateStatus');
-    
-    // Sertifikat & Penghargaan
     Route::resource('sertifikat', SertifikatController::class);
-    
-    // Why Choose Us
     Route::resource('why-choose-us', WhyChooseUsController::class);
-    
-    // Pedoman/Guidelines
     Route::resource('pedoman', PedomanController::class);
-    
-    // Sekilas Perusahaan
     Route::resource('sekilas', SekilasPerusahaanController::class);
-    
-    // Jejak Langkah
     Route::resource('jejak', JejakLangkahController::class);
     
-    // Company Info
-    Route::prefix('company-info')->name('company-info.')->group(function () {
-        Route::get('/', [CompanyInfoController::class, 'index'])->name('index');
-        Route::post('/store', [CompanyInfoController::class, 'store'])->name('store');
-        Route::get('/create', [CompanyInfoController::class, 'create'])->name('create');
-        Route::get('/{id}/edit', [CompanyInfoController::class, 'edit'])->name('edit');
-        Route::put('/{id}', [CompanyInfoController::class, 'update'])->name('update');
+    // Layanan (with custom slug parameter)
+    Route::resource('layanan', LayananController::class)->parameters(['layanan' => 'slug']);
+    Route::put('layanan/{slug}/status', [LayananController::class, 'updateStatus'])->name('layanan.updateStatus');
+    
+    // --- BLOK 3: ADMIN SETTINGS (Minimal Routes) ---
+    
+    // Company Info (Only Index & Update - No Create/Delete)
+    Route::controller(CompanyInfoController::class)->prefix('company-info')->name('company-info.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/store', 'store')->name('store');
+        Route::get('/{id}/edit', 'edit')->name('edit');
+        Route::put('/{id}', 'update')->name('update');
     });
     
     // Contact Page
-    Route::prefix('contact-page')->name('contact-page.')->group(function () {
-        Route::get('/', [ContactPageController::class, 'index'])->name('index');
-        Route::get('/create', [ContactPageController::class, 'create'])->name('create');
-        Route::post('/', [ContactPageController::class, 'store'])->name('store');
-        Route::get('/{id}/edit', [ContactPageController::class, 'edit'])->name('edit');
-        Route::put('/{id}', [ContactPageController::class, 'update'])->name('update');
-        Route::delete('/{id}', [ContactPageController::class, 'destroy'])->name('destroy');
+    Route::controller(ContactPageController::class)->prefix('contact-page')->name('contact-page.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/', 'store')->name('store');
+        Route::get('/{id}/edit', 'edit')->name('edit');
+        Route::put('/{id}', 'update')->name('update');
+        Route::delete('/{id}', 'destroy')->name('destroy');
     });
     
     // Social Media Links
-    Route::prefix('social-media')->name('social-media.')->group(function () {
-        Route::get('/', [SocialLinkController::class, 'index'])->name('index');
-        Route::get('/create', [SocialLinkController::class, 'create'])->name('create');
-        Route::post('/', [SocialLinkController::class, 'store'])->name('store');
-        Route::get('/{id}/edit', [SocialLinkController::class, 'edit'])->name('edit');
-        Route::put('/{id}', [SocialLinkController::class, 'update'])->name('update');
-        Route::delete('/{id}', [SocialLinkController::class, 'destroy'])->name('destroy');
+    Route::controller(SocialLinkController::class)->prefix('social-media')->name('social-media.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/', 'store')->name('store');
+        Route::get('/{id}/edit', 'edit')->name('edit');
+        Route::put('/{id}', 'update')->name('update');
+        Route::delete('/{id}', 'destroy')->name('destroy');
     });
     
-    // Website Settings
-    Route::prefix('settings')->name('settings.')->group(function () {
-        Route::get('/', [\App\Http\Controllers\Admin\SettingController::class, 'edit'])->name('edit');
-        Route::post('/', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('update');
+    // Website Settings (Only Edit & Update)
+    Route::controller(\App\Http\Controllers\Admin\SettingController::class)->prefix('settings')->name('settings.')->group(function () {
+        Route::get('/', 'edit')->name('edit');
+        Route::post('/', 'update')->name('update');
     });
 });
 

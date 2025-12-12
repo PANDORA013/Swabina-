@@ -6,22 +6,28 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
-    // Tampilkan form login
-    public function showLoginForm()
+    /**
+     * Create a new controller instance.
+     */
+    public function __construct()
     {
-        // Ambil email dan password dari cookie jika ada
-        $email = request()->cookie('remember_me_email', '');
-        $password = request()->cookie('remember_me_password', '');
-
-        // Kirim email dan password ke view login
-        return view('auth.login', ['email' => $email, 'password' => $password]);
+        $this->middleware('guest')->except('logout');
     }
 
-    // Proses login
+    /**
+     * Tampilkan form login.
+     */
+    public function showLoginForm()
+    {
+        return view('auth.login');
+    }
+
+    /**
+     * Proses login dengan redirect dinamis berdasarkan role.
+     */
     public function login(Request $request)
     {
         // Validasi input
@@ -31,59 +37,46 @@ class LoginController extends Controller
         ]);
 
         $credentials = $request->only('email', 'password');
-        $remember = $request->has('remember'); // Mengecek apakah checkbox "Remember Me" dicentang
+        $remember = $request->has('remember');
 
-        Log::info('Login attempt', ['email' => $request->email]); // Log attempt
-
-        // Cek kredensial dan autentikasi
+        // Cek kredensial
         if (Auth::attempt($credentials, $remember)) {
-            Log::info('Login successful', ['email' => $request->email]); // Log success
-            // Simpan email dan password dalam cookie jika "Remember Me" dicentang
-            if ($remember) {
-                $response = redirect()->route($this->determineRedirectRoute());
-                $response->cookie('remember_me_email', $request->email, 60 * 24 * 7); // Simpan selama 1 minggu
-                $response->cookie('remember_me_password', $request->password, 60 * 24 * 7); // Simpan selama 1 minggu
-                return $response;
-            }
-
-            // Jika login berhasil, redirect ke halaman sesuai role
-            return redirect()->route($this->determineRedirectRoute());
+            $request->session()->regenerate();
+            
+            // Redirect berdasarkan role
+            return $this->authenticated($request, Auth::user());
         }
 
-        Log::warning('Login failed', ['email' => $request->email]); // Log failure
-
-        // Jika login gagal, kembalikan error
+        // Jika login gagal
         throw ValidationException::withMessages([
-            'email' => [trans('auth.failed')],
+            'email' => ['Email atau password salah.'],
         ]);
     }
 
-    // Menentukan rute redirect berdasarkan peran pengguna
-    private function determineRedirectRoute()
+    /**
+     * Logika redirect setelah user berhasil login.
+     * Menggantikan property $redirectTo agar dinamis berdasarkan role.
+     */
+    protected function authenticated(Request $request, $user)
     {
-        $user = Auth::user();
-        if ($user->role === 'admin' || $user->role === 'superadmin') {
-            return 'admin.dashboard';
-        } elseif ($user->role === 'sdm') {
-            return 'sdm.dashboard';
-        } elseif ($user->role === 'marketing') {
-            return 'marketing.dashboard';
+        // Jika role adalah Admin atau Super Admin -> Ke Dashboard
+        if (in_array($user->role, ['admin', 'super_admin'])) {
+            return redirect()->route('admin.dashboard');
         }
-        return 'login';
+
+        // Jika user biasa -> Ke Homepage (atau redirect ke halaman lain sesuai kebutuhan)
+        return redirect()->route('beranda');
     }
 
-    // Proses logout
+    /**
+     * Proses logout.
+     */
     public function logout(Request $request)
     {
-        // Hapus cookie saat logout
-        $response = redirect('/login');
-        $response->cookie('remember_me_email', '', -1);
-        $response->cookie('remember_me_password', '', -1);
-        
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return $response;
+        return redirect('/login');
     }
 }
