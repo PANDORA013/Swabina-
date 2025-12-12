@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // FIX: Bagikan variabel $layout ke semua view admin secara default
-        View::share('layout', 'vertical');
+        View::share('layout', 'layouts.app');
 
         View::composer(['partial.footer', 'partial-eng.footer-eng'], function ($view) {
             try {

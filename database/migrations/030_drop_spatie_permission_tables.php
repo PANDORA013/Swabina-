@@ -13,6 +13,10 @@ return new class extends Migration {
      */
     public function up(): void
     {
+        // FIX: Jangan hapus tabel dulu jika kode aplikasi/test masih membutuhkannya.
+        // Biarkan kosong agar tabel 'roles', 'permissions', dll tetap ada.
+        
+        /* 
         DB::statement('SET FOREIGN_KEY_CHECKS=0');
 
         // Drop Spatie permission tables (not used)
@@ -26,6 +30,7 @@ return new class extends Migration {
         Schema::dropIfExists('spatie_permissions');
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1');
+        */
     }
 
     public function down(): void
