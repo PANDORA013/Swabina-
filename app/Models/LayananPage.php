@@ -30,6 +30,37 @@ class LayananPage extends Model
     ];
 
     /**
+     * FIX: Accessor untuk memastikan features selalu me-return Array.
+     * Mencegah error "foreach() argument must be of type array, string given".
+     */
+    public function getFeaturesAttribute($value)
+    {
+        // 1. Jika value null, kembalikan array kosong
+        if (is_null($value)) {
+            return [];
+        }
+
+        // 2. Jika value sudah berupa array (hasil casting Laravel), kembalikan langsung
+        if (is_array($value)) {
+            return $value;
+        }
+
+        // 3. Jika value adalah string
+        if (is_string($value)) {
+            // Coba decode sebagai JSON
+            $decoded = json_decode($value, true);
+            
+            // Jika valid JSON array, pakai itu. 
+            // Jika tidak (teks biasa), bungkus teks tersebut dalam array.
+            return (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) 
+                ? $decoded 
+                : [$value];
+        }
+
+        return [];
+    }
+
+    /**
      * Get only active layanan pages
      */
     public static function getActive()
