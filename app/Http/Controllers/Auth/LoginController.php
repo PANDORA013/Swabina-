@@ -18,8 +18,8 @@ class LoginController extends Controller
 
     public function showLoginForm()
     {
-        // FIX: Kirim variable $email untuk mencegah error 'Undefined variable'
-        return view('auth.login', ['email' => '']);
+        // FIX: Kirim variable $email dan $password untuk mencegah error 'Undefined variable'
+        return view('auth.login', ['email' => '', 'password' => '']);
     }
 
     /**
