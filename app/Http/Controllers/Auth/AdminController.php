@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\LayananPage;
 use App\Models\Faq;
 use App\Models\Sertifikat;
+use App\Models\Pedoman;
 
 class AdminController extends Controller
 {
@@ -22,8 +23,9 @@ class AdminController extends Controller
         $faqs = Faq::latest()->limit(10)->get();
         $layanan = LayananPage::where('is_active', true)->orderBy('order')->get();
         $sertifikats = Sertifikat::latest()->limit(10)->get();
+        $pedomans = Pedoman::latest()->limit(10)->get();
 
         // Kirim semua data ke view
-        return view('admin.dashboard', compact('beritas', 'users', 'faqs', 'layanan', 'sertifikats'));
+        return view('admin.dashboard', compact('beritas', 'users', 'faqs', 'layanan', 'sertifikats', 'pedomans'));
     }
 }
